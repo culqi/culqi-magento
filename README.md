@@ -1,6 +1,6 @@
 # Culqi Magento Extension
 
-## Guía de Instalación de Magento (test)
+## Guía de Uso de Magento e Instalación de Culqi
 
 ###Paso 1: Crear Categorías de tus Productos
 
