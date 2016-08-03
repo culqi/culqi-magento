@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Culqi_Pago>
+      <codePool>community</codePool>
+      <active>true</active>
+    </Culqi_Pago>
+  </modules>
+</config>
