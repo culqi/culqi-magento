@@ -84,7 +84,9 @@ class Culqi_Pago_PaymentController extends Mage_Core_Controller_Front_Action
       //Identificador de usuario del cliente
       'id_usuario_comercio' => $CustomerID,
       //Descripción de la venta
-      'descripcion' => $ProductName,
+      //'descripcion' => $ProductName,
+      'descripcion' => 'Productos varios',
+
       //Moneda de la venta ("PEN" O "USD")
       'moneda' => $currency,
       //Monto de la venta (ejem: 10.25, no se incluye el punto decimal)
@@ -135,4 +137,9 @@ class Culqi_Pago_PaymentController extends Mage_Core_Controller_Front_Action
       Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/failure', array('_secure'=> false));
     }
   }
+
+
+
+
+
 }
