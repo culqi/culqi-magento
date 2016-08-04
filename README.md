@@ -1,6 +1,32 @@
 # Culqi Magento Extension
 
-## Guía de Uso de Magento e Instalación de Culqi
+
+## Instalación
+
+Dentro de la carpeta /app es el punto de partida.
+
+###Paso 1: Subir el plugin a tu magento
+Copiar la carpeta "app\code\community\Culqi" dentro de tu "app\code\community"
+
+###Paso 2: Subir los templates a tu theme (.pthmls)
+
+Copiar la carpeta "app\design\frontend\base\default\template\pago" dentro de tu "app\design\frontend\base\default\template\"
+
+###Paso 3: Subir xml del modulo
+
+Subir el archivo "\app\etc\modules\Culqi_Pago.xml" dentro de tu "app\etc\modules"
+
+## Configuración
+
+Luego de intalado. Para poder configurar el plugin de Magento debes ingresar a System > Configuration
+
+Una vez ahi, en los menos laterales, ir a ADVANCED > Advanced.
+
+Dentro podrás ubicar un acordeón disponible para Culqi, no te olvides guardar los cambios.
+
+
+
+## Guía de Uso de Magento e Instalación de Culqi (old)
 
 ###Paso 1: Crear Categorías de tus Productos
 
@@ -82,7 +108,7 @@ En la pestaña Prices:
 * Group Price: Grupos de precios para un grupo de usuarios específico.
 * Special Price: Precio especial al que venderás en situaciones determinadas por ofertas, días festivos, o lo que tú mismo escojas.
 * Special Price from Date: Fecha desde la que estará vigente el precio especial.
-* Special Price to Date: Fecha hasta la que estará vigente el precio especial. 
+* Special Price to Date: Fecha hasta la que estará vigente el precio especial.
 * Tier price: Precio rebajado al que podrás vender tus productos, puedes configurarlo para que tu usuario pueda ver el precio normal tachado y este precio en rebaja como precio de venta.
 * Apply Map: (Use config)
 * Display Actual Price: (Use config) Precio que se mostrará al usuario.
