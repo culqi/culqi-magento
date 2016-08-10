@@ -10,11 +10,17 @@ Copiar la carpeta "app\code\community\Culqi" dentro de tu "app\code\community"
 
 ###Paso 2: Subir los templates a tu theme (.pthmls)
 
-Copiar la carpeta "app\design\frontend\base\default\template\pago" dentro de tu "app\design\frontend\base\default\template\"
+Copiar la carpeta "app\design\frontend\base\default\template\pago" dentro de tu "app/design/frontend/base/default/template/"
 
 ###Paso 3: Subir xml del modulo
 
-Subir el archivo "\app\etc\modules\Culqi_Pago.xml" dentro de tu "app\etc\modules"
+Subir el archivo "\app\etc\modules\Culqi_Pago.xml" dentro de tu "app/etc/modules"
+
+
+###Paso 4: Subir xml del layout AJAX
+
+Subir el archivo "app\design\frontend\base\default\layout\ajaxlayout.xml" dentro de tu "app/etc/modules"
+
 
 ## Configuración
 

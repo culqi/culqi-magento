@@ -61,6 +61,15 @@
       </pago>
     </routers>
 
+    <!-- Layout adiciones AJAX -->
+    <layout>
+     <updates>
+       <pago>
+         <file>ajaxlayout.xml</file>
+       </pago>
+     </updates>
+   </layout>
+
 
 
   </frontend>

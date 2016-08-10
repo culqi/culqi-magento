@@ -84,9 +84,7 @@ class Culqi_Pago_PaymentController extends Mage_Core_Controller_Front_Action
       //Identificador de usuario del cliente
       'id_usuario_comercio' => $CustomerID,
       //Descripción de la venta
-      //'descripcion' => $ProductName,
       'descripcion' => 'Productos varios',
-
       //Moneda de la venta ("PEN" O "USD")
       'moneda' => $currency,
       //Monto de la venta (ejem: 10.25, no se incluye el punto decimal)
@@ -125,8 +123,8 @@ class Culqi_Pago_PaymentController extends Mage_Core_Controller_Front_Action
     {
       $orderId = $this->getRequest()->get("orderId");
       $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-      //$order->setState(Mage_Sales_Model_Order::STATE_PAID, true, 'Pago correcto.');
-      $order->setState(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW, true, 'Venta correcta, espera a su revisión del pago.');
+      //$order->setState(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW, true, 'Pago correcto.');
+      $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, 'Venta correcta vía Tarjeta de Crédito (Culqi), espera a su entrega y confirmación.');
       $order->save();
 
       Mage::getSingleton('checkout/session')->unsQuoteId();
@@ -137,9 +135,4 @@ class Culqi_Pago_PaymentController extends Mage_Core_Controller_Front_Action
       Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/failure', array('_secure'=> false));
     }
   }
-
-
-
-
-
 }
