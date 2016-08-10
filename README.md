@@ -21,16 +21,20 @@ Subir el archivo "\app\etc\modules\Culqi_Pago.xml" dentro de tu "app/etc/modules
 
 Subir el archivo "app\design\frontend\base\default\layout\ajaxlayout.xml" dentro de tu "app/etc/modules"
 
+## Activar plugin
+
+Ir **System** > Configuration. Luego a ADVANCED > Advanced, ahi habilitar la extensión de Culqi y guardar cambios.
+
 
 ## Configuración
 
-Luego de intalado. Para poder configurar el plugin de Magento debes ingresar a System > Configuration
+Luego de instalado. Para poder configurar el plugin de Magento debes ingresar a **System** > Configuration
 
-Una vez ahi, en los menos laterales, ir a ADVANCED > Advanced.
+Una vez ahi, en los menos laterales, ir a SALES > **Payment Methods**.
 
 Dentro podrás ubicar un acordeón disponible para Culqi, no te olvides guardar los cambios.
 
-
+***
 
 ## Guía de Uso de Magento e Instalación de Culqi (old)
 
