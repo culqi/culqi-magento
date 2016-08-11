@@ -1,0 +1,377 @@
+<?php
+$order = new Mage_Sales_Model_Order();
+
+
+//Credenciales
+$codComercio = Mage::getStoreConfig( 'payment/pago/codigo_comercio' );
+$keyComercio = Mage::getStoreConfig( 'payment/pago/llave_codigo_comercio' );
+
+
+$checkout = Mage::getSingleton('checkout/session');
+$orderId =  $checkout->getLastRealOrderId();
+
+
+// Obteniendo Data
+$order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+$currency   = $order->getOrderCurrencyCode();
+$BAddress = $order->getBillingAddress();
+
+$Address = $order->getShippingAddress()->getStreet1().' '.$order->getShippingAddress()->getStreet2();
+
+$CustomerName = $BAddress->getFirstname();
+$CustomerLastName = $BAddress->getLastname();
+$CustomerID = $orderId;
+$CustomerEmail = $order->getCustomerEmail();
+
+$Total = number_format($order->getGrandTotal(),2,'','');
+
+$city = $BAddress->getCity();
+$telephone = $BAddress->getTelephone();
+
+$codPais = 'PE';
+
+$ProductName = '';
+$items = $order->getAllItems();
+if ($items)
+  {
+      foreach($items as $item)
+      {
+        if ($item->getParentItem()) continue;
+  $ProductName .= $item->getName() . '; ';
+      }
+  }
+$ProductName = rtrim($ProductName, '; ');
+
+
+
+
+$informacionVentaCifrada = Mage::registry('informacion_venta');
+
+
+
+?>
+<h4><?php echo $this->__('Paga con tarjeta Visa, Mastercard, American Express o DinersClub ') ?></h4>
+
+Numero de orden: <?php echo $orderId; ?> <br> <br>
+
+<!-- Descripción: <?php echo $ProductName; ?> <br>
+<!-- Nombres: <?php echo $CustomerName; ?> <br> -->
+<!-- Apellidos: <?php echo $CustomerLastName; ?> <br> -->
+<!-- Direccion: <?php echo $Address ?> <br> -->
+<!-- Ciudad: <?php echo $city; ?> <br> -->
+<!-- Telefono: <?php echo $telephone; ?> <br> -->
+<!-- Monto: <?php echo $Total; ?> <br> -->
+<!-- Email: <?php echo $CustomerEmail; ?> <br> -->
+<!-- Moneda  <?php echo $currency; ?> <br> -->
+<!-- País:  <?php echo $codPais; ?> <br> -->
+
+
+<!--<form name="pago" method="post" action="<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>">
+  <input type="hidden" name="orderId" value="<?php echo $orderId; ?>">
+  <input type="submit" value="<?php echo $this->__('Pagar') ?>" />
+</form>-->
+
+<!-- Botón de pago de Culqi -->
+
+<form id="formulario-culqi">
+
+    <!--<span style="font-weight:600">Nombre</span><br>
+    <input type="text" size="50" id="nombre"><br><br>
+
+    <span style="font-weight:600">Apellido</span><br>
+    <input type="text" size="50" id="apellido"><br><br>
+
+    <span style="font-weight:600">Correo electrónico</span><br>
+    <input type="text" size="50" id="email"><br><br>
+
+    <span style="font-weight:600">Número de tarjeta</span><br>
+    <input type="text" size="20" id="numero_tarjeta"><br><br>
+
+    <span style="font-weight:600">Mes de vencimiento (MM)</span><br>
+    <input type="text" size="2" id="exp_mes"><br><br>
+
+    <span style="font-weight:600">Año de vencimiento (AAAA)</span><br>
+    <input type="text" size="4" id="exp_anio"><br><br>
+
+    <span style="font-weight:600">CVV</span><br>
+    <input type="text" size="4" id="cvv" value=""><br>-->
+
+     <ul>
+         <li class="wide">
+                <div class="">
+                    <div class="field">
+                        <label for="" class="required"><em>*</em>Nombre de titular</label>
+                        <div class="input-box">
+                            <input type="text" id="nombre" name="" value="" title="Nombre del titular" maxlength="255" class="input-text required-entry">
+                        </div>
+                    </div>
+
+                </div><br>
+            </li>
+
+            <li class="wide">
+                <div class="">
+                    <div class="field">
+                        <label for="" class="required"><em>*</em>Apellido del titular</label>
+                        <div class="input-box">
+                            <input type="text" id="apellido" name="" value="" title="Apellido del titular" maxlength="255" class="input-text required-entry">
+                        </div>
+                    </div>
+                </div><br>
+            </li>
+
+            <li class="wide">
+                <div class="">
+                    <div class="field">
+                        <!--<label for="" class="required"><em>*</em>Correo electrónico</label>-->
+                        <div class="input-box">
+                            <input hidden type="text" id="email" name="" value="<?php $CustomerEmail ?>" title="Correo electrónico" maxlength="255" class="input-text required-entry" onchange="">
+                        </div>
+                    </div>
+                </div><br>
+            </li>
+            <div class="">
+                <div class="field">
+                    <label for="" class="required"><em>*</em>Número de tarjeta</label>
+                    <div class="input-box">
+                        <input type="text" id="numero_tarjeta" name="" value="" title="Número de tarjeta" class="input-text">
+                    </div><br>
+                </div>
+                <div class="field">
+                    <label for="" class="required"><em>*</em>Código de seguridad</label>
+                    <div class="input-box">
+                        <input type="text" id="cvv" name="" value="" title="Número de tarjeta" class="input-text">
+                    </div>
+                </div>
+            </div><br>
+
+            <li class="fields">
+                <div class="field">
+                    <label for="shipping:region" class="required"><em>*</em>Mes de vencimiento</label>
+                    <div class="input-box">
+                        <select id="exp_mes" name="" title="" class="validate-select required-entry" style="" defaultvalue="">
+                            <option value="">Seleccione mes (MM)</option>
+                            <option value="01" title="01 - Enero">01 - Enero</option>
+                            <option value="02" title="02 - Febrero">02 - Febrero</option>
+                            <option value="03" title="03 - Marzo">03 - Marzo</option>
+                            <option value="04" title="04 - Abril">04 - Abril</option>
+                            <option value="05" title="05 - Mayo">05 - Mayo</option>
+                            <option value="05" title="06 - Junio">06 - Junio</option>
+                            <option value="07" title="07 - Julio">07 - Julio</option>
+                            <option value="08" title="08 - Agosto">08 - Agosto</option>
+                            <option value="09" title="09 - Septiembre">09 - Septiembre</option>
+                            <option value="10" title="10 - Octubre">10 - Octubre</option>
+                            <option value="11" title="11 - Noviembre">11 - Noviembre</option>
+                            <option value="12" title="12 - Diciembre">12 - Diciembre</option>
+                        </select>
+                    </div>
+                </div><br>
+                <div class="field">
+                    <label for="shipping:region" class="required"><em>*</em>Año de vencimiento</label>
+                    <div class="input-box">
+                        <select id="exp_anio" name="" title="" class="validate-select required-entry" style="" defaultvalue="">
+                            <option value="">Selecciona año (AAAA)</option>
+                            <option value="2016" title="2016">2016</option>
+                            <option value="2017" title="2017">2017</option>
+                            <option value="2018" title="2018">2018</option>
+                            <option value="2019" title="2019">2019</option>
+                            <option value="2020" title="2020">2020</option>
+                            <option value="2020" title="2021">2021</option>
+                            <option value="2020" title="2022">2022</option>
+                            <option value="2020" title="2023">2023</option>
+                            <option value="2020" title="2024">2024</option>
+                            <option value="2020" title="2025">2025</option>
+                            <option value="2020" title="2026">2026</option>
+                            <option value="2020" title="2027">2027</option>
+                            <option value="2020" title="2028">2028</option>
+                            <option value="2020" title="2029">2029</option>
+                            <option value="2020" title="2030">2030</option>
+                        </select>
+                    </div><br>
+                </div>
+            </li>
+        </ul>
+</form>
+
+
+<button id="btn_pago" class="button">Pagar</button>
+
+        <p id="notify"></p>
+
+        <script type="text/javascript" src='https://integ-pago.culqi.com/api/v2/culqi.js'></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+
+        <!-- De culqi-helpers.js -->
+        <script>
+        /**
+        * EnvÃ­a un string en formato JSON con el mÃ©todo POST
+        *
+        * @param string url
+        * @param string data
+        * @param function success (optional)
+        * @return object
+        */
+        function PostData(url, data, success)
+        {
+          // Devuelve la respuesta del servidor luego de enviarse la peticiÃ³n
+          this.respuesta = function () {
+            return xhttp.responseText;
+          };
+          // Si success no estÃ¡ definido, se le da un valor de undefined
+          success = success || undefined;
+          // Se crea una peticiÃ³n que serÃ¡ enviada a la url
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+              console.log('InformaciÃ³n enviada al servidor.');
+              if (!(success === undefined)) {
+                success();
+              }
+            }
+          };
+          // Define el mÃ©todo de envÃ­o y envÃ­a los datos
+          xhttp.open('POST', url, true);
+          xhttp.send(data);
+        }
+        /**
+        * EnvÃ­a una peticiÃ³n POST con informaciÃ³n y redirige a la url
+        *
+        * @param string url
+        * @param string json
+        */
+        function post(url, json)
+        {
+          // Convertimos el json en un objeto
+          var obj = JSON.parse(json);
+          // Creamos un array con los nombres de las propiedades del objeto
+          var objKeys = Object.keys(obj);
+          // Creamos elementos <input> con el name=clave y value=valor del objeto
+          var inputs = [];
+          for (i = 0; i < objKeys.length; i++) {
+            inputs[i] = document.createElement('INPUT');
+            inputs[i].name = objKeys[i];
+            inputs[i].value = obj[objKeys[i]];
+          }
+          var form = document.createElement('FORM');
+          form.action = url;
+          form.method = 'post';
+          for (i = 0; i < objKeys.length; i++) {
+            form.appendChild(inputs[i]);
+          }
+          form.submit();
+        }
+        </script>
+
+
+        <!-- Aquí configuramos el botón de pago de Culqi. -->
+        <script>
+
+         var intentos = 3;
+
+        // Código del comercio
+        CulqiJS.codigo_comercio = '<?= $codComercio ?>';
+        // La informacion_venta es el contenido del parámetro que recibiste en la creación de la venta.
+        CulqiJS.informacion_venta = '<?= $informacionVentaCifrada ?>';
+
+
+
+        // Activa el botón de pago
+        $('#btn_pago').on('click', function(e) {
+        // Realizas el pago usando Culqi.
+            CulqiJS.pagarVenta({
+                numero: document.getElementById("numero_tarjeta").value,
+                exp_m: document.getElementById("exp_mes").value,
+                exp_a: document.getElementById("exp_anio").value,
+                cvc: document.getElementById("cvv").value,
+                nombre: document.getElementById("nombre").value,
+                apellido: document.getElementById("apellido").value,
+                correo: document.getElementById("email").value
+            });
+
+            e.preventDefault();
+        });
+
+
+
+        // Esta función es llamada al terminar el proceso de pago.
+        // Debe de ser usada siempre, para poder obtener la respuesta.
+        function culqi(CulqiJS)
+        {
+            // Aquí recibes la respuesta del formulario de pago.
+            // Si el usuario cierra el formulario de pago: checkout.respuesta tendrá en valor "checkout_cerrado"
+            console.log(CulqiJS.respuesta);
+
+
+
+            if (CulqiJS.respuesta == "error" || CulqiJS.respuesta == "parametro_invalido") {
+
+              $('#notify').html("");
+              $('#notify').html("<span><strong>" + "Ocurrió un error inesperado, regresa al paso anterior para que puedas terminar la compra." + "</strong></span><br>" +
+              "<br><span><br></span><button id='refresh'>Regresar</button>");
+
+            }
+
+
+            // Envía la respuesta cifrada que recibiste del formulario de Culqi a tu
+            // servidor para descifrarlo, tu servidor lo descifra con la librería
+            // de culqi y con esos datos muestra la vista de venta realizada
+            var json= JSON.stringify({
+                orderId: '<?php echo $orderId; ?>'
+
+            });
+
+
+
+            $.ajax({
+              url: '/pago/ajax/check',
+              type: 'POST',
+              data: {informacionDeVentaCifrada: CulqiJS.respuesta},
+                success: function(data){
+
+                  console.log("La solicitud se ha completado correctamente, respuesta enviada a descifrar!")
+                    var obj = JSON.parse(data);
+                    var tipo_respuesta_venta = obj['codigo_respuesta'];
+                  console.log(obj);
+
+                  console.log(obj['mensaje_respuesta_usuario']);
+
+
+
+                  $("#notify").html(obj['mensaje_respuesta_usuario'])
+
+
+                  if (tipo_respuesta_venta == "venta_exitosa") {
+                    post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', json);
+
+                  } else if (tipo_respuesta_venta == "venta_expirada") {
+
+                  } else if (tipo_respuesta_venta == "error") {
+                    $("#notify").html(obj['mensaje_respuesta_usuario']);
+
+                  } else if (tipo_respuesta_venta == "parametro_invalido") {
+                      $("#notify").html(obj['mensaje_respuesta_usuario']);
+                  } else {
+                    // Brindale un mensaje amigable al cliente
+                    // Puedes usar el mensaje que Culqi recomienda
+                    $("#notify").html(obj['mensaje_respuesta_usuario']);
+                  }
+
+
+                },
+                error: function(error)
+                      {
+                         console.log("Error:");
+                         console.log(error);
+                         alert("ERROR");
+                      }
+
+              });
+
+
+
+
+
+        };
+        </script>
