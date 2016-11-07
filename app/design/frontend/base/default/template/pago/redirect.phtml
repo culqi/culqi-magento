@@ -5,6 +5,7 @@ $order = new Mage_Sales_Model_Order();
 //Credenciales
 $codComercio = Mage::getStoreConfig( 'payment/pago/codigo_comercio' );
 $keyComercio = Mage::getStoreConfig( 'payment/pago/llave_codigo_comercio' );
+$entorno = Mage::getStoreConfig( 'payment/pago/url_culqi' );
 
 
 $checkout = Mage::getSingleton('checkout/session');
@@ -72,6 +73,19 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
 </form>-->
 
 <!-- Botón de pago de Culqi -->
+<style>
+#message-good, #message-error{
+  display:none;
+}
+
+</style>
+
+<div id="message-good"><ul class="messages"><li class="success-msg">
+  <ul><li><span id="notify-ok"></span></li></ul></li></ul>
+</div>
+<div id="message-error"><ul class="messages"><li class="error-msg">
+  <ul><li><span id="notify-error"></span></li></ul></li></ul>
+</div>
 
 <form id="formulario-culqi">
 
@@ -194,11 +208,13 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
 </form>
 
 
+
+
 <button id="btn_pago" class="button">Pagar</button>
 
-        <p id="notify"></p>
 
-        <script type="text/javascript" src='https://integ-pago.culqi.com/api/v2/culqi.js'></script>
+
+        <script type="text/javascript" src='<?= $entorno ?>/api/v2/culqi.js'></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
 
@@ -225,7 +241,7 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
           var xhttp = new XMLHttpRequest();
           xhttp.onreadystatechange = function () {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-              console.log('InformaciÃ³n enviada al servidor.');
+              console.log('Informacion enviada al servidor.');
               if (!(success === undefined)) {
                 success();
               }
@@ -333,29 +349,35 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
                   console.log("La solicitud se ha completado correctamente, respuesta enviada a descifrar!")
                     var obj = JSON.parse(data);
                     var tipo_respuesta_venta = obj['codigo_respuesta'];
-                  console.log(obj);
+                  //console.log(obj);
 
                   console.log(obj['mensaje_respuesta_usuario']);
 
 
 
-                  $("#notify").html(obj['mensaje_respuesta_usuario'])
-
-
                   if (tipo_respuesta_venta == "venta_exitosa") {
-                    post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', json);
+                      $("#message-error").hide();
+                      $("#message-good").show();
+                      $("#notify-ok").html(obj['mensaje_respuesta_usuario'])
+                     post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', json);
 
                   } else if (tipo_respuesta_venta == "venta_expirada") {
+                    $("#message-error").show();
+                    $("#notify-error").html(obj['mensaje_respuesta_usuario']);
+                    window.location.href = '/checkout/onepage/failure';
 
                   } else if (tipo_respuesta_venta == "error") {
-                    $("#notify").html(obj['mensaje_respuesta_usuario']);
+                    $("#message-error").show();
+                    $("#notify-error").html(obj['mensaje_respuesta_usuario']);
 
                   } else if (tipo_respuesta_venta == "parametro_invalido") {
-                      $("#notify").html(obj['mensaje_respuesta_usuario']);
+                    $("#message-error").show();
+                    $("#notify-error").html(obj['mensaje_respuesta_usuario']);
                   } else {
                     // Brindale un mensaje amigable al cliente
                     // Puedes usar el mensaje que Culqi recomienda
-                    $("#notify").html(obj['mensaje_respuesta_usuario']);
+                    $("#message-error").show();
+                    $("#notify-error").html(obj['mensaje_respuesta_usuario']);
                   }
 
 

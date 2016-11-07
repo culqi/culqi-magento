@@ -25,7 +25,7 @@ class Culqi_Pago_Helper_Data extends Mage_Core_Helper_Abstract
   public static function getApiBase()
   {
 
-      self::$servidorBase = "https://integ-pago.culqi.com";
+      self::$servidorBase = Mage::getStoreConfig('payment/pago/url_culqi');
 
       return self::$servidorBase;
   }
