@@ -12,6 +12,9 @@ class Culqi_Pago_Model_Culqi extends Mage_Payment_Model_Method_Abstract
    */
   protected $_api_key;
 
+
+
+  protected $_url_base;
   /**
    * Carga los archivos necesarios y las llaves Culqi
    * @return void
@@ -23,12 +26,10 @@ class Culqi_Pago_Model_Culqi extends Mage_Payment_Model_Method_Abstract
       //$culqi = Mage::getModel('culqi_gateway/config')->load(1);
       $this->_cod_comercio = Mage::getStoreConfig('payment/pago/codigo_comercio');
       $this->_api_key = Mage::getStoreConfig('payment/pago/llave_codigo_comercio');
-
-
-
-
+      $this->_url_base = Mage::getStoreConfig('payment/pago/url_culqi');
 
   }
+
 
 
   /**
@@ -65,11 +66,14 @@ class Culqi_Pago_Model_Culqi extends Mage_Payment_Model_Method_Abstract
 
     $data = Mage::helper('core')->jsonEncode($data);
 
-    $client = new Zend_Http_Client('https://integ-pago.culqi.com/api/v1/cargos');
+    $api_url = Mage::getStoreConfig('payment/pago/url_culqi');
+    $api_key = Mage::getStoreConfig('payment/pago/llave_codigo_comercio');
+
+    $client = new Zend_Http_Client($api_url."/api/v1/cargos");
     $client->setHeaders(
             array(
-                'Authorization' => 'Bearer eLHsrNFGp0PCnHfSMmW4DmgcYrylYkOVqufX5apTiUg=',
-                'Content-Type' => 'application/json',
+                'Authorization' => "Bearer ".$api_key,
+                'Content-Type' => "application/json",
             )
         );
 

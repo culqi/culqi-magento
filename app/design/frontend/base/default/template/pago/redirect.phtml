@@ -80,7 +80,6 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
                     guardar: false
                   });
 
-
         </script>
 
         <!-- De culqi-helpers.js -->
@@ -162,9 +161,16 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
         function culqi() {
 
           // Encapsulados para AJAX
+
+
           var json= JSON.stringify({
-              orderId: '<?php echo $orderId; ?>'
-          });
+               orderId: '<?php echo $orderId; ?>',
+               statusOrder: 'done'
+           });
+           var jsonFail= JSON.stringify({
+               orderId: '<?php echo $orderId; ?>',
+               statusOrder: 'fail'
+           });
 
           if(Culqi.error){
             // Mostramos JSON de objeto error en consola
@@ -195,13 +201,16 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
                   // Mostrar error
                   alert(obj.mensaje_usuario);
 
+                  post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonFail);
+
                 }
                 else if ( obj.objeto === "cargo") {
 
-                  alert('¡Se hizo el cargo correctamente!');
+                  alert('¡Se hizo el pago correctamente!');
 
                   // Procesar Venta en Magento
-                  //post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', json);
+                  post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', json);
+
                 }
 
                 else{
