@@ -197,9 +197,7 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
                             <option value="2020" title="2025">2025</option>
                             <option value="2020" title="2026">2026</option>
                             <option value="2020" title="2027">2027</option>
-                            <option value="2020" title="2028">2028</option>
-                            <option value="2020" title="2029">2029</option>
-                            <option value="2020" title="2030">2030</option>
+
                         </select>
                     </div><br>
                 </div>
@@ -334,10 +332,15 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
             // servidor para descifrarlo, tu servidor lo descifra con la librería
             // de culqi y con esos datos muestra la vista de venta realizada
             var json= JSON.stringify({
-                orderId: '<?php echo $orderId; ?>'
+                orderId: '<?php echo $orderId; ?>',
+                statusOrder: 'done'
 
             });
 
+            var jsonFail= JSON.stringify({
+                orderId: '<?php echo $orderId; ?>',
+                statusOrder: 'fail'
+            });
 
 
             $.ajax({
@@ -347,8 +350,8 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
                 success: function(data){
 
                   console.log("La solicitud se ha completado correctamente, respuesta enviada a descifrar!")
-                    var obj = JSON.parse(data);
-                    var tipo_respuesta_venta = obj['codigo_respuesta'];
+                  var obj = JSON.parse(data);
+                  var tipo_respuesta_venta = obj['codigo_respuesta'];
                   //console.log(obj);
 
                   console.log(obj['mensaje_respuesta_usuario']);
@@ -370,14 +373,22 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
                     $("#message-error").show();
                     $("#notify-error").html(obj['mensaje_respuesta_usuario']);
 
+                    post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonFail);
+
+
                   } else if (tipo_respuesta_venta == "parametro_invalido") {
                     $("#message-error").show();
                     $("#notify-error").html(obj['mensaje_respuesta_usuario']);
+
+                    post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonFail);
+
                   } else {
                     // Brindale un mensaje amigable al cliente
                     // Puedes usar el mensaje que Culqi recomienda
                     $("#message-error").show();
                     $("#notify-error").html(obj['mensaje_respuesta_usuario']);
+                    post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonFail);
+
                   }
 
 

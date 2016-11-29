@@ -1,0 +1,5 @@
+<default>
+    <reference name="head">
+        <action method="addItem"><type>skin_js</type><name>js/culqi-helpers.js</name></action>
+    </reference>
+</default>
