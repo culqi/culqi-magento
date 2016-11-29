@@ -2,7 +2,7 @@
 <config>
   <modules>
     <Culqi_Pago>
-      <version>1.0.0.0</version>
+      <version>1.2.0</version>
     </Culqi_Pago>
   </modules>
 
@@ -73,5 +73,19 @@
 
 
   </frontend>
+
+  <!--  ... rest your extension configuration ... -->
+   <crontab>
+       <jobs>
+           <cancel_pending_orders>
+               <schedule>
+                   <cron_expr>0,30 * * * *</cron_expr>
+               </schedule>
+               <run>
+                   <model>Culqi_Pago/cron::cancelPendingOrders</model>
+               </run>
+           </cancel_pending_orders>
+       </jobs>
+   </crontab>
 
 </config>

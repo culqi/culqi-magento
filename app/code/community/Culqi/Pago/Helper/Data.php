@@ -5,8 +5,8 @@ class Culqi_Pago_Helper_Data extends Mage_Core_Helper_Abstract
 
 
   public static $servidorBase;
-  public static $apiVersion = '1.0.0';
-  public static $sdkVersion = '1.2.0';
+  public static $apiVersion = '1.2.0';
+  public static $sdkVersion = '1.2.5';
 
 
   function getPaymentGatewayUrl()
@@ -29,6 +29,16 @@ class Culqi_Pago_Helper_Data extends Mage_Core_Helper_Abstract
 
       return self::$servidorBase;
   }
+
+
+  public static function getEnviroment()
+  {
+
+      // Obtener entorno
+
+      // Retornar INTEG o PROD
+  }
+
 
   /**
    * Cifra mediante la llave secreta

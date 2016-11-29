@@ -52,7 +52,7 @@ class Culqi_Pago_Model_Paymentgo {
 
         $cipherData = Culqi_Pago_Model_Paymentgo::getCipherData($params, $extra);
         $validationParams = array(
-            Culqi_Pago_Model_Paymentgo::PARAM_COD_COMERCIO => Mage::getStoreConfig( 'payment/pago/codigo_comercio' ),
+            Culqi_Pago_Model_Paymentgo::PARAM_COD_COMERCIO => Mage::getStoreConfig('payment/pago/codigo_comercio'),
             Culqi_Pago_Model_Paymentgo::PARAM_INFO_VENTA => $cipherData
         );
 

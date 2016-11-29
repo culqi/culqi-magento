@@ -5,47 +5,6 @@ class Culqi_Pago_Model_Pago extends Mage_Payment_Model_Method_Abstract {
   protected $_infoBlockType = 'pago/info_pago';
 
 
-  // public function assignData($data)
-  // {
-  //   $info = $this->getInfoInstance();
-  //
-  //   if ($data->getCustomFieldOne())
-  //   {
-  //     $info->setCustomFieldOne($data->getCustomFieldOne());
-  //   }
-  //
-  //   if ($data->getCustomFieldTwo())
-  //   {
-  //     $info->setCustomFieldTwo($data->getCustomFieldTwo());
-  //   }
-  //
-  //   return $this;
-  // }
-  //
-  // public function validate()
-  // {
-  //   parent::validate();
-  //   $info = $this->getInfoInstance();
-  //
-  //   if (!$info->getCustomFieldOne())
-  //   {
-  //     $errorCode = 'invalid_data';
-  //     $errorMsg = $this->_getHelper()->__("CustomFieldOne es un campo requerido.\n");
-  //   }
-  //
-  //   if (!$info->getCustomFieldTwo())
-  //   {
-  //     $errorCode = 'invalid_data';
-  //     $errorMsg .= $this->_getHelper()->__('CustomFieldTwo es un campo requerido.');
-  //   }
-  //
-  //   if ($errorMsg)
-  //   {
-  //     Mage::throwException($errorMsg);
-  //   }
-  //
-  //   return $this;
-  // }
 
   public function getOrderPlaceRedirectUrl()
   {
