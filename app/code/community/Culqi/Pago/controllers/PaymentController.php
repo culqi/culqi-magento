@@ -136,11 +136,17 @@ class Culqi_Pago_PaymentController extends Mage_Core_Controller_Front_Action
       $orderId = $this->getRequest()->get("orderId");
       $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-      $order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true, 'La orden no fue completada por problemas en el pago.');
+      $order->cancel();
+      $order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true, 'La orden no fue completada por problemas en el pago.')->setStatus(Mage_Sales_Model_Order::STATE_CANCELED);
+
       $order->save();
+
 
       // Devolver sesion
       $session = Mage::getSingleton('checkout/session');
+
+      Mage::getSingleton('core/session')->addError("Vuelva a intentar el pago.");
+
       if ($session->getLastRealOrderId())
       {
           $order = Mage::getModel('sales/order')->loadByIncrementId($session->getLastRealOrderId());
