@@ -1,77 +1,75 @@
 <?xml version="1.0"?>
 <config>
-  <modules>
-    <Culqi_Pago>
-      <version>1.0.0.0</version>
-    </Culqi_Pago>
-  </modules>
+    <modules>
+        <Culqi_Pago>
+            <version>1.2.0</version>
+        </Culqi_Pago>
+    </modules>
 
-  <global>
+    <global>
 
+        <helpers>
+            <pago>
+                <class>Culqi_Pago_Helper</class>
+            </pago>
+        </helpers>
 
-    <helpers>
-      <pago>
-        <class>Culqi_Pago_Helper</class>
-      </pago>
-    </helpers>
+        <blocks>
+            <pago>
+                <class>Culqi_Pago_Block</class>
+            </pago>
+        </blocks>
 
-    <blocks>
-      <pago>
-        <class>Culqi_Pago_Block</class>
-      </pago>
-    </blocks>
+        <models>
+            <pago>
+                <class>Culqi_Pago_Model</class>
+            </pago>
+        </models>
 
-    <models>
-      <pago>
-        <class>Culqi_Pago_Model</class>
-      </pago>
-    </models>
+        <resources>
+            <pago_setup>
+                <setup>
+                    <module>Culqi_Pago</module>
+                </setup>
+            </pago_setup>
+        </resources>
 
-    <resources>
-      <pago_setup>
-        <setup>
-          <module>Culqi_Pago</module>
-        </setup>
-      </pago_setup>
-    </resources>
+    </global>
 
-  </global>
+    <default>
+        <payment>
+            <pago>
+                <active>1</active>
+                <model>pago/pago</model>
+                <order_status>pending</order_status>
+                <title>Pago</title>
+                <allowspecific>0</allowspecific>
+                <payment_action>sale</payment_action>
+            </pago>
+        </payment>
+    </default>
 
-  <default>
-    <payment>
-      <pago>
-        <active>1</active>
-        <model>pago/pago</model>
-        <order_status>pending</order_status>
-        <title>Pago</title>
-        <allowspecific>0</allowspecific>
-        <payment_action>sale</payment_action>
-      </pago>
-    </payment>
-  </default>
+    <frontend>
+        <routers>
+            <pago>
+                <use>standard</use>
+                <args>
+                    <module>Culqi_Pago</module>
+                    <frontName>pago</frontName>
+                </args>
+            </pago>
+        </routers>
 
-  <frontend>
-    <routers>
-      <pago>
-        <use>standard</use>
-        <args>
-          <module>Culqi_Pago</module>
-          <frontName>pago</frontName>
-        </args>
-      </pago>
-    </routers>
+        <!-- Layout adiciones AJAX -->
+        <layout>
+            <updates>
+                <pago>
+                    <file>ajaxlayout.xml</file>
+                </pago>
+            </updates>
+        </layout>
 
-    <!-- Layout adiciones AJAX -->
-    <layout>
-     <updates>
-       <pago>
-         <file>ajaxlayout.xml</file>
-       </pago>
-     </updates>
-   </layout>
+    </frontend>
 
-
-
-  </frontend>
-
+  
 </config>

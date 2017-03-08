@@ -1,4 +1,5 @@
 <?php
+// Nueva orden
 $order = new Mage_Sales_Model_Order();
 
 
@@ -14,22 +15,9 @@ $orderId =  $checkout->getLastRealOrderId();
 
 // Obteniendo Data
 $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-$currency   = $order->getOrderCurrencyCode();
-$BAddress = $order->getBillingAddress();
-
-$Address = $order->getShippingAddress()->getStreet1().' '.$order->getShippingAddress()->getStreet2();
-
-$CustomerName = $BAddress->getFirstname();
-$CustomerLastName = $BAddress->getLastname();
-$CustomerID = $orderId;
+$currency  = $order->getOrderCurrencyCode();
 $CustomerEmail = $order->getCustomerEmail();
-
 $Total = number_format($order->getGrandTotal(),2,'','');
-
-$city = $BAddress->getCity();
-$telephone = $BAddress->getTelephone();
-
-$codPais = 'PE';
 
 $ProductName = '';
 $items = $order->getAllItems();
@@ -43,34 +31,21 @@ if ($items)
   }
 $ProductName = rtrim($ProductName, '; ');
 
-
-
-
-$informacionVentaCifrada = Mage::registry('informacion_venta');
-
-
-
 ?>
+
+
 <h4><?php echo $this->__('Paga con tarjeta Visa, Mastercard, American Express o DinersClub ') ?></h4>
 
 Numero de orden: <?php echo $orderId; ?> <br> <br>
 
-<!-- Descripción: <?php echo $ProductName; ?> <br>
-<!-- Nombres: <?php echo $CustomerName; ?> <br> -->
-<!-- Apellidos: <?php echo $CustomerLastName; ?> <br> -->
-<!-- Direccion: <?php echo $Address ?> <br> -->
-<!-- Ciudad: <?php echo $city; ?> <br> -->
-<!-- Telefono: <?php echo $telephone; ?> <br> -->
-<!-- Monto: <?php echo $Total; ?> <br> -->
-<!-- Email: <?php echo $CustomerEmail; ?> <br> -->
-<!-- Moneda  <?php echo $currency; ?> <br> -->
-<!-- País:  <?php echo $codPais; ?> <br> -->
+
+<p>En unos instantes aparecerá el formulario de pago. En caso de no aparecer, hacer click debajo.</p>
 
 
-<!--<form name="pago" method="post" action="<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>">
-  <input type="hidden" name="orderId" value="<?php echo $orderId; ?>">
-  <input type="submit" value="<?php echo $this->__('Pagar') ?>" />
-</form>-->
+<button id="btn_pago" class="button">Pagar</button>
+
+
+
 
 <!-- Botón de pago de Culqi -->
 <style>
@@ -87,6 +62,7 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
   <ul><li><span id="notify-error"></span></li></ul></li></ul>
 </div>
 
+<<<<<<< HEAD
 <form id="formulario-culqi">
 
     <!--<span style="font-weight:600">Nombre</span><br>
@@ -206,16 +182,27 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
 </form>
 
 
+=======
+>>>>>>> origin/develop
 
 
-<button id="btn_pago" class="button">Pagar</button>
-
-
-
-        <script type="text/javascript" src='<?= $entorno ?>/api/v2/culqi.js'></script>
+        <script type="text/javascript" src='<?= $entorno ?>/js/v1'></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
+        <script type="text/javascript">
 
+         Culqi.codigoComercio = '<?= $codComercio ?>';
+
+         Culqi.configurar({
+                    nombre: '<?= $this->getLayout()->getBlock('head')->getTitle(); ?>',
+                    orden: '<?= $orderId ?>',
+                    moneda: '<?= $currency ?>',
+                    descripcion: '<?= $ProductName ?>',
+                    monto: '<?= $Total ?>',
+                    guardar: false
+                  });
+
+        </script>
 
         <!-- De culqi-helpers.js -->
         <script>
@@ -278,56 +265,45 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
         }
         </script>
 
-
         <!-- Aquí configuramos el botón de pago de Culqi. -->
         <script>
 
-         var intentos = 3;
-
-        // Código del comercio
-        CulqiJS.codigo_comercio = '<?= $codComercio ?>';
-        // La informacion_venta es el contenido del parámetro que recibiste en la creación de la venta.
-        CulqiJS.informacion_venta = '<?= $informacionVentaCifrada ?>';
-
-
-
+        Culqi.abrir();
         // Activa el botón de pago
         $('#btn_pago').on('click', function(e) {
         // Realizas el pago usando Culqi.
-            CulqiJS.pagarVenta({
-                numero: document.getElementById("numero_tarjeta").value,
-                exp_m: document.getElementById("exp_mes").value,
-                exp_a: document.getElementById("exp_anio").value,
-                cvc: document.getElementById("cvv").value,
-                nombre: document.getElementById("nombre").value,
-                apellido: document.getElementById("apellido").value,
-                correo: document.getElementById("email").value
-            });
-
+            Culqi.abrir();
             e.preventDefault();
         });
 
+        // Recibimos Token del Culqi.js
+        // Tratando respuesta con AJAX (jQuery)
+
+        // Recibimos Token del Culqi.js=================================================
+        function culqi() {
+
+          // Encapsulados para AJAX
 
 
-        // Esta función es llamada al terminar el proceso de pago.
-        // Debe de ser usada siempre, para poder obtener la respuesta.
-        function culqi(CulqiJS)
-        {
-            // Aquí recibes la respuesta del formulario de pago.
-            // Si el usuario cierra el formulario de pago: checkout.respuesta tendrá en valor "checkout_cerrado"
-            console.log(CulqiJS.respuesta);
+          var json= JSON.stringify({
+               orderId: '<?php echo $orderId; ?>',
+               statusOrder: 'done'
+           });
+           var jsonFail= JSON.stringify({
+               orderId: '<?php echo $orderId; ?>',
+               statusOrder: 'fail'
+           });
+
+          if(Culqi.error){
+            // Mostramos JSON de objeto error en consola
+            console.log(Culqi.error);
+            alert(Culqi.error.mensaje);
+          }
+          else{
+            console.log(Culqi.token.id);
 
 
-
-            if (CulqiJS.respuesta == "error" || CulqiJS.respuesta == "parametro_invalido") {
-
-              $('#notify').html("");
-              $('#notify').html("<span><strong>" + "Ocurrió un error inesperado, regresa al paso anterior para que puedas terminar la compra." + "</strong></span><br>" +
-              "<br><span><br></span><button id='refresh'>Regresar</button>");
-
-            }
-
-
+<<<<<<< HEAD
             // Envía la respuesta cifrada que recibiste del formulario de Culqi a tu
             // servidor para descifrarlo, tu servidor lo descifra con la librería
             // de culqi y con esos datos muestra la vista de venta realizada
@@ -357,22 +333,34 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
                   console.log(obj['mensaje_respuesta_usuario']);
 
 
+=======
+            $j(document).ajaxStart(function(){
+              //$j('#culqi_notify').empty();
 
-                  if (tipo_respuesta_venta == "venta_exitosa") {
-                      $("#message-error").hide();
-                      $("#message-good").show();
-                      $("#notify-ok").html(obj['mensaje_respuesta_usuario'])
-                     post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', json);
+            });
+            $j(document).ajaxComplete(function(){
+              //$j('#info_payment').waitMe('hide');
+            });
 
-                  } else if (tipo_respuesta_venta == "venta_expirada") {
-                    $("#message-error").show();
-                    $("#notify-error").html(obj['mensaje_respuesta_usuario']);
-                    window.location.href = '/checkout/onepage/failure';
+            $.ajax({
+              url: "/pago/ajax/check",
+              type: "POST",
+              data: {token_id: Culqi.token.id, order_id: '<?= $orderId ?>' },
+              success: function(data) {
+                console.log(data);
+                var obj = JSON.parse(data);
+>>>>>>> origin/develop
 
-                  } else if (tipo_respuesta_venta == "error") {
-                    $("#message-error").show();
-                    $("#notify-error").html(obj['mensaje_respuesta_usuario']);
+                if (obj.objeto === "error") {
+                  // Mostrar error
+                  alert(obj.mensaje_usuario);
 
+                  post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonFail);
+
+                }
+                else if ( obj.objeto === "cargo") {
+
+<<<<<<< HEAD
                     post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonFail);
 
 
@@ -390,21 +378,28 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
                     post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonFail);
 
                   }
+=======
+                  alert('¡Se hizo el pago correctamente!');
+>>>>>>> origin/develop
 
+                  // Procesar Venta en Magento
+                  post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', json);
 
-                },
-                error: function(error)
-                      {
-                         console.log("Error:");
-                         console.log(error);
-                         alert("ERROR");
-                      }
+                }
 
-              });
+                else{
 
+                  alert('Hubo algun problema en el procesamiento.');
+                }
 
-
-
-
+              },
+              error: function() {
+                alert('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
+              }
+            });
+          }
         };
+
+
+
         </script>
