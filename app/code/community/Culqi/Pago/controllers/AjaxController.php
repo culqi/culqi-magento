@@ -2,97 +2,89 @@
 class Culqi_Pago_AjaxController extends Mage_Core_Controller_Front_Action {
 
   public function indexAction() {
-        $this->loadLayout();
-        $this->renderLayout();
+    $this->loadLayout(false);
+    $this->renderLayout();
   }
-
 
   /* Crear cargo */
-
   public function checkAction() {
 
-       //Recepcion de respuesta
-       $tokenId = $this->getRequest()->getPost('token_id');
-       $orderId = $this->getRequest()->getPost('order_id');
+    //Recepcion de respuesta
+    $source_id = $this->getRequest()->getPost('token_id');
+    $orderId = $this->getRequest()->getPost('order_id');
+    $installments = $this->getRequest()->getPost('installments');
 
-       // === Load Order Data ===
-       $checkout = Mage::getSingleton('checkout/session');
-       $orderId =  $checkout->getLastRealOrderId();
+    // === Load Order Data ===
+    $checkout = Mage::getSingleton('checkout/session');
+    $orderId =  $checkout->getLastRealOrderId();
 
-       // Obteniendo Data de la orden
-       $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-       $currency   = $order->getOrderCurrencyCode();
-       $BAddress = $order->getBillingAddress();
+    // Obteniendo Data de la orden
+    $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-       $Address = $order->getShippingAddress()->getStreet1().' '.$order->getShippingAddress()->getStreet2();
+    $currency_code  = $order->getOrderCurrencyCode();
 
-       $CustomerName = $BAddress->getFirstname();
-       $CustomerLastName = $BAddress->getLastname();
-       $CustomerID = $orderId;
-       $CustomerEmail = $order->getCustomerEmail();
+    $BAddress = $order->getBillingAddress();
 
-       $Total = number_format($order->getGrandTotal(),2,'','');
+    $address = $order->getShippingAddress()->getStreet1().' '.$order->getShippingAddress()->getStreet2();
 
-       $city = $BAddress->getCity();
-       $telephone = $BAddress->getTelephone();
+    $first_name = $BAddress->getFirstname();
 
-       $codPais = 'PE';
+    $last_name = $BAddress->getLastname();
 
-       $ProductName = '';
-       $items = $order->getAllItems();
-       if ($items)
-         {
-             foreach($items as $item)
-             {
-               if ($item->getParentItem()) continue;
-         $ProductName .= $item->getName() . '; ';
-             }
-         }
-       $ProductName = rtrim($ProductName, '; ');
+    $email = $order->getCustomerEmail();
 
-       // Generar un pedido aleatorio (for development - debug)
-       $listOfCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-       $string = str_shuffle($listOfCharacters);
-       $string = substr($string, 0, 15);
+    $amount = number_format($order->getGrandTotal(),2,'','');
 
+    $address_city = $BAddress->getCity();
 
-       // ======================
+    $phone_number = $BAddress->getTelephone();
 
+    $country_code = 'PE';
 
-       // Incluir clase Culqi
-       $objCulqi = Mage::getModel('pago/culqi');
+    $description = '';
+    $items = $order->getAllItems();
+    if ($items)
+      {
+          foreach($items as $item)
+          {
+            if ($item->getParentItem()) continue;
+      $description .= $item->getName() . '; ';
+          }
+      }
+    $description = rtrim($description, '; ');
 
-       // Crear Cargo
-       $cargo = $objCulqi->crearCargo($tokenId,
-                                      $currency,
-                                      $Total,
-                                      $ProductName,
-                                      $string,
-                                      $codPais,
-                                      $city,
-                                      $CustomerEmail,
-                                      $Address,
-                                      $telephone,
-                                      $CustomerName,
-                                      $CustomerLastName,
-                                      $CustomerEmail
-                                      );
+    // Generar un pedido aleatorio (for development - debug)
+    $listOfCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $string = str_shuffle($listOfCharacters);
+    $string = substr($string, 0, 15);
 
-       error_log($cargo);
+    // ======================
 
-       $cargo = json_decode($cargo);
+    // Incluir clase Culqi
+    $objCulqi = Mage::getModel('pago/culqi');
 
-       //Encode resultado en JSON
-       $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($cargo));
-       return $cargo;
+    // Crear Cargo
+    $cargo = $objCulqi->crearCargo(
+      $amount,
+      $address,
+      $address_city,
+      $country_code,
+      $first_name,
+      $last_name,
+      $phone_number,
+      $currency_code,
+      $description,
+      $installments,
+      $email,
+      $source_id,
+      $orderId
+    );
+
+    Mage::log("response  ==>  ".$cargo, null, 'system.log', true);
+
+    //Encode resultado en JSON
+    $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($cargo));
 
   }
-
-
-
-
-
-
-
 
 }

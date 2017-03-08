@@ -2,16 +2,11 @@
 // Nueva orden
 $order = new Mage_Sales_Model_Order();
 
-
 //Credenciales
-$codComercio = Mage::getStoreConfig( 'payment/pago/codigo_comercio' );
-$keyComercio = Mage::getStoreConfig( 'payment/pago/llave_codigo_comercio' );
-$entorno = Mage::getStoreConfig( 'payment/pago/url_culqi' );
-
+$llavePublica = Mage::getStoreConfig( 'payment/pago/llave_publica' );
 
 $checkout = Mage::getSingleton('checkout/session');
 $orderId =  $checkout->getLastRealOrderId();
-
 
 // Obteniendo Data
 $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
@@ -64,21 +59,19 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
 
 
 
-        <script type="text/javascript" src='<?= $entorno ?>/js/v1'></script>
+        <script type="text/javascript" src="https://checkout.culqi.com/plugins/v2/"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
         <script type="text/javascript">
 
-         Culqi.codigoComercio = '<?= $codComercio ?>';
+         Culqi.publicKey  = '<?= $llavePublica ?>';
 
-         Culqi.configurar({
-                    nombre: '<?= $this->getLayout()->getBlock('head')->getTitle(); ?>',
-                    orden: '<?= $orderId ?>',
-                    moneda: '<?= $currency ?>',
-                    descripcion: '<?= $ProductName ?>',
-                    monto: '<?= $Total ?>',
-                    guardar: false
-                  });
+         Culqi.settings({
+            title: '<?= $this->getLayout()->getBlock('head')->getTitle(); ?>',
+            currency: '<?= $currency ?>',
+            description: '<?= $ProductName ?>',
+            amount: '<?= $Total ?>'
+         });
 
         </script>
 
@@ -122,18 +115,22 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
         */
         function post(url, json)
         {
+
           // Convertimos el json en un objeto
           var obj = JSON.parse(json);
+
           // Creamos un array con los nombres de las propiedades del objeto
           var objKeys = Object.keys(obj);
           // Creamos elementos <input> con el name=clave y value=valor del objeto
           var inputs = [];
           for (i = 0; i < objKeys.length; i++) {
-            inputs[i] = document.createElement('INPUT');
+            inputs[i] = document.createElement('input');
             inputs[i].name = objKeys[i];
             inputs[i].value = obj[objKeys[i]];
           }
-          var form = document.createElement('FORM');
+
+          var form = document.createElement('form');
+          document.body.appendChild(form);
           form.action = url;
           form.method = 'post';
           for (i = 0; i < objKeys.length; i++) {
@@ -146,11 +143,11 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
         <!-- Aquí configuramos el botón de pago de Culqi. -->
         <script>
 
-        Culqi.abrir();
+        //Culqi.abrir();
         // Activa el botón de pago
         $('#btn_pago').on('click', function(e) {
         // Realizas el pago usando Culqi.
-            Culqi.abrir();
+            Culqi.open();
             e.preventDefault();
         });
 
@@ -160,24 +157,11 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
         // Recibimos Token del Culqi.js=================================================
         function culqi() {
 
-          // Encapsulados para AJAX
-
-
-          var json= JSON.stringify({
-               orderId: '<?php echo $orderId; ?>',
-               statusOrder: 'done'
-           });
-           var jsonFail= JSON.stringify({
-               orderId: '<?php echo $orderId; ?>',
-               statusOrder: 'fail'
-           });
-
-          if(Culqi.error){
+          if(Culqi.error) {
             // Mostramos JSON de objeto error en consola
             console.log(Culqi.error);
             alert(Culqi.error.mensaje);
-          }
-          else{
+          } else {
             console.log(Culqi.token.id);
 
 
@@ -190,31 +174,28 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
             });
 
             $.ajax({
-              url: "/pago/ajax/check",
+              url: "<?php echo $this->getUrl('pago/ajax/check');?>",
               type: "POST",
-              data: {token_id: Culqi.token.id, order_id: '<?= $orderId ?>' },
+              data: { token_id: Culqi.token.id, order_id: '<?= $orderId ?>', installments: Culqi.token.metadata.installments },
+              dataType: 'json',
+              type : 'post',
               success: function(data) {
-                console.log(data);
+                console.log(data)
+                //console.log(data);
                 var obj = JSON.parse(data);
 
-                if (obj.objeto === "error") {
-                  // Mostrar error
-                  alert(obj.mensaje_usuario);
+                if (obj.object === "error") {
 
-                  post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonFail);
+                  post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonResponse('fail'));
 
-                }
-                else if ( obj.objeto === "cargo") {
+                } else if (obj.object === "charge") {
 
                   alert('¡Se hizo el pago correctamente!');
 
                   // Procesar Venta en Magento
-                  post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', json);
+                  post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonResponse('done'));
 
-                }
-
-                else{
-
+                } else {
                   alert('Hubo algun problema en el procesamiento.');
                 }
 
@@ -226,6 +207,11 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
           }
         };
 
-
+        function jsonResponse(message){
+          return JSON.stringify({
+               orderId: '<?php echo $orderId; ?>',
+               statusOrder: message
+           });
+        };
 
         </script>

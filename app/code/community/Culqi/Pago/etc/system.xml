@@ -36,27 +36,20 @@
                                 <show_in_store>0</show_in_store>
                                 <sort_order>3</sort_order>
                             </order_status>
-                            <codigo_comercio translate="label">
-                                <label>Código Comercio</label>
+                            <llave_publica translate="label">
+                                <label>Llave Publica</label>
                                 <frontend_type>text</frontend_type>
                                 <show_in_default>1</show_in_default>
                                 <show_in_website>1</show_in_website>
                                 <show_in_store>0</show_in_store>
-                            </codigo_comercio>
-                            <llave_codigo_comercio translate="label">
-                                <label>Llave Comercio</label>
+                            </llave_publica>
+                            <llave_secreta translate="label">
+                                <label>Llave Secreta</label>
                                 <frontend_type>text</frontend_type>
                                 <show_in_default>1</show_in_default>
                                 <show_in_website>1</show_in_website>
                                 <show_in_store>0</show_in_store>
-                            </llave_codigo_comercio>
-                            <url_culqi translate="label">
-                                <label>URL Culqi</label>
-                                <frontend_type>text</frontend_type>
-                                <show_in_default>1</show_in_default>
-                                <show_in_website>1</show_in_website>
-                                <show_in_store>0</show_in_store>
-                            </url_culqi>
+                            </llave_secreta>
                         </fields>
                     </pago>
                 </groups>
