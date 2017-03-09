@@ -164,10 +164,8 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
           } else {
             console.log(Culqi.token.id);
 
-
             $j(document).ajaxStart(function(){
               //$j('#culqi_notify').empty();
-
             });
             $j(document).ajaxComplete(function(){
               //$j('#info_payment').waitMe('hide');
@@ -186,11 +184,13 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
 
                 if (obj.object === "error") {
 
+                  alert(obj.user_message);
+
                   post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonResponse('fail'));
 
                 } else if (obj.object === "charge") {
 
-                  alert('¡Se hizo el pago correctamente!');
+                  alert(obj.outcome.user_message);
 
                   // Procesar Venta en Magento
                   post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonResponse('done'));
