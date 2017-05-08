@@ -163,14 +163,6 @@ Numero de orden: <?php echo $orderId; ?> <br> <br>
             alert(Culqi.error.mensaje);
           } else {
             console.log(Culqi.token.id);
-
-            $j(document).ajaxStart(function(){
-              //$j('#culqi_notify').empty();
-            });
-            $j(document).ajaxComplete(function(){
-              //$j('#info_payment').waitMe('hide');
-            });
-
             $.ajax({
               url: "<?php echo $this->getUrl('pago/ajax/check');?>",
               type: "POST",
