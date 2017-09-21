@@ -102,6 +102,6 @@ tus llaves de pruebas por tus llaves de producción como en el paso 4.2
 > En el ambiente de producción podrás comenzar a usar tarjetas reales.
 
 
-### Si tienes dudas de Integración escríbenos a integrate@culqi.com
+### Si tienes dudas de integración escríbenos a integrate@culqi.com
 
 ### Si tienes dudas comerciales escríbenos a unete@culqi.com
