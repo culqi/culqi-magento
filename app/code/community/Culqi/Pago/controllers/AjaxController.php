@@ -1,4 +1,6 @@
 <?php
+
+
 class Culqi_Pago_AjaxController extends Mage_Core_Controller_Front_Action {
 
   public function indexAction() {
@@ -20,29 +22,20 @@ class Culqi_Pago_AjaxController extends Mage_Core_Controller_Front_Action {
 
     // Obteniendo Data de la orden
     $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-
     $currency_code  = $order->getOrderCurrencyCode();
-
     $BAddress = $order->getBillingAddress();
-
     $address = $order->getShippingAddress()->getStreet1().' '.$order->getShippingAddress()->getStreet2();
-
     $first_name = $BAddress->getFirstname();
-
     $last_name = $BAddress->getLastname();
-
     $email = $order->getCustomerEmail();
-
     $amount = number_format($order->getGrandTotal(),2,'','');
-
     $address_city = $BAddress->getCity();
-
     $phone_number = $BAddress->getTelephone();
-
     $country_code = 'PE';
-
     $description = '';
+
     $items = $order->getAllItems();
+
     if ($items)
       {
           foreach($items as $item)

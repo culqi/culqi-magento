@@ -18,18 +18,68 @@ class Culqi_Pago_PaymentController extends Mage_Core_Controller_Front_Action
 
   // Pagina intermedia (gateway), aqui Generar la venta
   public function redirectAction()
-  {
+  { 
 
+    // Nueva orden
+    $order = new Mage_Sales_Model_Order();
 
+    $checkout = Mage::getSingleton('checkout/session');
+    $orderId =  $checkout->getLastRealOrderId();
+
+    // Obteniendo Data
+    $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+    $BAddress = $order->getBillingAddress();
+    $first_name = $BAddress->getFirstname();
+    $last_name = $BAddress->getLastname();
+    $phone_number = $BAddress->getTelephone();
+    $currency  = $order->getOrderCurrencyCode();
+    $customerEmail = $order->getCustomerEmail();
+    $total = number_format($order->getGrandTotal(),2,'',''); 
+
+    $productName = '';
+    $items = $order->getAllItems();
+    if ($items)
+    {
+      foreach($items as $item)
+        {
+          if ($item->getParentItem()) continue;
+          $ProductName .= $item->getName() . '; ';
+        }
+    }
+    $productName = rtrim($productName, '; ');  
+
+    // Render 
     $this->loadLayout();
-    $block = $this->getLayout()->createBlock('Mage_Core_Block_Template','pago',array('template' => 'pago/redirect.phtml'));
+    /*$block = $this->getLayout()
+    ->createBlock('Mage_Core_Block_Template','pago',array('template' => 'pago/redirect.phtml'))
+    ->setData('orderIdFront','aaaa'); */
 
+
+    $block = $this->getLayout()->createBlock('core/template')   
+    ->setTemplate('pago/redirect.phtml');
+
+    if(Mage::getStoreConfig('payment/pago/active_multipayment')){
+
+      // Generar orden previa  
+      $culqi = Mage::getModel('pago/culqi');  
+      $orderReq = $culqi->crearOrden($total, $currency, Mage::app()->getStore()->getFrontendName()
+      , $first_name, $last_name, 
+      $phone_number, $customerEmail, $orderId);   
+
+      Mage::log("response  ==>  ".$orderReq, null, 'system.log', true);        
+      $orderReq = json_decode($orderReq, true); 
+        
+      $block->setData('orderIdFront', $orderReq['id']); 
+    }    
+
+    $block->setData('orderId', $orderId); 
+    $block->setData('currency', $currency); 
+    $block->setData('customerEmail', $customerEmail); 
+    $block->setData('total', $total); 
+    $block->setData('productName', $productName); 
 
     $this->getLayout()->getBlock('content')->append($block);
     $this->renderLayout();
-
-
-
 
   }
 
@@ -88,10 +138,21 @@ class Culqi_Pago_PaymentController extends Mage_Core_Controller_Front_Action
 
       return $this->getResponse()->setRedirect( Mage::getUrl('checkout/onepage'));
 
-    }
+    } 
 
-    else
-    {
+    elseif ($this->getRequest()->get("flag") == "1" && $this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'pending_payment') {
+
+      $orderId = $this->getRequest()->get("orderId");
+      $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+
+      $order->setState(Mage_Sales_Model_Order::STATE_HOLDED, true, 'Orden en espera de pago por medio de PagoEfectivo.');
+      $order->save();
+
+      Mage::getSingleton('checkout/session')->unsQuoteId();
+      Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/success', array('_secure'=> false));
+    }    
+
+    else {
 
       Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/failure', array('_secure'=> false));
     }
