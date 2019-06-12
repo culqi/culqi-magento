@@ -145,6 +145,7 @@ Tu número de orden: <?php echo $orderId; ?> <br> <br>
 
                   // Procesar Venta en Magento
                   post('<?php echo Mage::helper('pago')->getPaymentGatewayUrl(); ?>', jsonResponse('done'));
+		 Culqi.close();	
 
                 } else {
                   resultdiv('Hubo algun problema en el procesamiento.');
