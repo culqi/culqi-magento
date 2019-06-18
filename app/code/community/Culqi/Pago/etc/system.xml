@@ -79,7 +79,7 @@
 
 
                             <active_multipayment translate="label">
-                                <label>Habilitar multipagos (pagos con tarjetas + pago en efectivo)</label>
+                                <label>Habilitar multipagos (pagos con tarjetas + PagoEfectivo)</label>
                                 <frontend_type>select</frontend_type>
                                 <source_model>adminhtml/system_config_source_yesno</source_model>
                                 <show_in_default>1</show_in_default>
