@@ -11,9 +11,9 @@ donde encontrarás tus llaves `<link>` : <https://integ-panel.culqi.com/#/desarr
 
 `Llave privada: sk_test_xxxxxxxxxxxxxx`
 
-#### 2. Descargar  el Plugin de Culqi 2.1.0 
+#### 2. Descargar  el Plugin de Culqi 2.1.1 
 
-`<link>` : <https://github.com/culqi/culqi-magento/releases/tag/v2.1.0> 
+`<link>` : <https://github.com/culqi/culqi-magento/releases/tag/v2.1.1> 
 
 ##### 2.1
 ![Imgur](https://i.imgur.com/eoVyTFZ.png)
