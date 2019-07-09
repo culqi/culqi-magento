@@ -23,7 +23,7 @@ class Culqi_Pago_Block_Adminhtml_System_Config_Info
             'authorizenet/directpost_payment/response';
 
 
-        $html = '<div class="section-config"> <div class="config-heading"> <div class="heading"><strong>Culqi<a class="link-more" href="https://www.culqi.com/docs" target="_blank">Leer más</a></strong><span class="heading-intro"> Con Culqi comienza a aceptar pagos con tarjeta de crédito/debito y también en efectivo (<b>¡Nuevo!</b>).</span></div> </div> </div>';
+        $html = '<div class="section-config"> <div class="config-heading"> <div class="heading"><strong>Culqi<a class="link-more" href="https://www.culqi.com/docs" target="_blank">Leer más</a></strong><span class="heading-intro"> Con Culqi comienza a aceptar pagos con tarjeta de crédito/debito y también PagoEfectivo (<b>¡Nuevo!</b>).</span></div> </div> </div>';
         return $html;
     }
 }
