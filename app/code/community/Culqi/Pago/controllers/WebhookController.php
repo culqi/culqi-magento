@@ -12,7 +12,8 @@ class Culqi_Pago_WebhookController extends Mage_Core_Controller_Front_Action {
         // Recepción de evento 
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON); 
-        $data = json_decode($input->data);       
+        $data = json_decode($input->data); 
+
            
         Mage::log('Llega peticion a webhook');
 
@@ -27,7 +28,7 @@ class Culqi_Pago_WebhookController extends Mage_Core_Controller_Front_Action {
             $orderReq = json_decode($orderReq, true); 
 
  
-            $mgtOrderId = $data->metadata->mgt_order_id;  
+            $mgtOrderId = $orderReq->metadata->mgt_order_id;  
 
             Mage::log('Evento de Culqi, cambio de orden identificado. Orden: '.$mgtOrderId);
             
