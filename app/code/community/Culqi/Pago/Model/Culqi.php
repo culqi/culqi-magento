@@ -11,6 +11,13 @@ class Culqi_Pago_Model_Culqi extends Mage_Payment_Model_Method_Abstract
       $this->_private_key = Mage::getStoreConfig('payment/pago/llave_secreta');    
   } 
 
+  public function consultarOrden($order_id) {
+    $client = new Zend_Http_Client($this->_url_base."/orders/" . $order_id); 
+    $response = $client->request();
+
+    return $response;
+    
+  }
 
   public function crearOrden($amount, $currency_code, $description, $first_name, $last_name, 
   $phone_number, $email, $order_id) { 
