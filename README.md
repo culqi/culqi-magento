@@ -1,6 +1,6 @@
-# culqi-magento
+# Culqi-magento2
 
-### Pasos para la integración del Plugin de Culqi
+### Pasos para la integración del Metódo de Pago Culqi
 
 #### 1. Registrarse en Culqi   `<link>` : <https://www.culqi.com/>
 
@@ -11,74 +11,128 @@ donde encontrarás tus llaves `<link>` : <https://integ-panel.culqi.com/#/desarr
 
 `Llave privada: sk_test_xxxxxxxxxxxxxx`
 
-#### 2. Descargar  el Plugin de Culqi 2.1.1 
+#### 2. Descargar  el Método de Pago de Culqi para Magento 2
 
-`<link>` : <https://github.com/culqi/culqi-magento/releases/tag/v2.1.1> 
+`<link>` : <https://github.com/Nicerova7/culqi-magento2/releases/tag/v1.0.0> 
 
 ##### 2.1
-![Imgur](https://i.imgur.com/eoVyTFZ.png)
+![Imgur](https://i.imgur.com/yh7Mc3b.png)
 
-##### 2.2
-![Imgur](https://i.imgur.com/fBBBiwA.png)
 
-#### 3. Instalar el Plugin de Culqi en tu Magento 1.9
+#### 3. Instalación del Método de Pago de Culqi en tu Magento 2.3
 
-##### 3.1 Después de descargar el archivo .zip debemos descomprimir e ingresar a la carpeta "app"
+![Imgur](https://i.imgur.com/4iol348.png)
 
-![Imgur](https://i.imgur.com/vCuLES6.png)
+##### 3.1 Después de descargar el archivo .zip debemos descomprimirlo
 
-![Imgur](https://i.imgur.com/P6N5EZy.png)
+![Imgur](https://i.imgur.com/gG2QbAp.png)
 
-![Imgur](https://i.imgur.com/dm7AeHl.png)
+Tendremos entonces la carpeta Culqi.
 
-##### 3.2 El contenido de la carpeta "/app" es el inicio de la integración tomar mucha atención 
-![Imgur](https://i.imgur.com/7FwPNmU.png)
-
-##### 3.3 Seguir los siguientes pasos:
+##### 3.2 Seguir los siguientes pasos:
 
 ```Markdown 
-Paso 1: Subir el plugin a tu Magento
-Copiar la carpeta "app\code\community\Culqi" dentro de tu "app\code\community"
+Paso 1: Subir el nuevo modulo a tu Magento
+Copiar la carpeta "Culqi" dentro de tu "app\code\"
+
+De no existir la carpeta \code, crearla.
+```
+
+Para los siguientes pasos nos situamos en tu carpeta principal de magento:
+
+![Imgur](https://i.imgur.com/zEKnyGk.png)
+
+```Markdown 
+Paso 2: Habilitar el nuevo modulo Culqi (importante verificar el php usado y correrlo correctamente).
+
+$ php bin/magento module:enable Culqi_Pago
 ```
 
 ```Markdown 
-Paso 2: Subir los templates a tu theme (.pthmls)
-Copiar la carpeta "app\design\frontend\base\default\template\pago" dentro de tu
-"app/design/frontend/base/default/template/"
+Paso 3: Correr el comando setup:upgrade.
+
+$ php bin/magento setup:upgrade
 ```
 
 ```Markdown 
-Paso 3: Subir xml del modulo
-Copiar el archivo "\app\etc\modules\Culqi_Pago.xml" dentro de tu "app/etc/modules"
+Paso 4: Correr el comando cache:flush
+$ php bin/magento cache:flush
 ```
+> Ten cuidado con los permisos de las carpetas y archivos en Magento 2 ! 
+`<link>` : <https://devdocs.magento.com/guides/v2.4/install-gde/prereq/file-system-perms.html/> 
 
-```Markdown 
-Paso 4: Subir xml del layout AJAX
-Copiar el archivo "app\design\frontend\base\default\layout\ajaxlayout.xml" dentro de tu
-"app/etc/modules"
-```
+#### 4. Configurar el Método de pago de Culqi en tu administrador de Magento 2.3
 
-#### 4. Configurar el Plugin de Culqi en tu administrador de Magento 1.9
+##### 4.1 Panel principal 
 
-##### 4.1
-![Imgur](https://i.imgur.com/j1ELo4U.png)
+![Imgur](https://i.imgur.com/dADyL3a.png)
 
-##### 4.2
-![Imgur](https://i.imgur.com/zCfpcYm.png)
+##### 4.2 Sales
 
-##### 4.3
-![Imgur](https://i.imgur.com/sMjrEoy.png)
+![Imgur](https://i.imgur.com/zQ6N4HY.png)
 
-![Imgur](https://i.imgur.com/GNXxKkq.png)
-> Aqui van tus llaves que mencionamos en el paso 1 ( Registrarse en Culqi ).
+##### 4.3 Payment methods
+
+![Imgur](https://i.imgur.com/axDBf3r.png)
+
+##### 4.4 Nos dirigimos al último 
+
+![Imgur](https://i.imgur.com/bmFrxPs.png)
+
+##### 4.5 Configuración de llaves
+
+![Imgur](https://i.imgur.com/uZc8FMk.png)
 
 ### Finalmente debes tener a Culqi como pasarela de pago de esta manera:
 
-![Imgur](https://i.imgur.com/obCgQ5R.png)
+![Imgur](https://i.imgur.com/1xWAyX3.png)
 
-> Debes usar las tarjetas de prueba que Culqi te ofrece para hacer las pruebas necesarias
+##### Configura el nombre de tu tienda
 
-`<link>` : <https://culqi.com/docs/#/desarrollo/tarjetas/> 
+Tip para definir el nombre de tu tienda en el checkout de Culqi.
+
+##### 1. Nos dirigimos al panel de administración de Magento
+
+###### 1.1 Ubicamos la sección All Stores.
+
+![Imgur](https://i.imgur.com/1mviyes.png)
+
+
+###### 1.2 Seleccionamos Magento Commerce en la Seccion Web Store.
+
+![Imgur](https://i.imgur.com/NsyzdDW.png)
+
+###### 1.3 Configuramos el nombre deseado.
+
+![Imgur](https://i.imgur.com/tCVGnYj.png)
+
+
+### Webhook
+
+Puedes activar un Webhook desde el panel de integración de Culqi para mantener el status de una orden pagada por pagoefectivo.
+
+```Markdown 
+Paso 1: Ir al panel de integración de culqi, en la sección Eventos y luego a Webhooks.
+```
+
+![Imgur](https://i.imgur.com/yfFo29t.png)
+
+
+```Markdown 
+Paso 2: Configuramos nuestra url con el Webhook order.status.changed 
+
+Importante: la dirección /pago/webhook/event siempre se mantendrá.
+```
+
+![Imgur](https://i.imgur.com/Jv0CwEp.png)
+
+Y con esto tenemos activado nuestro Webhook para que nuestras ventas pagadas por pagoefectivo se encuentren monitoreadas y actualizadas en todo momento.
+
+> Recordar que la dirección aqui registrada no puede ser local y debe iniciar con https://
+
+> Si tienes dudas con lo que es un Webhook puedes consultar el siguiente enlace: 
+`<link>` : < https://docs.culqi.com/#/desarrollo/webhooks/> 
+
 
 ### Pase a producción:
 
