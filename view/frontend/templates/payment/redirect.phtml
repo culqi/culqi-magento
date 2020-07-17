@@ -89,7 +89,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 $jq('#response').html(Culqi.error.merchant_message);
                 $jq('body').waitMe('hide');
               } else {
-                $(document).ajaxStart(function(){
+                $jq(document).ajaxStart(function(){
                   run_waitMe();
                   });
                 $jq.ajax({  
