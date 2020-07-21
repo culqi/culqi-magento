@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="culqi" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Culqi</label>
+                <comment> <![CDATA[Con Culqi comienza a aceptar pagos con tarjeta de crédito/debito y también <br/> PagoEfectivo.]]> </comment>
+                <fieldset_css>culqi-other-section</fieldset_css>
+                <frontend_model>Magento\Paypal\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
+                <field id="info_block" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Info</frontend_model>
+                </field>
+
+                <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Título</label>
+                </field>
+                <field id="active" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Habilitado</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_status" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Estado nuevo pedido</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status\NewStatus</source_model>
+                </field>
+                <field id="llave_publica" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Llave Publica</label>
+                </field>
+                <field id="llave_secreta" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Llave Secreta</label>
+                </field>
+                <!-- separator -->
+                <field id="label_multipayment" translate="label" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Separator</frontend_model>
+                </field>
+                <!-- /separator -->
+                <field id="active_multipayment" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Habilitar multipagos (pagos con tarjetas + PagoEfectivo)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="duracion_maxima" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Tiempo de duración máxima de las órdenes</label>
+                </field>
+                <field id="order_preffix" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Prefijo de las órdenes, máximo 3 caracteres. Ejem: MGT. (Opcional)</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config> 

@@ -1,0 +1,9 @@
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+
+ .culqi-other-section .button-container {float: right; margin: 1rem 0 0 !important;}
+ .culqi-other-section > .entry-edit-head > a::before {left: auto !important; right: 1.3rem !important;}
+ .culqi-other-section .heading {background: url("images/logoCulqi.svg") no-repeat 0 0% / 18rem auto; padding-left: 20rem;}

@@ -1,8 +1,0 @@
-
-<pago_ajax_check>
-  <block type="pago/pago" name="root" output="toHtml" template="pago/aviso.phtml" />
-</pago_ajax_check>
-
-<pago_ajax_charge>
-  <block type="pago/pago" name="root" output="toHtml" template="pago/aviso.phtml" />
-</pago_ajax_charge>

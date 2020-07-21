@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<payment>
+			<culqi>
+				<active>1</active>
+                <model>Culqi\Pago\Model\Payment\Pago</model>
+                <order_status>pending</order_status>
+                <title>Culqi Pago</title>
+                <allowspecific>0</allowspecific>
+                <payment_action>sale</payment_action>
+				<order_preffix>MGT</order_preffix>
+                <duracion_maxima>24</duracion_maxima>   
+			</culqi>
+		</payment>
+	</default>
+</config>
