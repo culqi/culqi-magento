@@ -21,11 +21,9 @@ donde encontrarás tus llaves `<link>` : <https://integ-panel.culqi.com/#/desarr
 
 #### 3. Instalación del Método de Pago de Culqi en tu Magento 2.3
 
-![Imgur](https://i.imgur.com/4iol348.png)
+##### 3.1 Descargar el archivo .zip y descomprimirlo
 
-##### 3.1 Después de descargar el archivo .zip debemos descomprimirlo
-
-![Imgur](https://i.imgur.com/gG2QbAp.png)
+![Imgur](https://i.imgur.com/p6ulVcQ.png)
 
 ##### 3.2 Colocar todos estos archivos dentro de las carpetas Culqi\Pago
 
