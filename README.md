@@ -13,23 +13,26 @@ donde encontrarás tus llaves `<link>` : <https://integ-panel.culqi.com/#/desarr
 
 #### 2. Descargar  el Método de Pago de Culqi para Magento 2
 
-`<link>` : <https://github.com/Nicerova7/culqi-magento2/releases/tag/v1.0.0> 
+`<link>` : <https://github.com/culqi/culqi-magento/releases/tag/v3.0.0> 
 
 ##### 2.1
-![Imgur](https://i.imgur.com/yh7Mc3b.png)
+![Imgur](https://i.imgur.com/m6KXC3q.png)
 
 
 #### 3. Instalación del Método de Pago de Culqi en tu Magento 2.3
 
-![Imgur](https://i.imgur.com/4iol348.png)
+##### 3.1 Descargar el archivo .zip y descomprimirlo
 
-##### 3.1 Después de descargar el archivo .zip debemos descomprimirlo
+![Imgur](https://i.imgur.com/p6ulVcQ.png)
 
-![Imgur](https://i.imgur.com/gG2QbAp.png)
+##### 3.2 Colocar todos estos archivos dentro de las carpetas Culqi\Pago
 
-Tendremos entonces la carpeta Culqi.
+![imgur](https://i.imgur.com/uvsqBXj.png)
 
-##### 3.2 Seguir los siguientes pasos:
+Tendremos entonces la carpeta Culqi que contiene la carpeta Pago el cual contiene nuestros
+archivos.
+
+##### 3.3 Seguir los siguientes pasos:
 
 ```Markdown 
 Paso 1: Subir el nuevo modulo a tu Magento
