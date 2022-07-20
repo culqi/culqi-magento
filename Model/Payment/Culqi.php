@@ -2,7 +2,7 @@
 
 namespace Culqi\Pago\Model\Payment;
 
-include_once dirname(__FILE__, 3) . '\libraries\culqi-php\lib\culqi.php';
+include_once dirname(__FILE__, 3) . '/libraries/culqi-php/lib/culqi.php';
 
 use Zend\Http\Client;
 use Zend\Http\Request;

@@ -126,10 +126,9 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $device,
         $parameters3DS
     ) {
-        include_once dirname(__FILE__, 3).'\libraries\Requests\library\Requests.php';
+        include_once dirname(__FILE__, 3).'/libraries/Requests/library/Requests.php';
         \Requests::register_autoloader();
-        //include_once dirname(__FILE__, 3).'\libraries\Requests\library\Requests.php';
-        include_once dirname(__FILE__, 3) . '\libraries\culqi-php\lib\culqi.php';
+        include_once dirname(__FILE__, 3) . '/libraries/culqi-php/lib/culqi.php';
         //\Requests::register_autoloader();
         $this->_private_key = $this->storeConfig->getLlaveSecreta();
         $this->_enviroment = $this->storeConfig->getURLEnviroment();
