@@ -1691,8 +1691,9 @@
                 jQuery('#'+jQuery('input[name="groups[culqi][fields][theme][value]"]').val().replace('#', '').replace('#', '')).click();
                     if(jQuery('input[name="groups[culqi][fields][logo][value]"]').val()!=''){
                         document.querySelector('#logo').src=jQuery('input[name="groups[culqi][fields][logo][value]"]').val();
-                        jQuery('#logo-url').val(jQuery('input[name="groups[culqi][fields][logo][value]"]').val());
+                        
                     } 
+jQuery('#logo-url').val(jQuery('input[name="groups[culqi][fields][logo][value]"]').val());
                     console.log('beforesetcolors');
                     console.log(jQuery('input[name="groups[culqi][fields][theme][value]"]').val());
                     if(jQuery('input[name="groups[culqi][fields][theme][value]"]').val()!=''){
