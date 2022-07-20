@@ -14,6 +14,7 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
     protected $request;
     protected $order;
     protected $logger;
+    protected $statusCompleted = \Magento\Sales\Model\Order::STATE_COMPLETE;
     protected $statusProcessing = \Magento\Sales\Model\Order::STATE_PROCESSING;
     protected $statusCanceled = \Magento\Sales\Model\Order::STATE_CANCELED;
     protected $statusHolded = \Magento\Sales\Model\Order::STATE_HOLDED;
@@ -63,14 +64,36 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
     public function responseAction()
     {
         // If all is right !
-        if ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'done') {
+        if ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'complete_payment') {
             $orderId = $this->getRequest()->get("orderId");
+            $card_number = $this->getRequest()->get("card_number");
+            $card_brand = $this->getRequest()->get("card_brand");
+            $culqi_order_id = $this->getRequest()->get("order_id");
  
+            $orderToSet = $this->order->loadByIncrementId($orderId);
+            $orderToSet->setState($this->statusCompleted)->setStatus($this->statusCompleted);
+            $orderToSet->addStatusToHistory(
+                $orderToSet->getStatus(),
+                "Venta correcta vía Tarjeta de Crédito (Culqi), espera a su entrega y confirmación."
+            );
+            $orderToSet->addStatusHistoryComment('Card number: ' . $card_number . ' Card brand: ' . $card_brand );
+            $orderToSet->addStatusHistoryComment('Charge Id: ' . $culqi_order_id . '.' );
+            $orderToSet->save();
+
+            $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
+            $this->_checkoutSession->setSuccess(true);
+            $resultRedirect->setUrl($this->url->getUrl('pago/payment/success'));
+
+            return $resultRedirect;
+        } elseif ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'order'){
+            $orderId = $this->getRequest()->get("orderId");
+            $culqi_order_id = $this->getRequest()->get("order_id");
+            //var_dump($this->getRequest()->get("culqi_order_id")); exit(1);
             $orderToSet = $this->order->loadByIncrementId($orderId);
             $orderToSet->setState($this->statusProcessing)->setStatus($this->statusProcessing);
             $orderToSet->addStatusToHistory(
                 $orderToSet->getStatus(),
-                "Venta correcta vía Tarjeta de Crédito (Culqi), espera a su entrega y confirmación."
+                "Venta correcta (Culqi), espera a su entrega y confirmación, Order Id : " . $culqi_order_id . "."
             );
             $orderToSet->save();
 
@@ -102,8 +125,7 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
             $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
             $resultRedirect->setUrl($this->url->getUrl('checkout/cart/'));
             return $resultRedirect;
-        } elseif ($this->getRequest()->get("orderId") &&
-            $this->getRequest()->get("statusOrder") == 'pending_payment') {
+        } elseif ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'pending_payment') {
 
             $orderId = $this->getRequest()->get("orderId");
             
@@ -120,8 +142,7 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
             $resultRedirect->setUrl($this->url->getUrl('pago/payment/success'));
 
             return $resultRedirect;
-        } elseif ($this->getRequest()->get("orderId") &&
-            $this->getRequest()->get("statusOrder") == 'cancelado_por_usuario') {
+        } elseif ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'cancelado_por_usuario') {
                 
             $orderId = $this->getRequest()->get("orderId");
 

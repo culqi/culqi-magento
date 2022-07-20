@@ -25,6 +25,7 @@ class Redirect extends \Magento\Framework\App\Action\Action
 
     public function execute()
     {
+        
         $amount = $this->_checkoutSession->getAmount();
         $currencyCode = $this->_checkoutSession->getCurrencyCode();
         $description = $this->_checkoutSession->getDescription();
@@ -50,7 +51,6 @@ class Redirect extends \Magento\Framework\App\Action\Action
     
         $page = $this->resultPageFactory->create();
         $block = $page->getLayout()->getBlock('payment.redirect');
- 
         if ($activeMultiPay) {
             $orderReq = $this->culqiopera->createOrder(
                 $amount,

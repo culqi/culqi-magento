@@ -1,0 +1,773 @@
+<style>
+    #woocommerce_culqi_login_button {
+        background: #ffffff;
+        border: 1px solid #d4d8dd;
+        box-sizing: border-box;
+        border-radius: 4px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 18px;
+        margin-left: 20px;
+        cursor: pointer;
+    }
+
+    #woocommerce_culqi_login_button > div {
+        display: flex;
+        align-items: center;
+    }
+    input.form-control{
+        display: block;
+    width: 100%;
+    height: 39px;
+    padding: 8px 16px;
+    font-size: 12px;
+    line-height: 1.42857;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #bbcdd2;
+    border-radius: 4px;
+    -webkit-transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+    -webkit-transition: border-color ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
+    }
+    .form-group {
+        margin-bottom: 19px;
+    }
+    .btn{
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        color: #fff;
+        background: #25b9d7;
+        border-color: #25b9d7;
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        -webkit-transition: .25s ease-out;
+        transition: .25s ease-out;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        padding: 8px 16px;
+        font-size: 12px;
+        line-height: 1.42857;
+        border-radius: 4px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .btnClose{
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        color: #fff;
+        background: #808080;
+        border-color: #808080;
+        display: inline-block;
+        margin-bottom: 0;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        -webkit-transition: .25s ease-out;
+        transition: .25s ease-out;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        padding: 8px 16px;
+        font-size: 12px;
+        line-height: 1.42857;
+        border-radius: 4px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    }
+
+    #woocommerce_culqi_login_button span {
+        font-family: "Archivo", sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14.22px;
+        line-height: 20px;
+        color: #3e4b61;
+        margin-left: 10px;
+    }
+
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1055;
+        display: none;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        outline: 0;
+        background: rgba(0,0,0,0.5);
+    }
+
+    .modal-dialog {
+        position: relative;
+        width: auto;
+        margin: 0.5rem;
+        pointer-events: none;
+    }
+    .modal.fade .modal-dialog {
+        transition: transform 0.3s ease-out;
+        transform: translate(0, -50px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .modal.fade .modal-dialog {
+            transition: none;
+        }
+    }
+    .modal.show .modal-dialog {
+        transform: none;
+    }
+
+    .modal.modal-static .modal-dialog {
+        transform: scale(1.02);
+    }
+
+    .modal-dialog-scrollable {
+        height: calc(100% - 1rem);
+    }
+    .modal-dialog-scrollable .modal-content {
+        max-height: 100%;
+        overflow: hidden;
+    }
+    .modal-dialog-scrollable .modal-body {
+        overflow-y: auto;
+    }
+
+    .modal-dialog-centered {
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - 1rem);
+    }
+
+    .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1050;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000;
+    }
+    .modal-backdrop.fade {
+        opacity: 0;
+    }
+    .modal-backdrop.show {
+        opacity: 0.5;
+    }
+
+    .modal-header {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 1.5rem 1rem 1.5rem;
+        /* border-bottom: 1px solid #dee2e6; */
+        border-top-left-radius: calc(0.3rem - 1px);
+        border-top-right-radius: calc(0.3rem - 1px);
+    }
+    .modal-header .btn-close {
+        padding: 0.5rem 0.5rem;
+        margin: -0.5rem -0.5rem -0.5rem auto;
+    }
+
+    .modal-title {
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .modal-body {
+        position: relative;
+        flex: 1 1 auto;
+        padding: 0rem 1.5rem;
+    }
+
+    .modal-footer {
+        display: flex;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 1.5rem;
+        /* border-top: 1px solid #dee2e6; */
+        border-bottom-right-radius: calc(0.3rem - 1px);
+        border-bottom-left-radius: calc(0.3rem - 1px);
+    }
+    .modal-footer > * {
+        margin: 0.25rem;
+    }
+
+    @media (min-width: 576px) {
+        .modal-dialog {
+            max-width: 500px;
+            margin: 1.75rem auto;
+        }
+
+        .modal-dialog-scrollable {
+            height: calc(100% - 3.5rem);
+        }
+
+        .modal-dialog-centered {
+            min-height: calc(100% - 3.5rem);
+        }
+
+        .modal-sm {
+            max-width: 300px;
+        }
+    }
+
+    .modal-title {
+        font-family: "Archivo", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14.22px;
+        line-height: 20px;
+        color: #3e4b61;
+    }
+
+    .modalListLabel {
+        font-family: "Lexend Deca", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20.25px;
+        line-height: 28px;
+        text-align: center;
+        color: #1f263e;
+        text-align: center;
+        display: block;
+    }
+
+    .modalListDesc {
+        font-family: "Archivo", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14.22px;
+        line-height: 20px;
+        text-align: center;
+        color: #3e4b61;
+        display: block;
+        max-width: 250px;
+        margin: 0 auto;
+    }
+
+    .merchant_item {
+        background: #ffffff;
+        border-bottom: solid 2px #e7e9ec;
+        padding: 8px 26px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .merchant_logo {
+        /* background: #763383; */
+        background: #00a19b;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 42px;
+        height: 42px;
+    }
+
+    .merchant_name {
+        font-family: "Archivo", sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        color: #1f263e;
+    }
+
+    .listaselect {
+        max-height: 40vh;
+        overflow: auto;
+    }
+
+
+    .control-label {
+        text-align: left !important;
+    }
+
+    .bootstrap label {
+        font-weight: normal !important;
+    }
+
+    /* OLANDA CSS TOOLTIP */
+
+    #form-culqi-settings tbody th{
+    position: relative;
+    }
+
+    /*== start of code for tooltips ==*/
+    .tool {
+    cursor: help;
+    padding-left: 10PX;
+    position: absolute;
+    /* right: 0;  */
+    }
+
+
+    /*== common styles for both parts of tool tip ==*/
+    .tool::before,
+    .tool::after {
+    left: 50%;
+    opacity: 0;
+
+    position: absolute;
+    z-index: -100;
+    }
+    .tool::after {
+        bottom: 30px!important;
+    }
+
+    .tool:hover::before,
+    .tool:focus::before,
+    .tool:hover::after,
+    .tool:focus::after {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    z-index: 100;
+    }
+
+
+    /*== pointer tip ==*/
+    .tool::before {
+    border-style: solid;
+    border-width: 1em 0.75em 0 0.75em;
+    border-color: #3E474F transparent transparent transparent;
+    bottom: 100%;
+    content: "";
+    margin-left: -0.5em;
+    transition: all .65s cubic-bezier(.84,-0.18,.31,1.26), opacity .65s .5s;
+    transform:  scale(.6) translateY(-90%);
+    }
+
+    .tool:hover::before,
+    .tool:focus::before {
+    transition: all .65s cubic-bezier(.84,-0.18,.31,1.26) .2s;
+    }
+
+
+    /*== speech bubble ==*/
+    .tool::after {
+    background: #3E474F;
+    border-radius: .25em;
+    bottom: 180%;
+    color: #EDEFF0;
+    content: attr(data-tip);
+    margin-left: -8.75em;
+    padding: 1em;
+    transition: all .65s cubic-bezier(.84,-0.18,.31,1.26) .2s;
+    transform:  scale(.6) translateY(50%);
+    width: 17.5em;
+    }
+
+    .tool:hover::after,
+    .tool:focus::after  {
+    transition: all .65s cubic-bezier(.84,-0.18,.31,1.26);
+    }
+
+    @media (max-width: 760px) {
+    .tool::after {
+        font-size: .75em;
+        margin-left: -5em;
+        width: 10em;
+    }
+    }
+</style>
+<input type="hidden" id="CULQI_TOKENLOGIN" />
+<div class="form-group logincontainer">
+    <div class="col-lg-8">
+        <button onclick="jQuery('#modalLogin').show()" id="pretashop_culqi_login_button" type="button" class="btnlogin" data-toggle="modal" data-target="#modalLogin" style="padding: 10px 20px">
+            <div style="display: initial">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: -4px; margin-right: 5px">
+                    <path d="M7.99463 8.66086C6.58697 8.66086 5.44795 7.52184 5.44795 6.11418C5.44795 4.70653 6.59772 3.55676 8.00537 3.55676C9.41303 3.55676 10.5628 4.70653 10.5628 6.11418C10.5628 7.52184 9.40228 8.66086 7.99463 8.66086ZM7.99463 4.95367C7.36065 4.95367 6.83412 5.46946 6.83412 6.11418C6.83412 6.75891 7.3499 7.27469 7.99463 7.27469C8.63936 7.27469 9.15514 6.75891 9.15514 6.11418C9.15514 5.46946 8.63936 4.95367 7.99463 4.95367Z" fill="#3E4B61"/>
+                    <path d="M7.99463 0C3.58899 0 0 3.58899 0 7.99463C0 9.75688 0.580255 11.3902 1.54735 12.7119C1.83747 13.1095 2.17058 13.4856 2.53593 13.8294C3.96508 15.1726 5.88852 16 7.99463 16C10.1007 16 12.0242 15.1726 13.4533 13.8294C13.8187 13.4856 14.1518 13.1202 14.4419 12.7119C15.409 11.3902 15.9893 9.75688 15.9893 7.99463C16 3.58899 12.411 0 7.99463 0ZM7.99463 14.6568C6.14641 14.6568 4.47011 13.8939 3.25588 12.6689C4.36266 11.272 6.07119 10.3801 7.99463 10.3801C9.90732 10.3801 11.6159 11.272 12.7334 12.6689C11.5299 13.8939 9.85359 14.6568 7.99463 14.6568ZM13.6145 11.5621C12.2498 9.98254 10.2404 8.98321 7.99463 8.98321C5.74883 8.98321 3.73942 9.98254 2.37475 11.5514C1.71927 10.5306 1.34318 9.30557 1.34318 7.99463C1.34318 4.31968 4.33042 1.33244 8.00537 1.33244C11.6803 1.33244 14.6676 4.31968 14.6676 7.99463C14.6568 9.30557 14.27 10.5306 13.6145 11.5621Z" fill="#3E4B61"/>
+                </svg>
+            </div>
+            <span>Iniciar Sesión</span>
+        </button>
+    </div>
+</div>
+<div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="modalLoginLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <form method="post" action="#" id="modal_login_form_culqi">
+                <div class="modal-header">
+                <span class="modal-title" id="modalLoginLabel">Ingresa tus datos para ayudarte con la configuración.</span>
+                </div>
+                <div class="modal-body">
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="ejemplo@culqi.com" value="">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Tu contraseña de CulqiPanel" value="">
+                </div>
+                <div class="form-group d-none" style="display: none">
+                    <label for="type_integration">Tipo de Integración</label>
+                    <select name="type_integration" class="form-control" id="type_integration">
+                    <option value="0" selected>Test</option>
+                    <option value="1">Live</option>
+                    </select>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" onclick="login()" name="button" class="btn btn-primary" style='width:100%'>Iniciar Sesión</button>
+                <button type="button" onclick="jQuery('#modalLogin').hide()" name="button" class="btnClose" style='width:100%'>Cerrar</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalList" tabindex="-1" role="dialog" aria-labelledby="modalListLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                <span class="modalListLabel">¡Bienvenid@!</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <br />
+                <div class="modal-subtitle">
+                <span class="modalListDesc"
+                    >Elige el comercio en donde activarás tu checkout de Culqi</span
+                >
+                </div>
+                <div class="form-group">
+                <ul id='list-merchants' class="listaselect"></ul>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+        /**
+         * @license
+         * three.js - JavaScript 3D library
+         * Copyright 2016 The three.js Authors
+         *
+         * Permission is hereby granted, free of charge, to any person obtaining a copy
+         * of this software and associated documentation files (the "Software"), to deal
+         * in the Software without restriction, including without limitation the rights
+         * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+         * copies of the Software, and to permit persons to whom the Software is
+         * furnished to do so, subject to the following conditions:
+         *
+         * The above copyright notice and this permission notice shall be included in
+         * all copies or substantial portions of the Software.
+         *
+         * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+         * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+         * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+         * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+         * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+         * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+         * THE SOFTWARE.
+         */
+            jQuery('form#config-edit-form').submit(function (e) {
+
+                var enviroment = '';
+                
+                jQuery('input[type="radio"]').each(function(){
+                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                        urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                        enviroment = 'prod';
+                    }
+                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='integ'){
+                        urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                        enviroment = 'integ';
+                    }
+                });
+
+                var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
+                var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');
+
+                if(enviroment == 'integ'){
+                    if(!(llavepublica.length==3 && llavepublica[1]=='test' && llaveprivada.length==3 && llaveprivada[1]=='test')){
+                        alert('Las llaves ingresadas no pertenecen al ambiente de integración');
+                        $('#config-edit-form').submit(false);
+                    }
+                }
+                if(enviroment == 'prod'){
+                    if(!(llavepublica.length==3 && llavepublica[1]=='live' && llaveprivada.length==3 && llaveprivada[1]=='live')){
+                        alert('Las llaves ingresadas no pertenecen al ambiente de producción');
+                        $('#config-edit-form').submit(false);
+                    }
+                }
+                
+                var urlwebhook = "<?php echo $this->getUrlWebhookInteg() ?>";
+                jQuery('input[type="radio"]').each(function(){
+                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                        urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                     }
+                 });
+                console.log(urlwebhook);
+                if (jQuery('#CULQI_TOKENLOGIN').val().length>0) {
+                    const settings = {
+                        url: urlwebhook,
+                        crossDomain: true,
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        type: "GET",
+                        timeout: 0,
+                        headers: {
+                            'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
+                            'Access-Control-Allow-Origin': '*',
+                            "Content-Type": "application/json",
+                            "Accept": "*/*"
+                        },
+                        data: {
+                            "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
+                            "version": 2
+                        }
+                    };
+                    jQuery.ajax(settings).done(function (response) {
+                        var valid = 1;
+                        for(let i = 0; i < response.data.length; i++) {
+                            if(response.data[i].url==jQuery('input[name="groups[culqi][fields][notpay][value]"]').val()){
+                                valid=0;
+                            }
+                        }
+                        if(valid==1){
+                            const settings = {
+                                url: urlwebhook,
+                                crossDomain: true,
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                type: "POST",
+                                timeout: 0,
+                                headers: {
+                                    'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
+                                    'Access-Control-Allow-Origin': '*',
+                                    "Content-Type": "application/json",
+                                    "Accept": "*/*"
+                                },
+                                data: JSON.stringify({
+                                    "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
+                                    "eventId": "order.status.changed",
+                                    "url": jQuery('input[name="groups[culqi][fields][notpay][value]"]').val(),
+                                    "version": 2
+                                }),
+                            };
+                            jQuery.ajax(settings).done(function (response) {
+                                console.log(response);
+                            });
+                        }
+                    });
+                }
+                return true;
+            });
+
+            function login(){
+                fullculqi_login();
+            };
+
+            function fullculqi_login() {
+                var urllogin = "<?php echo $this->getUrlLoginInteg() ?>";
+                jQuery('input[type="radio"]').each(function(){
+                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                        urllogin = "<?php echo $this->getUrlLoginProd() ?>";
+                    }
+                });
+                console.log(urllogin);
+                const settings = {
+                    url: urllogin,
+                    method: "POST",
+                    timeout: 0,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    data: JSON.stringify({
+                        email: jQuery('#email').val(),
+                        password: jQuery('#password').val(),
+                    }),
+                };
+                console.log('settings:::', settings);
+                jQuery.ajax(settings).done(function (response) {
+                    console.log('response:::', response);
+                    window.culqi_token = response.data;
+                    console.log('window.culqi_token:::', window.culqi_token);
+                    culqiWoGetMerchants(window.culqi_token);
+                });
+            }
+
+            const culqiWoGetMerchants = (token) => {
+                console.log('culqiWoGetMerchants');
+                var urlmerchant = "<?php echo $this->getUrlMerchantInteg() ?>";
+                jQuery('input[type="radio"]').each(function(){
+                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                    urlmerchant = "<?php echo $this->getUrlMerchantProd() ?>";
+                    }
+                });
+                const settings = {
+                    url: urlmerchant,
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": "Bearer " + token,
+                    },
+                };
+
+                console.log('settings:::', settings);
+
+                jQuery.ajax(settings)
+                .done(function (response) {
+                    console.log('response:::', response);
+                    renderMerchants(response.data);
+                    jQuery("#modalLogin").hide();
+                    jQuery("#modalList").show();
+                })
+                .error(function (error) {
+                    console.log('error:::', error);
+                });
+            };
+
+            const getMerchant = (id) => {
+                console.log('getMerchant');
+                var urlmerchantsingle = "<?php echo $this->getUrlMerchantSingleInteg() ?>";
+                jQuery('input[type="radio"]').each(function(){
+                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                    urlmerchantsingle = "<?php echo $this->getUrlMerchantSingleProd() ?>";
+                    }
+                });
+                const settings = {
+                    url: urlmerchantsingle + id,
+                    method: "GET",
+                    timeout: 0,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": "Bearer " + window.culqi_token,
+                    },
+                };
+
+                console.log('settings:::', settings);
+
+                jQuery.ajax(settings)
+                .done(function (response) {
+                    console.log('response data:::', response);
+                    window.culqi_settings["private_key"] = response.data[0].key;
+                    renderSettings();
+                    jQuery("#modalList").hide();
+                });
+                return false;
+            };
+
+            const renderSettings = () => {
+            console.log(window.culqi_settings);
+
+            jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(window.culqi_settings["public_key"]);
+
+             
+                jQuery('input[name="groups[culqi][fields][llave_secreta][value]"]').val(window.culqi_settings["private_key"]);
+                
+                jQuery("#CULQI_TOKENLOGIN").val(window.culqi_token);
+
+                window.culqi_settings = null;
+
+                console.log(window.culqi_settings);
+            };
+
+            const renderMerchants = (merchants) => {
+                let html = "";
+                merchants.forEach((merchant) => {
+                html += `
+                    <li>
+                    <div class="items">
+                       <div class="merchant_item" data-name="`+merchant.nombre_comercial+`" data-key='`+merchant.codigo_comercio+`'>
+                        <div class="merchant_logo">
+                            <svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_135_620)">
+                            <path d="M11.6701 18.3208V19.625H2.46777V8.49707C2.8659 8.69858 3.3209 8.81613 3.79296 8.83852V18.3264H11.6701V18.3208Z" fill="white"/>
+                            <path d="M23.244 0.38623V5.56957C23.244 6.50436 22.8459 7.34959 22.2032 7.94293V19.625H12.9952V18.3208H20.8837V8.6986C20.5823 8.78816 20.2524 8.83854 19.9168 8.83854C18.8248 8.83854 17.858 8.31797 17.2551 7.51752C16.6522 8.31797 15.6853 8.83854 14.5933 8.83854C13.5013 8.83854 12.5288 8.31797 11.9259 7.51752C11.414 8.18922 10.6462 8.67061 9.75328 8.79936C9.59403 8.82175 9.4291 8.83854 9.26416 8.83854V7.53431C9.36654 7.53431 9.46322 7.52871 9.55991 7.51192C10.5268 7.37198 11.2605 6.53794 11.2605 5.56957V3.35294H12.5857V5.56957C12.5857 6.65549 13.4786 7.53431 14.582 7.53431C15.6797 7.53431 16.5783 6.65549 16.5783 5.56957V3.35294H17.9035V5.56957C17.9035 6.65549 18.8021 7.53431 19.8998 7.53431C21.0032 7.53431 21.8961 6.65549 21.8961 5.56957V0.38623H23.244Z" fill="white"/>
+                            <path d="M12.9952 14.4416V19.625H11.67V14.4416C11.67 13.3053 10.7316 12.3761 9.57134 12.3761C8.41677 12.3761 7.47265 13.2997 7.47265 14.4416V18.3207H6.14746V14.4416C6.14746 12.5832 7.6774 11.0719 9.56565 11.0719C11.4596 11.0719 12.9952 12.5832 12.9952 14.4416Z" fill="white"/>
+                            <path d="M19.4337 16.0034H14.4287V11.0775H19.4337V16.0034ZM15.7539 14.6991H18.1085V12.3817H15.7539V14.6991Z" fill="white"/>
+                            <path d="M1.95019 1.68924V5.56835C1.95019 6.65427 2.84312 7.53309 3.9465 7.53309C5.04419 7.53309 5.94281 6.65427 5.94281 5.56835V3.35172H7.268V5.56835C7.268 6.65427 8.16662 7.53309 9.26431 7.53309V8.83732C8.17231 8.83732 7.20544 8.31675 6.60256 7.5163C5.99969 8.31675 5.03281 8.83732 3.94081 8.83732C3.88962 8.83732 3.83275 8.83732 3.78156 8.82613C3.30381 8.80933 2.8545 8.68619 2.45637 8.48468C1.37575 7.9585 0.625 6.85019 0.625 5.56835V0.38501H21.9133V1.68924H1.95019Z" fill="white"/>
+                            <path d="M23.2388 0.375H21.9136V0.386195H23.2388V0.375Z" fill="white"/>
+                            </g>
+                            <defs>
+                            <clipPath id="clip0_135_620">
+                            <rect width="22.75" height="19.25" fill="white" transform="translate(0.625 0.375)"/>
+                            </clipPath>
+                            </defs>
+                            </svg>
+                        </div>
+                        <div class="merchant_name">`
+                        +merchant.nombre_comercial+
+                    `</div>
+                        <div class="merchant_arrow">
+                            <svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.95079 5.23163L1.71079 0.341176C1.61783 0.233069 1.50723 0.147262 1.38537 0.0887049C1.26351 0.0301478 1.1328 0 1.00079 0C0.868781 0 0.738075 0.0301478 0.616216 0.0887049C0.494356 0.147262 0.383755 0.233069 0.290792 0.341176C0.104542 0.557282 0 0.849616 0 1.15433C0 1.45904 0.104542 1.75138 0.290792 1.96748L3.83079 6.05055L0.290792 10.1336C0.104542 10.3497 0 10.6421 0 10.9468C0 11.2515 0.104542 11.5438 0.290792 11.7599C0.384233 11.8668 0.495049 11.9514 0.616886 12.0088C0.738724 12.0662 0.869186 12.0953 1.00079 12.0944C1.1324 12.0953 1.26286 12.0662 1.3847 12.0088C1.50654 11.9514 1.61735 11.8668 1.71079 11.7599L5.95079 6.86947C6.04452 6.76225 6.11891 6.63468 6.16968 6.49413C6.22045 6.35357 6.24659 6.20282 6.24659 6.05055C6.24659 5.89829 6.22045 5.74753 6.16968 5.60698C6.11891 5.46642 6.04452 5.33886 5.95079 5.23163Z" fill="#B1B8C1"/>
+                            </svg>
+                        </div>
+                        </div>
+                    </div>
+                    </li>`;
+                });
+                jQuery("#list-merchants").html(html);
+
+                jQuery(".merchant_item").click(function (event) {
+
+                    const key = jQuery(this).attr("data-key");
+                    const name = jQuery(this).attr("data-name");
+                    window.culqi_settings = {
+                        public_key: key,
+                        merchant_name: name,
+                    };
+                    getMerchant(key);
+                });
+            };
+
+
+    </script>

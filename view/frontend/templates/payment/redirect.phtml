@@ -1,9 +1,23 @@
 <?php
-
 // Credenciales
 $llavePublica = $block->getLlavePublica();
+$enviroment = $block->getEnviroment();
+$paymentMethods = $block->getPaymentMethods();
+$logo = $block->getLogo();
+$theme = $block->getTheme();
 
-$activeMultiPay = $block->getData('activeMultiPay');
+$urlapi_ordercharges = URLAPI_ORDERCHARGES_INTEG;
+$urlapi_checkout = URLAPI_CHECKOUT_INTEG;
+$urlapi_3ds = URLAPI_INTEG_3DS;
+
+if($enviroment =='prod'){
+  $urlapi_ordercharges = URLAPI_ORDERCHARGES_PROD;
+  $urlapi_checkout = URLAPI_CHECKOUT_PROD;
+  $urlapi_3ds = URLAPI_PROD_3DS;
+}
+
+//$activeMultiPay = $block->getData('activeMultiPay');
+//var_dump($activeMultiPay);
 $orderIdCq      = $block->getData('orderIdCq');
 
 $orderId      = $block->getData('dataOrder')['orderId'];
@@ -13,7 +27,7 @@ $first_name   = $block->getData('dataOrder')['first_name'];
 $email        = $block->getData('dataOrder')['email'];
 
 $total     = number_format($block->getData('dataOrder')['amount'], 2, '', '');
-$storeName = array_map('trim', explode("\n", $block->getData('dataOrder')['store_name']))[0];
+$storeName = $block->getStoreName();
 
 ?>
 
@@ -40,26 +54,127 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
 <div id="response">
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script type="text/javascript" src="https://checkout.culqi.com/js/v3"></script>
+<script src="<?php echo $urlapi_3ds; ?>"></script>
 
-        <script type="text/javascript">
+<script type="text/javascript" src="<?php echo $urlapi_checkout; ?>"></script>
 
-            Culqi.publicKey  = '<?= $block->escapeHtml($llavePublica) ?>';
+<script type="module">
 
-            Culqi.settings({
-                title: '<?=  $block->escapeHtml($storeName) ?>',
-                currency: '<?= $block->escapeHtml($currencyCode) ?>',
-                description: '<?= $block->escapeHtml($productName) ?>',
-                amount: '<?= $block->escapeHtml($total) ?>', 
-                <?php
-                if ($activeMultiPay && isset($orderIdCq)) {
-                    ?>
-                    order: '<?= $block->escapeHtml($orderIdCq) ?>'  
-                    <?php
+  Culqi3DS.options = {
+		closeModalAction: () => window.location.reload(true), // ACTION CUANDO SE CIERRA EL MODAL
+	};
+
+	window.addEventListener("message", async function (event) {
+
+		if (event.origin === window.location.origin) {
+			const { parameters3DS, error } = event.data;
+			console.log('data3ds');
+			console.log(event.data);
+			if (parameters3DS) {
+				
+        var token = Culqi.token.id;
+        var email = Culqi.token.email;
+
+        console.log('Se ha creado un token: ' + token);
+        
+        $jq(document).ajaxStart(function(){
+          run_waitMe();
+        });
+
+        $jq.ajax({
+          url: "<?= $block->escapeUrl($block->getUrl('pago/payment/check')); ?>",
+          type: "POST",
+          data: {
+            token_id: Culqi.token.id,
+            order_id: '<?= $block->escapeHtml($orderId) ?>',
+            email: Culqi.token.email,
+            installments: Culqi.token.metadata.installments,
+            device: device, 
+            parameters3DS: parameters3DS },
+          dataType: 'json',
+          success: function(data) {
+
+            console.log('data:::', data);
+
+            
+              //var obj = JSON.parse(data);
+              var result = "";
+
+              if (data.constructor == String) {
+                result = JSON.parse(data);
+              }
+              if (data.constructor == Object) {
+                result = JSON.parse(JSON.stringify(data));
+              }
+
+              console.log('result:::', result);
+              //alert(result.id);
+              if (result.object === 'charge') {
+                var card_number = result['source']['card_number'];
+                var card_brand = result['source']['iin']['card_brand'] + ' ' + result['source']['iin']['card_category'] + ' ' + result['source']['iin']['card_type'];
+                var culqi_order_id = result.id;
+                resultdiv(result['user_message']);
+
+                //var id = setInterval(function() {
+                  //if (!Culqi.isOpen) {
+                    //clearInterval(id);
+                    post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand, culqi_order_id));
+                  //}
+                //}, 1000);
+              }
+              
+              if (result.object === 'error') {
+                resultdiv(obj.user_message);
+                post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('fail'));
+              }
+            
+
+            
+            
+
+          },
+          error: function() {
+            resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
+          }
+        });
+
+			}
+
+			if (error) {
+				console.log('error3DS:::');
+				console.log(error);
+			}
+		}
+	}, false );
+
+	// GENERAR DEVICE ID (INVOCAR APENAS SE DE AL BOTON PAGAR Y ABRA EL CULQI CHECKOUT)
+  Culqi3DS.publicKey = "<?php echo $llavePublica; ?>";
+	var device = await Culqi3DS.generateDevice();
+
+            Culqi.publicKey  = '<?php echo $llavePublica; ?>';
+            Culqi.useClasses = true;
+		        Culqi.init();
+            
+
+            Culqi.options({
+                lang: 'auto', 
+                paymentMethods: {
+                    tarjeta: <?php echo in_array('tarjeta', $paymentMethods) ? 'true' : 'false';  ?>,
+                    bancaMovil: <?php echo in_array('bancamovil', $paymentMethods) ? 'true' : 'false';  ?>,
+                    agente: <?php echo in_array('agente', $paymentMethods) ? 'true' : 'false';  ?>,
+                    billetera: <?php echo in_array('billetera', $paymentMethods) ? 'true' : 'false';  ?>,
+                    cuotealo: <?php echo in_array('cuotealo', $paymentMethods) ? 'true' : 'false';  ?>
+                },
+                style: {
+                  bannerColor: '<?php echo $theme[0]; ?>', 
+                  imageBanner: '', 
+                  buttonBackground: '<?php echo $theme[1]; ?>',  
+                  menuColor: '<?php echo $theme[1]; ?>',  
+                  linksColor: '<?php echo $theme[1]; ?>',  
+                  buttontext: '<?php echo $theme[0]; ?>', 
+                  priceColor: '<?php echo $theme[1]; ?>',  
+                  logo: '<?php echo $logo ?>'
                 }
-                ?>
-
             });
 
             var $jq = jQuery.noConflict();
@@ -71,121 +186,167 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
             // Activa el botón de pago
             $jq('#btn_pago').on('click', function(e) {
-              Culqi.open();
-              e.preventDefault();
+              generateOrder();
+              //Abre el formulario con las opciones de Culqi.settings
+              
             });
 
         
-            function culqi() { 
+  function culqi() { 
 
-                    <?php
-                    if (!$activeMultiPay) {
-                        ?> 
-            
-              // Only cards  
-
-              if (Culqi.error) {
-                // Mostramos JSON de objeto error en consola
-                $jq('#response').html(Culqi.error.merchant_message);
-                $jq('body').waitMe('hide');
-              } else {
-                $jq(document).ajaxStart(function(){
-                  run_waitMe();
-                  });
-                $jq.ajax({  
-                      url: "<?= $block->escapeUrl($block->getUrl('pago/payment/check')); ?>",
-                      type: "POST",
-                      timeout: 30000,
-                      data: { token_id: Culqi.token.id,
-                              order_id: '<?= $block->escapeHtml($orderId) ?>',
-                              installments: Culqi.token.metadata.installments },
-                      dataType: 'json',
-                      type : 'post',
-                      success: function(data) {
-                        var obj = JSON.parse(data);
-
-                        if( obj.object === "error"){
-                          resultdiv(obj.user_message);
-                          post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>",
-                              jsonResponse('fail'));
-                      
-                      } else if( obj.object === "charge") {
-                          resultdiv(obj.outcome.user_message);
-                          post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>",
-                              jsonResponse('done'));
-
-                          Culqi.close();                        
-                      } else {
-                          resultdiv('Hubo algun problema en el procesamiento.');
-                      }
-
-                      },
-                      error: function() {
-                        resultdiv(
-                          'Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.'
-                        );
-                      }
-                    });  
-                }
-            
-                        <?php
-                    } else {
-                        ?> 
+    console.log('Culqi:::', Culqi);
+    
+    if (Culqi.order) {
+      //console.log('Culqi.order', Culqi.order.id);
+      $jq(document).ajaxStart(function(){
+        run_waitMe();
+      });
+      var culqi_order_id = Culqi.order.id;
+      console.log('culqi_order_id:::', culqi_order_id);
+      if (Culqi.token == null) {
         
-            // Multipayment  
 
-            if(Culqi.error) {
-                // Mostramos JSON de objeto error en consola
-                $jq('#response').html(Culqi.error.merchant_message);
-                $jq('body').waitMe('hide');
-            } else if (Culqi.token) {
-                console.log(Culqi.token.id);
+        var id = setInterval(function() {
+          if (!Culqi.isOpen) {
+            clearInterval(id);
+            post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('order', '', '', culqi_order_id));
+          }
+        }, 1000);
 
-                $jq(document).ajaxStart(function(){
-                  run_waitMe();
-                });
+      } else {
 
-                $jq.ajax({    
-                    url: "<?= $block->escapeUrl($block->getUrl('pago/payment/check'));?>",
-                    type: "POST",
-                    timeout: 30000,
-                    data: { token_id: Culqi.token.id,
-                            order_id: '<?= $block->escapeHtml($orderId) ?>',
-                            installments: Culqi.token.metadata.installments },
-                    dataType: 'json',
-                    type: 'post',
-                    success: function(data) {
-                        var obj = JSON.parse(data);
-                        if(obj.object === "error"){
-                            resultdiv(obj.user_message);
-                            post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>",
-                                jsonResponse('fail'));
-                        }
-                        else if (obj.object === "charge"){
-                            resultdiv(obj.outcome.user_message);
-                            post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>",
-                                jsonResponse('done'));
-                        }
-                        else { resultdiv('Hubo algun problema en el procesamiento.'); }
-                    },
-                    error: function() {
-                        resultdiv(
-                          'Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.'
-                        );
-                    }
-                });
-            } else if (Culqi.order) {
-                    console.log('Orden Confirmada correctamente');
-                    resultdiv('Orden confirmada correctamente como pendiente pago. No cierres esta página aún...');
-                    post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>",
-                        jsonResponse('pending_payment'));
-                } else if (Culqi.closeEvent){
-                        console.log(Culqi.closeEvent);
-                    }
+      }
+      
+    } else if(Culqi.token) {
+
+      var token = Culqi.token.id;
+      var email = Culqi.token.email;
+
+      console.log('Se ha creado un token: ' + token);
+      
+      $jq(document).ajaxStart(function(){
+        run_waitMe();
+      });
+
+      $jq.ajax({
+        url: "<?= $block->escapeUrl($block->getUrl('pago/payment/check')); ?>",
+        type: "POST",
+        data: {
+          token_id: Culqi.token.id,
+          order_id: '<?= $block->escapeHtml($orderId) ?>',
+          email: Culqi.token.email,
+          installments: Culqi.token.metadata.installments,
+          device: device },
+        dataType: 'json',
+        success: function(data) {
+
+          console.log('data:::', data);
+
+          if(data.action_code=='REVIEW'){
+            $jq('body').waitMe('hide');
+						Culqi.close();
+						Culqi3DS.settings = {
+							charge: {
+                currency: '<?php echo $currencyCode ?>',
+								totalAmount: <?php echo $total; ?>,
+								returnUrl: "<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ?>" //URL DEL CHECKOUT DEL COMERCIO
+							},
+							card: {
+								email: email,
+							}
+						};
+						console.log('abriendo3DS');
+						console.log("{/literal}{$BASE_URL}{literal}");
+						Culqi3DS.initAuthentication(token);
+					} else {
+            var obj = JSON.parse(data);
+            var result = "";
+
+            if (data.constructor == String) {
+              result = JSON.parse(data);
+            }
+            if (data.constructor == Object) {
+              result = JSON.parse(JSON.stringify(data));
+            }
+
+            console.log('result:::', result);
+            //alert(result);
+            if (result.object === 'charge') {
+              var card_number = result['source']['card_number'];
+              var card_brand = result['source']['iin']['card_brand'] + ' ' + result['source']['iin']['card_category'] + ' ' + result['source']['iin']['card_type'];
+              var culqi_order_id = result.id;
+              resultdiv(result['user_message']);
+
+              //var id = setInterval(function() {
+                //if (!Culqi.isOpen) {
+                  //clearInterval(id);
+                  post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand, culqi_order_id));
+                //}
+              //}, 1000);
+            }
             
-            <?php  } ?>
+            if (result.object === 'error') {
+              resultdiv(obj.user_message);
+              post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('fail'));
+            }
+          }
 
-           };
+          
+          
+
+        },
+        error: function() {
+          resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
+        }
+      });
+
+      
+
+    } else {
+      $jq('body').waitMe('hide');
+      if (Culqi.error) {
+        $jq('#response').html(Culqi.error.user_message);
+      }
+    }
+
+  };
+
+            function generateOrder() {
+              var $jq = jQuery.noConflict();
+              $jq.ajax({
+                 url: "<?= $block->escapeUrl($block->getUrl('pago/payment/order')); ?>",
+                 type: "POST",
+                 dataType: 'json',
+                 success: function(response) {
+                   console.log('response:::', response);
+                   Culqi.settings({
+                     title: '<?php echo $storeName ?>',
+                     currency: '<?php echo $currencyCode ?>',
+                     amount: <?php echo $total; ?>,
+                     order: response,
+                     culqiclient: 'Magento',
+                     culqiclientversion: '123',
+                   });
+                   Culqi.open();
+              e.preventDefault();
+                   //console.log(Culqi);
+                 },
+                 error: function(error){
+                   console.log('error:::', error);
+                   Culqi.settings({
+					title: '<?php echo $storeName ?>',
+					currency: '<?php echo $currencyCode ?>',
+					amount: <?php echo $total; ?>,
+					//order: 'ord_live_mQjOSWvYKnNgotsY', // esto es solo si se tiene habilitada la opción de billeteras, agentes y/o cuetealo
+					culqiclient: 'Magento',
+					culqiclientversion: '123',
+				});
+        Culqi.open();
+              e.preventDefault();
+                 }
+              
+              });
+            }
 
             function run_waitMe(){
               $jq('body').waitMe({
@@ -196,9 +357,12 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
               });
             }
 
-            function jsonResponse(message){
+            function jsonResponse(message, card_number = '', card_brand = '', order_id = ''){
                 return JSON.stringify({
                     orderId: '<?= $block->escapeHtml($orderId); ?>',
+                    card_number: card_number,
+                    card_brand: card_brand,
+                    order_id: order_id,
                     statusOrder: message
                 });
             };
@@ -267,7 +431,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             ".waitMe_container:not([data-waitme_id])").remove();
             b("body.waitMe_body").removeClass("waitMe_body hideMe")},200)})})(jQuery);
 
-
             function post(url, json){
                     // Convertimos el json en un objeto
                   var obj = JSON.parse(json);
@@ -276,7 +439,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                   var objKeys = Object.keys(obj);
                   // Creamos elementos <input> con el name=clave y value=valor del objeto
                   var inputs = [];
-                  for (i = 0; i < objKeys.length; i++) {
+                  for (var i = 0; i < objKeys.length; i++) {
                     inputs[i] = document.createElement('input');
                     inputs[i].name = objKeys[i];
                     inputs[i].value = obj[objKeys[i]];
@@ -292,5 +455,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                   form.submit();
             }
         
-
-        </script>   
+  window.culqi = culqi;
+  
+</script>   

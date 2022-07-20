@@ -4,44 +4,65 @@
         <section id="payment">
             <group id="culqi" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
                 <label>Culqi</label>
-                <comment> <![CDATA[Con Culqi comienza a aceptar pagos con tarjeta de crédito/debito y también <br/> PagoEfectivo.]]> </comment>
+                <comment> <![CDATA[Conéctate a nuestra pasarela de pagos para aumentar tus ventas. Acepta pago con tarjetas, pagoefectivo, billeteras móviles y cuotéalo desde tu tienda virtual.]]> </comment>
                 <fieldset_css>culqi-other-section</fieldset_css>
                 <frontend_model>Magento\Paypal\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
                 <field id="info_block" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Info</frontend_model>
                 </field>
-
-                <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Título</label>
-                </field>
-                <field id="active" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <!-- <field id="active" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Habilitado</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field> -->
+                <field id="active" translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Culqi Checkout</label>
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Active</frontend_model>
+                    
                 </field>
-                <field id="order_status" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Estado nuevo pedido</label>
-                    <source_model>Magento\Sales\Model\Config\Source\Order\Status\NewStatus</source_model>
+                <field id="enviroment" translate="label" type="radios" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Elige el entorno donde activarás tu checkout</label>
+                    <source_model>Culqi\Pago\Block\Adminhtml\Form\Field\Enviroment</source_model>
                 </field>
-                <field id="llave_publica" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Llave Publica</label>
+                <field id="login" translate="label" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Login</frontend_model>
+                    <attribute type="shared">1</attribute>
                 </field>
-                <field id="llave_secreta" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Llave Secreta</label>
+                 <field id="llave_publica" translate="label" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PublicKey</frontend_model>
+                    <attribute type="shared">1</attribute>
+                    <comment>Ingresa tu llave pública</comment>
                 </field>
-                <!-- separator -->
-                <field id="label_multipayment" translate="label" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Separator</frontend_model>
+                <field id="llave_secreta" translate="label" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\SecretKey</frontend_model>
+                    <attribute type="shared">1</attribute>
                 </field>
-                <!-- /separator -->
-                <field id="active_multipayment" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Habilitar multipagos (pagos con tarjetas + PagoEfectivo)</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="payment_methods" translate="label" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Métodos de pago</label>
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PaymentMethods</frontend_model>
                 </field>
-                <field id="duracion_maxima" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Tiempo de duración máxima de las órdenes</label>
+                <field id="timexp" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Tiempo de expiración</label>
+                    <comment>Ingresar el número de horas que tendrá el cliente para pagar su orden. Ejem: 24</comment>
                 </field>
-                <field id="order_preffix" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Prefijo de las órdenes, máximo 3 caracteres. Ejem: MGT. (Opcional)</label>
+                <field id="notpay" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <!-- <label>Notificaciones de Pago</label>
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Disable</frontend_model>
+                    <comment>Si no iniciaste sesión con tu cuenta de Culqi Panel, tienes que configurar esta URL.</comment> -->
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\NotifyPayment</frontend_model>
+                </field>
+                <field id="personalize" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PersonalizeTheme</frontend_model>
+                    <attribute type="shared">1</attribute>
+                </field>
+                <field id="logo" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Logo URL</label>
+                    <comment>Este logo aparecerá en tu Culqi Checkout</comment>
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Disable</frontend_model>
+                </field>
+                <field id="theme" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Tema elegido</label>
+                    <comment>Utilizaremos estos colores para personalizar tu checkout.</comment>
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Disable</frontend_model>
                 </field>
             </group>
         </section>

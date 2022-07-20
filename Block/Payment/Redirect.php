@@ -25,6 +25,14 @@ class Redirect extends \Magento\Framework\View\Element\Template
         parent::__construct($context, $data);
     }
 
+    public function getEnviroment()
+    {
+        return $this->scopeConfig->getValue(
+            'payment/culqi/enviroment',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
     public function getLlavePublica()
     {
         return $this->scopeConfig->getValue(
@@ -39,6 +47,16 @@ class Redirect extends \Magento\Framework\View\Element\Template
             'payment/culqi/llave_secreta',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
+    }
+
+    public function getPaymentMethods()
+    {
+        $methods =  $this->scopeConfig->getvalue(
+            'payment/culqi/payment_methods',
+            \Magento\Store\model\ScopeInterface::SCOPE_STORE
+        );
+
+        return explode(',', $methods);
     }
 
     public function getDuracionMaxima()
@@ -61,4 +79,50 @@ class Redirect extends \Magento\Framework\View\Element\Template
     {
         return $this->storeManager->getStore()->getName();
     }
+
+    public function getLogo()
+    {
+        return $this->scopeConfig->getvalue(
+            'payment/culqi/logo',
+            \Magento\Store\model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    public function getTheme()
+    {
+        $theme =  $this->scopeConfig->getvalue(
+            'payment/culqi/theme',
+            \Magento\Store\model\ScopeInterface::SCOPE_STORE
+        );
+
+        return explode('-', '#F6911B-#FFB600');
+    }
+
+    public function getURLEnviroment()
+    {
+        $enviroment = $this->getEnviroment();
+
+        $urlapi_ordercharges = URLAPI_ORDERCHARGES_INTEG;
+        $urlapi_checkout = URLAPI_CHECKOUT_INTEG;
+
+        if($enviroment =='prod'){
+            $urlapi_ordercharges = URLAPI_ORDERCHARGES_PROD;
+            $urlapi_checkout = URLAPI_CHECKOUT_PROD;
+        }
+
+        return $urlapi_ordercharges;
+    }
+
+    public function getTimeExpiration()
+    {
+        $timexp = $this->scopeConfig->getvalue(
+            'payment/culqi/timexp',
+            \Magento\Store\model\ScopeInterface::SCOPE_STORE
+        );
+        return isset($timexp) ? $timexp : TIME_EXPIRATION_DEFAULT;
+        //var_dump(isset($timexp) ? $timexp : 24); exit(1);
+
+    }
+    
+
 }

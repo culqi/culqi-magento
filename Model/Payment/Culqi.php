@@ -2,6 +2,8 @@
 
 namespace Culqi\Pago\Model\Payment;
 
+include_once dirname(__FILE__, 3) . '\libraries\culqi-php\lib\culqi.php';
+
 use Zend\Http\Client;
 use Zend\Http\Request;
 use Zend\Json\Json;
@@ -80,7 +82,7 @@ class Culqi extends \Magento\Payment\Model\Method\AbstractMethod
         return $json;
     }
 
-    public function crearCargo(
+    /* public function crearCargo(
         $amount,
         $address,
         $addressCity,
@@ -96,15 +98,17 @@ class Culqi extends \Magento\Payment\Model\Method\AbstractMethod
         $orderId
     ) {
 
+        $this->_private_key = $this->storeConfig->getLlaveSecreta();
+        
         $data =  [
             'amount' => $amount,
             'antifraud_details'=> [
-            'address' => $address,
-            'address_city' => $addressCity,
-            'country_code' => $countryCode,
-            'first_name' => $firstName,
-            'last_name' => $lastName,
-            'phone_number' => $phoneNumber
+                'address' => $address,
+                'address_city' => $addressCity,
+                'country_code' => $countryCode,
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'phone_number' => $phoneNumber
             ],
             'capture' => true,
             'currency_code' => $currencyCode,
@@ -114,8 +118,6 @@ class Culqi extends \Magento\Payment\Model\Method\AbstractMethod
             'email' => $email,
             'source_id' => $source_id
         ];
-
-        $this->_private_key = $this->storeConfig->getLlaveSecreta();
 
         $client = new Client();
         $client->setUri($this->_url_base."/charges/");
@@ -127,5 +129,35 @@ class Culqi extends \Magento\Payment\Model\Method\AbstractMethod
         $client->setMethod('POST');
         $json = $client->send()->getBody();
         return $json;
+    } */
+
+    public function crearCargo(
+        $amount,
+        $currencyCode,
+        $email,
+        $source_id
+    ) {
+
+        $this->_private_key = $this->storeConfig->getLlaveSecreta();
+
+        $culqi = new Culqi\Culqi(array('api_key' => $this->_private_key));
+
+        try {
+            $args_charge = array(
+                'amount' => $amount,
+                'currency_code' => $currencyCode,
+                'email' => $email,
+                'source_id' => $source_id,
+                'capture' => false
+            );
+
+            $culqi_charge = $culqi->Charges->create($args_charge);
+            
+            return $culqi_charge;
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
     }
 }
