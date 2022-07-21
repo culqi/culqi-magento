@@ -25,7 +25,7 @@ class Redirect extends \Magento\Framework\App\Action\Action
 
     public function execute()
     {
-        
+        //var_dump($this->_checkoutSession->getData()); exit(1);
         $amount = $this->_checkoutSession->getAmount();
         $currencyCode = $this->_checkoutSession->getCurrencyCode();
         $description = $this->_checkoutSession->getDescription();

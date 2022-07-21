@@ -141,7 +141,8 @@ class Requests {
 			return;
 		}
 		
-		$delimitador = (CULQI_OS == true) ? '/' : '\\';
+		//$delimitador = (CULQI_OS == true) ? '\\' : '/';
+		$delimitador = '/';
 
 		$file = str_replace('_', $delimitador, $class);
 		if (file_exists(dirname(__FILE__) . $delimitador . $file . '.php')) {
@@ -566,9 +567,10 @@ class Requests {
 		if (!preg_match('/^http(s)?:\/\//i', $url, $matches)) {
 			throw new Requests_Exception('Only HTTP(S) requests are handled.', 'nonhttp', $url);
 		}
-
+		
 		if (empty($options['hooks'])) {
 			$options['hooks'] = new Requests_Hooks();
+			//var_dump($options['hooks']); exit(1);
 		}
 
 		if (is_array($options['auth'])) {

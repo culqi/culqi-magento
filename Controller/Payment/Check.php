@@ -141,7 +141,7 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 'currency_code' => $currencyCode,
                 'email' => $email,
                 'source_id' => $source_id,
-                'capture' => false,
+                'capture' => true,
                 'enviroment' => $this->_enviroment,
                 'antifraud_details' => array('device_finger_print_id'=>$device),
                 'metadata' => ["order_id" => (string) $orderId],

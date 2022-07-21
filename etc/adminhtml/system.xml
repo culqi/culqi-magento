@@ -40,9 +40,9 @@
                     <label>Métodos de pago</label>
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PaymentMethods</frontend_model>
                 </field>
+                
                 <field id="timexp" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Tiempo de expiración</label>
-                    <comment>Ingresar el número de horas que tendrá el cliente para pagar su orden. Ejem: 24</comment>
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\TimeExpiration</frontend_model>
                 </field>
                 <field id="notpay" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
                     <!-- <label>Notificaciones de Pago</label>

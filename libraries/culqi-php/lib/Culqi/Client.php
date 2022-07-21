@@ -31,7 +31,7 @@ class Client {
 			// Check URL
 			//if($secure_url) $base_url = Culqi::SECURE_BASE_URL;
 			//else $base_url = Culqi::BASE_URL;
-//echo('hi'); exit(1);
+			//echo('hi'); exit(1);
 			if($method == "GET") {
 
 				update_option('kono_4', print_r($data['enviroment']. $url . $url_params,true));

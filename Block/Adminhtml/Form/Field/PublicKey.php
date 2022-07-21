@@ -27,7 +27,7 @@ class PublicKey extends \Magento\Config\Block\System\Config\Form\Field
             ->setName($element->getName());
 
         //$columns = $this->getRequest()->getParam('website') || $this->getRequest()->getParam('store') ? 5 : 4;
-        return $this->_decorateRowHtml($element, "<td class='label'>Llave Pública<div class='tooltip'><span class='help'><span></span></span><div class='tooltip-content'>Encuentra tu llave pública ingresando a la sección Desarrollo en tu Culqipanel, en la pestaña de API Keys</div></div></td><td>" . $this->toHtml() . '<p class="note"><span>Ingresa tu llave pública</span></p></td><td></td>');
+        return $this->_decorateRowHtml($element, "<td class='label'>Llave Pública<div class='tooltip'><span class='help'><span></span></span><div class='tooltip-content' style='text-align:left;'>Encuentra tu llave pública ingresando a la sección Desarrollo en tu Culqipanel, en la pestaña de API Keys</div></div></td><td>" . $this->toHtml() . '<p class="note"><span>Ingresa tu llave pública</span></p></td><td></td>');
     }
 
     public function getValue()

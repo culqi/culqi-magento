@@ -93,8 +93,9 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
             $orderToSet->setState($this->statusProcessing)->setStatus($this->statusProcessing);
             $orderToSet->addStatusToHistory(
                 $orderToSet->getStatus(),
-                "Venta correcta (Culqi), espera a su entrega y confirmación, Order Id : " . $culqi_order_id . "."
+                "Venta correcta (Culqi), espera a su entrega y confirmación."
             );
+            $orderToSet->addStatusHistoryComment('Order Id: ' . $culqi_order_id . '.' );
             $orderToSet->save();
 
             $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
