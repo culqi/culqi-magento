@@ -515,16 +515,16 @@
          * THE SOFTWARE.
          */
             jQuery('form#config-edit-form').submit(function (e) {
-
-                if (!jQuery('#payment_other_culqi_active').is(':checked')) {
-                    jQuery('#payment_other_culqi_active').val('0');
-                } else {
-                    jQuery('#payment_other_culqi_active').val('1');
-                }
-                jQuery('#payment_other_culqi_active').prop('checked', true);
-                //alert(jQuery('#payment_other_culqi_active').val());
                 
+                if (!jQuery("input[data-ui-id='culqi-fields-active-value'").is(':checked')) {
+                    jQuery("input[data-ui-id='culqi-fields-active-value'").val('0');
+                } else {
+                    jQuery("input[data-ui-id='culqi-fields-active-value'").val('1');
+                }
+                jQuery("input[data-ui-id='culqi-fields-active-value'").prop('checked', true);
+                                
                 var enviroment = '';
+                var hasError = '0';
                 
                 jQuery('input[type="radio"]').each(function(){
                     if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
@@ -546,28 +546,38 @@
                 if(enviroment == 'integ'){
                     if(!(llavepublica.length==3 && llavepublica[1]=='test')){
                         jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de integración');
-                        $('#config-edit-form').submit(false);
+                        hasError = '1';
+                        //$('#config-edit-form').submit(false);
                     }
                     if(!(llaveprivada.length==3 && llaveprivada[1]=='test')){
                         jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de integración');
-                        $('#config-edit-form').submit(false);
+                        hasError = '1';
+                        //$('#config-edit-form').submit(false);
                     }
                 }
                 if(enviroment == 'prod'){
                     if(!(llavepublica.length==3 && llavepublica[1]=='live')){
                         jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de producción');
-                        $('#config-edit-form').submit(false);
+                        hasError = '1';
+                        //$('#config-edit-form').submit(false);
                     }
                     if(!(llaveprivada.length==3 && llaveprivada[1]=='live')){
                         jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de producción');
-                        $('#config-edit-form').submit(false);
+                        hasError = '1';
+                        //$('#config-edit-form').submit(false);
                     }
                 }
-
+                
                 if(!(timexp=='' || (timexp>0 && timexp.length <= 10 && timexp.length > 0))){
                     jQuery('#errortimeexp').html('El tiempo de expiración debe ser un valor numérico, mayor a 0 y no mayor a 10 dígitos.');
+                    hasError = '1';
+                    //$('#config-edit-form').submit(false);
+                }
+                
+                if (hasError === '1') {
                     $('#config-edit-form').submit(false);
                 }
+
                 /*FIN*/
                 /* var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
                 var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');

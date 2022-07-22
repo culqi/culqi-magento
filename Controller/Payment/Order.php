@@ -18,6 +18,7 @@ class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
     protected $order;
     protected $logger;
     protected $storeConfig;
+    //protected $orderRepo;
     protected $_block;
 
     public function __construct(
@@ -27,7 +28,9 @@ class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         \Magento\Sales\Model\Order $order,
         \Culqi\Pago\Model\Payment\Method $culqiopera,
         //\Culqi\Pago\Block\Payment\Success $block,
+        //\Magento\Sales\Api\Data\OrderInterface $orderInterface,
         \Psr\Log\LoggerInterface $logger,
+        //\Magento\Sales\Api\OrderRepositoryInterface $orderRepo,
         \Culqi\Pago\Block\Payment\Redirect $storeConfig
         //\Culqi\Culqi $culqilib
     ) {
@@ -37,7 +40,9 @@ class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $this->order = $order;
         $this->logger = $logger;
         $this->storeConfig = $storeConfig;
+        //$this->orderRepo = $orderRepo;
         //$this->_block = $block;
+        //$this->orderInterface = $orderInterface;
         parent::__construct($context);
     }
 
@@ -70,6 +75,14 @@ class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $timexp = $this->storeConfig->getTimeExpiration();
 
         $expiration_date = time() + $timexp * 60 * 60;
+        //var_dump($orderId); exit(1);
+        //$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        //$orderToSet = $objectManager->create('\Magento\Sales\Api\Data\OrderInterface')->load($orderId);
+
+//$orderToSet = $objectManager->create('\Magento\Sales\Model\OrderRepository')->get($orderId);   
+        //$orderToSet = $this->orderRepo->get($orderId);
+        //$orders = $this->order->load($orderId);
+        //var_dump($orderToSet); exit(1);
         //var_dump($this->_checkoutSession->getOrderId()); exit(1);
         //echo('hoi'); exit(1);
         
@@ -142,7 +155,8 @@ class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
             $phone,
             $expiration_date
         );
-
+        //$orderToSet->addStatusHistoryComment('Order Id: ' . $order . '.' );
+        //$orderToSet->save();
         $this->getResponse()->setBody(Json::encode($order));
     }
 

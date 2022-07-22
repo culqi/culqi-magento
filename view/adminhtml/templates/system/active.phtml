@@ -225,7 +225,11 @@
 
 
 <div class="col-lg-8 can-toggle demo-rebrand-1">
-	<input id="<?php echo $this->getHtmlId() ?>" type="checkbox" name="<?php echo $this->getNamePrefix() ?>" value="1" <?php echo ($this->getValue() == '1' ? ' checked="checked"' : '') ?>  >
+	<input id="<?php echo $this->getHtmlId() ?>" 
+           type="checkbox" 
+           name="<?php echo $this->getNamePrefix() ?>" 
+           value="1" <?php echo ($this->getValue() == '1' ? ' checked="checked"' : '') ?> 
+           data-ui-id="culqi-fields-active-value" >
 	<label for="<?php echo $this->getHtmlId() ?>">
 	    <div class="can-toggle__switch" data-checked="Activo" data-unchecked="Inactivo"></div>
 	</label>

@@ -330,6 +330,32 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                      culqiclient: 'Magento',
                      culqiclientversion: '123',
                    });
+
+                   /* Inicio */
+
+                   $jq.ajax({
+                    url: "<?= $block->escapeUrl($block->getUrl('pago/payment/registerorder')); ?>",
+                    type: "POST",
+                    data: {
+                      order_id: '<?= $block->escapeHtml($orderId) ?>',
+                      order_culqi: response },
+                      
+                    dataType: 'json',
+                    success: function(data) {
+
+                      console.log('data:::', data);
+                        
+                    },
+                    error: function() {
+                      resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
+                    }
+                  });
+
+                   /* Termino */
+
+
+
+
                    Culqi.open();
               e.preventDefault();
                    //console.log(Culqi);
