@@ -170,9 +170,6 @@
     .can-toggle.can-toggle--size-large label .can-toggle__switch:hover:after {
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
     }
-
-
-
     .can-toggle.demo-rebrand-1 input[type=checkbox][disabled] ~ label {
     color: rgba(181, 62, 116, 0.5);
     }
@@ -225,11 +222,13 @@
 
 
 <div class="col-lg-8 can-toggle demo-rebrand-1">
+    <input type='hidden' name="<?php echo $this->getNamePrefix() ?>"  value='0'>
 	<input id="<?php echo $this->getHtmlId() ?>" 
            type="checkbox" 
            name="<?php echo $this->getNamePrefix() ?>" 
            value="1" <?php echo ($this->getValue() == '1' ? ' checked="checked"' : '') ?> 
            data-ui-id="culqi-fields-active-value" >
+    
 	<label for="<?php echo $this->getHtmlId() ?>">
 	    <div class="can-toggle__switch" data-checked="Activo" data-unchecked="Inactivo"></div>
 	</label>

@@ -208,7 +208,7 @@ class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 'expiration_date' => $expiration_date,
                 'confirm' => false,
                 'enviroment' => $this->_enviroment,
-                'metadata' => ["mgt_order_id" => $orderId]
+                'metadata' => ["order_id" => $orderId, "sponsor" => "shopify"]
     
             );
             //var_dump($args_order); exit(1);
