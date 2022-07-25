@@ -69,7 +69,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
 		if (event.origin === window.location.origin) {
 			const { parameters3DS, error } = event.data;
-			console.log('data3ds');
+			//console.log('data3ds 72');
+      //run_waitMe();
 			console.log(event.data);
 			if (parameters3DS) {
 				
@@ -111,6 +112,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
               console.log('result:::', result);
               //alert(result.id);
               if (result.object === 'charge') {
+                console.log('114');
                 run_waitMe();
                 var card_number = result['source']['card_number'];
                 var card_brand = result['source']['iin']['card_brand'] + ' ' + result['source']['iin']['card_category'] + ' ' + result['source']['iin']['card_type'];
@@ -137,6 +139,14 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
           },
           error: function() {
             resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
+          },
+          beforeSend: function() {
+            console.log('144');
+            run_waitMe();
+          },
+          complete: function() {
+            console.log('148');
+            run_waitMe();
           }
         });
 
@@ -145,6 +155,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 			if (error) {
 				console.log('error3DS:::');
 				console.log(error);
+        $jq('body').waitMe('hide');
 			}
 		}
 	}, false );
@@ -199,11 +210,13 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
     console.log('Culqi:::', Culqi);
     
     if (Culqi.order) {
-      //console.log('Culqi.order', Culqi.order.id);
+      console.log('Culqi.order', Culqi.order);
       $jq(document).ajaxStart(function(){
         run_waitMe();
       });
+
       var culqi_order_id = Culqi.order.id;
+      var cip_code = Culqi.order.payment_code;
       console.log('culqi_order_id:::', culqi_order_id);
 
       $jq.ajax({
@@ -211,7 +224,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
           type: "POST",
           data: {
             order: 'order',
-            order_id: '<?= $block->escapeHtml($orderId) ?>' },
+            order_id: '<?= $block->escapeHtml($orderId) ?>',
+            cip: cip_code },
           dataType: 'json',
           success: function(data) {
 
@@ -243,8 +257,9 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
       var email = Culqi.token.email;
 
       console.log('Se ha creado un token: ' + token);
-      
+      //run_waitMe();
       $jq(document).ajaxStart(function(){
+        console.log('251');
         run_waitMe();
       });
 
@@ -261,6 +276,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
         success: function(data) {
 
           console.log('data:::', data);
+          console.log('data.action_code:::', data.action_code);
 
           if(data.action_code=='REVIEW'){
             $jq('body').waitMe('hide');
@@ -278,7 +294,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 						console.log('abriendo3DS');
 						console.log("{/literal}{$BASE_URL}{literal}");
 						Culqi3DS.initAuthentication(token);
-            run_waitMe();
+            //console.log('282');
+            //run_waitMe();
 					} else {
             var obj = JSON.parse(data);
             var result = "";
@@ -293,6 +310,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             console.log('result:::', result);
             //alert(result);
             if (result.object === 'charge') {
+              console.log('298');
               run_waitMe();
               var card_number = result['source']['card_number'];
               var card_brand = result['source']['iin']['card_brand'] + ' ' + result['source']['iin']['card_category'] + ' ' + result['source']['iin']['card_type'];
@@ -319,6 +337,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
         },
         error: function() {
           resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
+          $jq('body').waitMe('hide');
         }
       });
 
@@ -340,58 +359,55 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                  type: "POST",
                  dataType: 'json',
                  success: function(response) {
-                   console.log('response:::', response);
-                   Culqi.settings({
+                    console.log('response:::', response);
+                    Culqi.settings({
                      title: '<?php echo $storeName ?>',
                      currency: '<?php echo $currencyCode ?>',
                      amount: <?php echo $total; ?>,
                      order: response,
                      culqiclient: 'Magento',
                      culqiclientversion: '123',
-                   });
+                    });
 
-                   /* Inicio */
+                    /* Inicio */
 
-                   $jq.ajax({
-                    url: "<?= $block->escapeUrl($block->getUrl('pago/payment/registerorder')); ?>",
-                    type: "POST",
-                    data: {
-                      order_id: '<?= $block->escapeHtml($orderId) ?>',
-                      order_culqi: response },
-                      
-                    dataType: 'json',
-                    success: function(data) {
-
-                      console.log('data:::', data);
+                    $jq.ajax({
+                      url: "<?= $block->escapeUrl($block->getUrl('pago/payment/registerorder')); ?>",
+                      type: "POST",
+                      data: {
+                        order_id: '<?= $block->escapeHtml($orderId) ?>',
+                        order_culqi: response },
                         
-                    },
-                    error: function() {
-                      resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
-                    }
-                  });
+                      dataType: 'json',
+                      success: function(data) {
 
-                   /* Termino */
+                        console.log('data:::', data);
+                          
+                      },
+                      error: function() {
+                        resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
+                      }
+                    });
 
+                    /* Termino */
 
-
-
-                   Culqi.open();
-              e.preventDefault();
+                    Culqi.open();
+                    e.preventDefault();
                    //console.log(Culqi);
-                 },
-                 error: function(error){
-                   console.log('error:::', error);
-                   Culqi.settings({
-					title: '<?php echo $storeName ?>',
-					currency: '<?php echo $currencyCode ?>',
-					amount: <?php echo $total; ?>,
-					//order: 'ord_live_mQjOSWvYKnNgotsY', // esto es solo si se tiene habilitada la opción de billeteras, agentes y/o cuetealo
-					culqiclient: 'Magento',
-					culqiclientversion: '123',
-				});
-        Culqi.open();
-              e.preventDefault();
-                 }
+                  },
+                  error: function(error){
+                    console.log('error:::', error);
+                    Culqi.settings({
+					            title: '<?php echo $storeName ?>',
+                      currency: '<?php echo $currencyCode ?>',
+                      amount: <?php echo $total; ?>,
+                      //order: 'ord_live_mQjOSWvYKnNgotsY', // esto es solo si se tiene habilitada la opción de billeteras, agentes y/o cuetealo
+                      culqiclient: 'Magento',
+                      culqiclientversion: '123',
+				            });
+                    Culqi.open();
+                    e.preventDefault();
+                  }
               
               });
             }

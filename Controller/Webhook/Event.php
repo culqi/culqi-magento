@@ -14,6 +14,7 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
 
     protected $statusProcessing = \Magento\Sales\Model\Order::STATE_PROCESSING;
     protected $statusCanceled = \Magento\Sales\Model\Order::STATE_CANCELED;
+    protected $statusCompleted = \Magento\Sales\Model\Order::STATE_COMPLETE;
 
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -40,22 +41,24 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
     {
         // Recepcion del mensaje de webhook
         $inputJSON = $this->getRequest()->getContent();
+        //var_dump($inputJSON); exit(1);
         $input = json_decode($inputJSON);
-        $data = json_decode($input->data);
-
+        //var_dump($input->data); exit(1);
+        $data = $input->data;
+        //var_dump($data->metadata->mgt_order_id); exit(1);
         $this->logger->debug("Mensaje de webhook recibido");
-
+        //var_dump($input->type); exit(1);
         if ($input->object == 'event' && $input->type == 'order.status.changed') {
-            $mgtOrderId = $data->metadata->mgt_order_id;
-
+            $mgtOrderId = (int)$data->metadata->mgt_order_id;
+            //var_dump($mgtOrderId); exit(1);
             $this->logger->debug('Evento de Culqi, cambio de orden identificado. Orden: '.$mgtOrderId);
 
             $orderToSet = $this->order->loadByIncrementId($mgtOrderId);
 
-            if ($orderToSet && $orderToSet->getStatus() != $this->statusProcessing) {
+            if ($orderToSet && $orderToSet->getStatus() != $this->statusCompleted) {
                 if ($data->state == 'paid') {
                     $this->logger->debug('Orden Pagada');
-                    $orderToSet->setState($this->statusProcessing)->setStatus($this->statusProcessing);
+                    $orderToSet->setState($this->statusCompleted)->setStatus($this->statusCompleted);
                     $orderToSet->addStatusToHistory(
                         $orderToSet->getStatus(),
                         "Venta completada. El pago se realizó con éxito."

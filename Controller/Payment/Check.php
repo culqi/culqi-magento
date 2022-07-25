@@ -144,7 +144,7 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 'capture' => true,
                 'enviroment' => $this->_enviroment,
                 'antifraud_details' => array('device_finger_print_id'=>$device),
-                'metadata' => ["order_id" => (string) $orderId, "sponsor" => "shopify"],
+                'metadata' => ["order_id" => (string) $orderId, "sponsor" => "magento"],
             );
 
             if( is_array($parameters3DS)){

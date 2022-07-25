@@ -54,10 +54,12 @@ class UpdateStateOrder extends \Magento\Framework\App\Action\Action implements C
         // Reception of Post parameters
         $order = $this->getRequest()->getPost('order');
         $orderId = $this->getRequest()->getPost('order_id');
+        $cip = $this->getRequest()->getPost('cip');
         
         // === Load Order Data ===
         $orderToSet = $this->order->loadByIncrementId($orderId);
         $orderToSet->setState($this->statusProcessing)->setStatus($this->statusProcessing);
+        $orderToSet->addStatusHistoryComment('Culqi CIP Code: ' . $cip . '.' );
         $orderToSet->save();
 
         $this->getResponse()->setBody(Json::encode('OK'));
