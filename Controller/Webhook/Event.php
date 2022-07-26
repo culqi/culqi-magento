@@ -41,13 +41,17 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
     {
         // Recepcion del mensaje de webhook
         $inputJSON = $this->getRequest()->getContent();
-        //var_dump($inputJSON); exit(1);
+        
         $input = json_decode($inputJSON);
+        
+        //var_dump(serialize($input)); exit(1);
+        //$this->logger->debug(serialize($input)); 
         //var_dump($input->data); exit(1);
-        $data = $input->data;
+        $data = json_decode($input->data);
         //var_dump($data->metadata->mgt_order_id); exit(1);
         $this->logger->debug("Mensaje de webhook recibido");
         //var_dump($input->type); exit(1);
+        $this->logger->debug($data);
         if ($input->object == 'event' && $input->type == 'order.status.changed') {
             $mgtOrderId = (int)$data->metadata->mgt_order_id;
             //var_dump($mgtOrderId); exit(1);
