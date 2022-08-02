@@ -450,6 +450,9 @@
                     <label for="password">Contraseña</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Tu contraseña de CulqiPanel" value="">
                 </div>
+                <div class="form-group">
+                    <label id="errorlogincpanelculqi" style="color: red"></label>
+                </div>
                 <div class="form-group d-none" style="display: none">
                     <label for="type_integration">Tipo de Integración</label>
                     <select name="type_integration" class="form-control" id="type_integration">
@@ -659,6 +662,7 @@
             });
 
             function login(){
+                jQuery('body').append('<div id="loadingloginculqi" style="position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999999; top: 0; text-align: center; justify-content: center; align-content: center; flex-direction: column; padding: 25% 0; color: white; font-size: 14px">Cargando <img width="14" src="https://icon-library.com/images/loading-icon-transparent-background/loading-icon-transparent-background-12.jpg" /></div>');
                 fullculqi_login();
             };
 
@@ -684,10 +688,20 @@
                 };
                 console.log('settings:::', settings);
                 jQuery.ajax(settings).done(function (response) {
-                    console.log('response:::', response);
-                    window.culqi_token = response.data;
-                    console.log('window.culqi_token:::', window.culqi_token);
-                    culqiWoGetMerchants(window.culqi_token);
+
+                    if(typeof(response.message) != "undefined" && response.message !== null){
+                        //jQuery('#loginbutton').html('Iniciar sesión');
+                        //jQuery('#loginbutton').removeAttr('disabled');
+                        jQuery('#loadingloginculqi').remove();
+                        jQuery('#errorlogincpanelculqi').html(response.message);
+                    }else{
+                        window.culqi_token = response.data;
+                        culqiWoGetMerchants(window.culqi_token);
+                    }
+                    //console.log('response:::', response);
+                    //window.culqi_token = response.data;
+                    //console.log('window.culqi_token:::', window.culqi_token);
+                    //culqiWoGetMerchants(window.culqi_token);
                 });
             }
 
@@ -806,7 +820,10 @@
                     </li>`;
                 });
                 jQuery("#list-merchants").html(html);
-
+                jQuery("#modalLogin").hide();
+                setTimeout(function (){
+                    jQuery('#loadingloginculqi').remove();
+                }, 2000)
                 jQuery(".merchant_item").click(function (event) {
 
                     const key = jQuery(this).attr("data-key");
