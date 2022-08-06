@@ -198,7 +198,7 @@ class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 //'description' => $description,
                 'description' => 'Venta desde Plugin Magento',
                 //'order_number' => (string)$orderId . $expiration_date,
-                'order_number' => 'mgt-' . $expiration_date,
+                'order_number' => 'mgt-' . time(),
                 'client_details' => array(
                     'email' => $email,
                     'first_name' => $firstname,

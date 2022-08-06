@@ -423,7 +423,7 @@
 <input type="hidden" id="CULQI_TOKENLOGIN" />
 <div class="form-group logincontainer">
     <div class="col-lg-8">
-        <button onclick="jQuery('#errorlogincpanelculqi').html(''); jQuery('#modalLogin').show()" id="pretashop_culqi_login_button" type="button" class="btnlogin" data-toggle="modal" data-target="#modalLogin" style="padding: 10px 20px">
+        <button onclick="jQuery('#modalLogin').show()" id="pretashop_culqi_login_button" type="button" class="btnlogin" data-toggle="modal" data-target="#modalLogin" style="padding: 10px 20px">
             <div style="display: initial">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: -4px; margin-right: 5px">
                     <path d="M7.99463 8.66086C6.58697 8.66086 5.44795 7.52184 5.44795 6.11418C5.44795 4.70653 6.59772 3.55676 8.00537 3.55676C9.41303 3.55676 10.5628 4.70653 10.5628 6.11418C10.5628 7.52184 9.40228 8.66086 7.99463 8.66086ZM7.99463 4.95367C7.36065 4.95367 6.83412 5.46946 6.83412 6.11418C6.83412 6.75891 7.3499 7.27469 7.99463 7.27469C8.63936 7.27469 9.15514 6.75891 9.15514 6.11418C9.15514 5.46946 8.63936 4.95367 7.99463 4.95367Z" fill="#3E4B61"/>
@@ -444,11 +444,11 @@
                 <div class="modal-body">
                 <div class="form-group">
                     <label for="email">Correo electrónico</label>
-                    <input required type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="ejemplo@culqi.com" value="">
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="ejemplo@culqi.com" value="">
                 </div>
                 <div class="form-group">
                     <label for="password">Contraseña</label>
-                    <input required type="password" class="form-control" id="password" name="password" placeholder="Tu contraseña de CulqiPanel" value="">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Tu contraseña de CulqiPanel" value="">
                 </div>
                 <div class="form-group">
                     <label id="errorlogincpanelculqi" style="color: red"></label>
@@ -463,7 +463,7 @@
                 </div>
                 <div class="modal-footer">
                 <button type="button" onclick="login()" name="button" class="btn btn-primary" style='width:100%'>Iniciar Sesión</button>
-                <button type="button" onclick="jQuery('#modalLogin').hide()" name="button" class="btnClose" style='width:100%'>Cerrar</button>
+                <button type="button" onclick="jQuery('#errorlogincpanelculqi').html(''); jQuery('#modalLogin').hide()" name="button" class="btnClose" style='width:100%'>Cerrar</button>
                 </div>
             </form>
             </div>
@@ -665,12 +665,14 @@
             });
 
             function login(){
-                jQuery('body').append('<div id="loadingloginculqi" style="position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999999; top: 0; text-align: center; justify-content: center; align-content: center; flex-direction: column; padding: 25% 0; color: white; font-size: 14px">Cargando <img width="14" src="https://icon-library.com/images/loading-icon-transparent-background/loading-icon-transparent-background-12.jpg" /></div>');
+                
                 fullculqi_login();
             };
 
             function fullculqi_login() {
-                var urllogin = "<?php echo $this->getUrlLoginInteg() ?>";
+                if(jQuery('#email').val()!='' && jQuery('#password').val()){
+                    jQuery('body').append('<div id="loadingloginculqi" style="position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999999; top: 0; text-align: center; justify-content: center; align-content: center; flex-direction: column; padding: 25% 0; color: white; font-size: 14px">Cargando <img width="14" src="https://icon-library.com/images/loading-icon-transparent-background/loading-icon-transparent-background-12.jpg" /></div>');
+                    var urllogin = "<?php echo $this->getUrlLoginInteg() ?>";
                 jQuery('input[type="radio"]').each(function(){
                     if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
                         urllogin = "<?php echo $this->getUrlLoginProd() ?>";
@@ -706,6 +708,10 @@
                     //console.log('window.culqi_token:::', window.culqi_token);
                     //culqiWoGetMerchants(window.culqi_token);
                 });
+                }else{
+                    jQuery('#errorlogincpanelculqi').html('Debes ingresar el correo electrónico y la contraseña.');
+                }
+                
             }
 
             const culqiWoGetMerchants = (token) => {
