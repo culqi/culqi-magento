@@ -56,7 +56,7 @@ class Redirect extends \Magento\Framework\View\Element\Template
             \Magento\Store\model\ScopeInterface::SCOPE_STORE
         );
 
-        return explode(',', $methods);
+        return explode(',', (String)$methods);
     }
 
     public function getDuracionMaxima()
