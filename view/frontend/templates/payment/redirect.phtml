@@ -285,7 +285,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 							charge: {
                 currency: '<?php echo $currencyCode ?>',
 								totalAmount: <?php echo $total; ?>,
-								returnUrl: "<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ?>" //URL DEL CHECKOUT DEL COMERCIO
+								//returnUrl: "<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ?>" //URL DEL CHECKOUT DEL COMERCIO
+                                returnUrl: "<?php echo (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ?>" //URL DEL CHECKOUT DEL COMERCIO
 							},
 							card: {
 								email: email,
