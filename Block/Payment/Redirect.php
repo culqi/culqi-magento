@@ -95,7 +95,7 @@ class Redirect extends \Magento\Framework\View\Element\Template
             \Magento\Store\model\ScopeInterface::SCOPE_STORE
         );
 
-        return explode('-', '#F6911B-#FFB600');
+        return explode('-', $theme);
     }
 
     public function getURLEnviroment()
