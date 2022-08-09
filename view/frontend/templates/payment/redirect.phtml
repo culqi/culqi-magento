@@ -5,6 +5,7 @@ $enviroment = $block->getEnviroment();
 $paymentMethods = $block->getPaymentMethods();
 $logo = $block->getLogo();
 $theme = $block->getTheme();
+//echo var_dump($theme);
 
 $urlapi_ordercharges = URLAPI_ORDERCHARGES_INTEG;
 $urlapi_checkout = URLAPI_CHECKOUT_INTEG;
@@ -189,6 +190,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                   logo: '<?php echo $logo ?>'
                 }
             });
+
+
 
             var $jq = jQuery.noConflict();
 
