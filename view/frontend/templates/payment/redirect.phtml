@@ -281,7 +281,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
           console.log('data:::', data);
           console.log('data.action_code:::', data.action_code);
 
-          if(data.action_code=='REVIEW'){
+          if(typeof(data.action_code)!="undefined" && data.action_code=='REVIEW'){
             $jq('body').waitMe('hide');
 						Culqi.close();
 						Culqi3DS.settings = {
@@ -301,7 +301,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             //console.log('282');
             //run_waitMe();
 					} else {
-            var obj = JSON.parse(data);
             var result = "";
 
             if (data.constructor == String) {
@@ -330,7 +329,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             }
             
             if (result.object === 'error') {
-              resultdiv(obj.user_message);
+              resultdiv(result.user_message);
               post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('fail'));
             }
           }
