@@ -54,7 +54,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
         class="action primary"
         style="background-color: rgb(250,68,68); border:rgb(250,68,68)">Cancelar</button><br><br>
 
-<div id="response">
+<div id="response" style="color: red; font-weight: 600;">
 </div>
 <script src="<?php echo $urlapi_3ds; ?>"></script>
 
@@ -129,6 +129,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
               }
               
               if (result.object === 'error') {
+
                 resultdiv(obj.user_message);
                 post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('fail'));
               }
@@ -139,6 +140,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
           },
           error: function() {
+              $jq('body').waitMe('hide');
+              Culqi.close();
             resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
           },
           beforeSend: function() {
@@ -202,7 +205,9 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
             // Activa el botón de pago
             $jq('#btn_pago').on('click', function(e) {
+                $jq('#btn_pago').attr('disabled', true);
               generateOrder();
+
               //Abre el formulario con las opciones de Culqi.settings
               
             });
@@ -329,6 +334,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             }
             
             if (result.object === 'error') {
+                $jq('body').waitMe('hide');
+                Culqi.close();
               resultdiv(result.user_message);
               post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('fail'));
             }
@@ -339,6 +346,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
         },
         error: function() {
+            Culqi.close();
           resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
           $jq('body').waitMe('hide');
         }
@@ -383,9 +391,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         
                       dataType: 'json',
                       success: function(data) {
-
                         console.log('data:::', data);
-                          
                       },
                       error: function() {
                         resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
@@ -393,9 +399,9 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     });
 
                     /* Termino */
-
-                    Culqi.open();
-                    e.preventDefault();
+                     $jq('#btn_pago').removeAttr('disabled');
+                        Culqi.open();
+                        e.preventDefault();
                    //console.log(Culqi);
                   },
                   error: function(error){
