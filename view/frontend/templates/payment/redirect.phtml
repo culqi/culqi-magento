@@ -140,6 +140,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
           },
           error: function() {
+              $jq('body').waitMe('hide');
               Culqi.close();
             resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
           },
@@ -333,6 +334,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             }
             
             if (result.object === 'error') {
+                $jq('body').waitMe('hide');
                 Culqi.close();
               resultdiv(result.user_message);
               post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('fail'));
