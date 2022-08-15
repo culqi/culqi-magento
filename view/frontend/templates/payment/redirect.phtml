@@ -138,6 +138,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     error: function () {
                         console.log('3');
                         $jq('body').waitMe('hide');
+                        $jq('.waitMe').remove();
                         Culqi.close();
                         resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
                     },
