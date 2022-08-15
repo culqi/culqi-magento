@@ -98,7 +98,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     },
                     dataType: 'json',
                     success: function (data) {
-
                         console.log('data:::', data);
                         //var obj = JSON.parse(data);
                         var result = "";
@@ -129,7 +128,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         }
 
                         if (result.object === 'error') {
-                            $jq('body').waitMe('hide');
                             console.log('2');
                             resultdiv(obj.user_message);
                             post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('fail'));
@@ -143,11 +141,9 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     },
                     beforeSend: function () {
                         console.log('144');
-                        run_waitMe();
                     },
                     complete: function () {
                         console.log('148');
-                        run_waitMe();
                     }
                 });
 
@@ -258,7 +254,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             }
 
         } else if (Culqi.token) {
-
+            Culqi.close();
+            run_waitMe();
             var token = Culqi.token.id;
             var email = Culqi.token.email;
 
@@ -287,7 +284,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
                     if (typeof (data.action_code) != "undefined" && data.action_code == 'REVIEW') {
                         $jq('body').waitMe('hide');
-                        Culqi.close();
                         Culqi3DS.settings = {
                             charge: {
                                 currency: '<?php echo $currencyCode ?>',
@@ -302,8 +298,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         console.log('abriendo3DS');
                         console.log("{/literal}{$BASE_URL}{literal}");
                         Culqi3DS.initAuthentication(token);
-                        //console.log('282');
-                        //run_waitMe();
                     } else {
                         var result = "";
 
@@ -427,8 +421,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
         $jq('body').waitMe({
             effect: 'bounce',
             text: 'Cargando. Espere por favor',
-            bg: 'rgba(255,255,255,0.7)',
-            color: '#000000'
+            bg: 'rgba(0,0,0,0.7)',
+            color: '#FFFFFF'
         });
     }
 
@@ -628,4 +622,4 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
     window.culqi = culqi;
 
-</script>   
+</script>

@@ -18,21 +18,21 @@
     }
     input.form-control{
         display: block;
-    width: 100%;
-    height: 39px;
-    padding: 8px 16px;
-    font-size: 12px;
-    line-height: 1.42857;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #bbcdd2;
-    border-radius: 4px;
-    -webkit-transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
-    -webkit-transition: border-color ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
-    transition: border-color ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
-    transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
-    transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
+        width: 100%;
+        height: 39px;
+        padding: 8px 16px;
+        font-size: 12px;
+        line-height: 1.42857;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #bbcdd2;
+        border-radius: 4px;
+        -webkit-transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+        -webkit-transition: border-color ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
     }
     .form-group {
         margin-bottom: 19px;
@@ -340,26 +340,26 @@
     /* OLANDA CSS TOOLTIP */
 
     #form-culqi-settings tbody th{
-    position: relative;
+        position: relative;
     }
 
-    /*== start of code for tooltips ==*/
+    /== start of code for tooltips ==/
     .tool {
-    cursor: help;
-    padding-left: 10PX;
-    position: absolute;
-    /* right: 0;  */
+        cursor: help;
+        padding-left: 10PX;
+        position: absolute;
+        /* right: 0;  */
     }
 
 
-    /*== common styles for both parts of tool tip ==*/
+    /== common styles for both parts of tool tip ==/
     .tool::before,
     .tool::after {
-    left: 50%;
-    opacity: 0;
+        left: 50%;
+        opacity: 0;
 
-    position: absolute;
-    z-index: -100;
+        position: absolute;
+        z-index: -100;
     }
     .tool::after {
         bottom: 30px!important;
@@ -369,55 +369,55 @@
     .tool:focus::before,
     .tool:hover::after,
     .tool:focus::after {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    z-index: 100;
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        z-index: 100;
     }
 
 
-    /*== pointer tip ==*/
+    /== pointer tip ==/
     .tool::before {
-    border-style: solid;
-    border-width: 1em 0.75em 0 0.75em;
-    border-color: #3E474F transparent transparent transparent;
-    bottom: 100%;
-    content: "";
-    margin-left: -0.5em;
-    transition: all .65s cubic-bezier(.84,-0.18,.31,1.26), opacity .65s .5s;
-    transform:  scale(.6) translateY(-90%);
+        border-style: solid;
+        border-width: 1em 0.75em 0 0.75em;
+        border-color: #3E474F transparent transparent transparent;
+        bottom: 100%;
+        content: "";
+        margin-left: -0.5em;
+        transition: all .65s cubic-bezier(.84,-0.18,.31,1.26), opacity .65s .5s;
+        transform:  scale(.6) translateY(-90%);
     }
 
     .tool:hover::before,
     .tool:focus::before {
-    transition: all .65s cubic-bezier(.84,-0.18,.31,1.26) .2s;
+        transition: all .65s cubic-bezier(.84,-0.18,.31,1.26) .2s;
     }
 
 
-    /*== speech bubble ==*/
+    /== speech bubble ==/
     .tool::after {
-    background: #3E474F;
-    border-radius: .25em;
-    bottom: 180%;
-    color: #EDEFF0;
-    content: attr(data-tip);
-    margin-left: -8.75em;
-    padding: 1em;
-    transition: all .65s cubic-bezier(.84,-0.18,.31,1.26) .2s;
-    transform:  scale(.6) translateY(50%);
-    width: 17.5em;
+        background: #3E474F;
+        border-radius: .25em;
+        bottom: 180%;
+        color: #EDEFF0;
+        content: attr(data-tip);
+        margin-left: -8.75em;
+        padding: 1em;
+        transition: all .65s cubic-bezier(.84,-0.18,.31,1.26) .2s;
+        transform:  scale(.6) translateY(50%);
+        width: 17.5em;
     }
 
     .tool:hover::after,
     .tool:focus::after  {
-    transition: all .65s cubic-bezier(.84,-0.18,.31,1.26);
+        transition: all .65s cubic-bezier(.84,-0.18,.31,1.26);
     }
 
     @media (max-width: 760px) {
-    .tool::after {
-        font-size: .75em;
-        margin-left: -5em;
-        width: 10em;
-    }
+        .tool::after {
+            font-size: .75em;
+            margin-left: -5em;
+            width: 10em;
+        }
     }
 </style>
 <input type="hidden" id="CULQI_TOKENLOGIN" />
@@ -435,367 +435,367 @@
     </div>
 </div>
 <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="modalLoginLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
             <form method="post" action="#" id="modal_login_form_culqi">
                 <div class="modal-header">
-                <span class="modal-title" id="modalLoginLabel">Ingresa tus datos para ayudarte con la configuración.</span>
+                    <span class="modal-title" id="modalLoginLabel">Ingresa tus datos para ayudarte con la configuración.</span>
                 </div>
                 <div class="modal-body">
-                <div class="form-group">
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="ejemplo@culqi.com" value="">
-                </div>
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Tu contraseña de CulqiPanel" value="">
-                </div>
-                <div class="form-group">
-                    <label id="errorlogincpanelculqi" style="color: red"></label>
-                </div>
-                <div class="form-group d-none" style="display: none">
-                    <label for="type_integration">Tipo de Integración</label>
-                    <select name="type_integration" class="form-control" id="type_integration">
-                    <option value="0" selected>Test</option>
-                    <option value="1">Live</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="ejemplo@culqi.com" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Tu contraseña de CulqiPanel" value="">
+                    </div>
+                    <div class="form-group">
+                        <label id="errorlogincpanelculqi" style="color: red"></label>
+                    </div>
+                    <div class="form-group d-none" style="display: none">
+                        <label for="type_integration">Tipo de Integración</label>
+                        <select name="type_integration" class="form-control" id="type_integration">
+                            <option value="0" selected>Test</option>
+                            <option value="1">Live</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                <button type="button" onclick="login()" name="button" class="btn btn-primary" style='width:100%'>Iniciar Sesión</button>
-                <button type="button" onclick="jQuery('#errorlogincpanelculqi').html(''); jQuery('#modalLogin').hide()" name="button" class="btnClose" style='width:100%'>Cerrar</button>
+                    <button type="button" onclick="login()" name="button" class="btn btn-primary" style='width:100%'>Iniciar Sesión</button>
+                    <button type="button" onclick="jQuery('#errorlogincpanelculqi').html(''); jQuery('#modalLogin').hide()" name="button" class="btnClose" style='width:100%'>Cerrar</button>
                 </div>
             </form>
-            </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="modalList" tabindex="-1" role="dialog" aria-labelledby="modalListLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+<div class="modal fade" id="modalList" tabindex="-1" role="dialog" aria-labelledby="modalListLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">
-                <span class="modalListLabel">¡Bienvenid@!</span>
+                    <span class="modalListLabel">¡Bienvenid@!</span>
                 </div>
             </div>
             <div class="modal-body">
                 <br />
                 <div class="modal-subtitle">
                 <span class="modalListDesc"
-                    >Elige el comercio en donde activarás tu checkout de Culqi</span
+                >Elige el comercio en donde activarás tu checkout de Culqi</span
                 >
                 </div>
                 <div class="form-group">
-                <ul id='list-merchants' class="listaselect"></ul>
+                    <ul id='list-merchants' class="listaselect"></ul>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="jQuery('#modalList').hide()" name="button" class="btnClose" style='width:100%'>Cerrar</button>
             </div>
-            </div>
         </div>
     </div>
+</div>
 
 <script type="text/javascript">
-        /**
-         * @license
-         * three.js - JavaScript 3D library
-         * Copyright 2016 The three.js Authors
-         *
-         * Permission is hereby granted, free of charge, to any person obtaining a copy
-         * of this software and associated documentation files (the "Software"), to deal
-         * in the Software without restriction, including without limitation the rights
-         * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-         * copies of the Software, and to permit persons to whom the Software is
-         * furnished to do so, subject to the following conditions:
-         *
-         * The above copyright notice and this permission notice shall be included in
-         * all copies or substantial portions of the Software.
-         *
-         * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-         * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-         * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-         * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-         * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-         * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-         * THE SOFTWARE.
-         */
-            jQuery('form#config-edit-form').submit(function (e) {
-                
-                if (!jQuery("input[data-ui-id='culqi-fields-active-value'").is(':checked')) {
-                    jQuery("input[data-ui-id='culqi-fields-active-value'").val('0');
-                } else {
-                    jQuery("input[data-ui-id='culqi-fields-active-value'").val('1');
-                }
-                //jQuery("input[data-ui-id='culqi-fields-active-value'").prop('checked', true);
-                                
-                var enviroment = '';
-                var hasError = '0';
-                
-                jQuery('input[type="radio"]').each(function(){
-                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
-                        urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
-                        enviroment = 'prod';
-                    }
-                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='integ'){
-                        urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
-                        enviroment = 'integ';
-                    }
-                });
+    /**
+     * @license
+     * three.js - JavaScript 3D library
+     * Copyright 2016 The three.js Authors
+     *
+     * Permission is hereby granted, free of charge, to any person obtaining a copy
+     * of this software and associated documentation files (the "Software"), to deal
+     * in the Software without restriction, including without limitation the rights
+     * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+     * copies of the Software, and to permit persons to whom the Software is
+     * furnished to do so, subject to the following conditions:
+     *
+     * The above copyright notice and this permission notice shall be included in
+     * all copies or substantial portions of the Software.
+     *
+     * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+     * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+     * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+     * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+     * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+     * THE SOFTWARE.
+     */
+    jQuery('form#config-edit-form').submit(function (e) {
 
-                jQuery('#errorpubkey').html('');
-                jQuery('#errorseckey').html('');
-                jQuery('#errortimeexp').html('');
-                var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
-                var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');
-                var timexp = jQuery("input[data-ui-id='text-groups-culqi-fields-timexp-value'").val();
-                if(enviroment == 'integ'){
-                    if(!(llavepublica.length==3 && llavepublica[1]=='test')){
-                        jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de integración');
-                        hasError = '1';
-                        //$('#config-edit-form').submit(false);
-                    }
-                    if(!(llaveprivada.length==3 && llaveprivada[1]=='test')){
-                        jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de integración');
-                        hasError = '1';
-                        //$('#config-edit-form').submit(false);
-                    }
-                }
-                if(enviroment == 'prod'){
-                    if(!(llavepublica.length==3 && llavepublica[1]=='live')){
-                        jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de producción');
-                        hasError = '1';
-                        //$('#config-edit-form').submit(false);
-                    }
-                    if(!(llaveprivada.length==3 && llaveprivada[1]=='live')){
-                        jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de producción');
-                        hasError = '1';
-                        //$('#config-edit-form').submit(false);
-                    }
-                }
-                
-                if(!(timexp=='' || (timexp>0 && timexp.length <= 10 && timexp.length > 0))){
-                    jQuery('#errortimeexp').html('El tiempo de expiración debe ser un valor numérico, mayor a 0 y no mayor a 10 dígitos.');
-                    hasError = '1';
-                    //$('#config-edit-form').submit(false);
-                }
-                
-                if (hasError === '1') {
-                    $('#config-edit-form').submit(false);
-                }
+        if (!jQuery("input[data-ui-id='culqi-fields-active-value'").is(':checked')) {
+            jQuery("input[data-ui-id='culqi-fields-active-value'").val('0');
+        } else {
+            jQuery("input[data-ui-id='culqi-fields-active-value'").val('1');
+        }
+        //jQuery("input[data-ui-id='culqi-fields-active-value'").prop('checked', true);
 
-                /*FIN*/
-                /* var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
-                var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');
+        var enviroment = '';
+        var hasError = '0';
 
-                if(enviroment == 'integ'){
-                    if(!(llavepublica.length==3 && llavepublica[1]=='test' && llaveprivada.length==3 && llaveprivada[1]=='test')){
-                        alert('Las llaves ingresadas no pertenecen al ambiente de integración');
-                        $('#config-edit-form').submit(false);
+        jQuery('input[type="radio"]').each(function(){
+            if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                enviroment = 'prod';
+            }
+            if(jQuery(this).is(':checked') &&jQuery(this).val()=='integ'){
+                urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                enviroment = 'integ';
+            }
+        });
+
+        jQuery('#errorpubkey').html('');
+        jQuery('#errorseckey').html('');
+        jQuery('#errortimeexp').html('');
+        var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
+        var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');
+        var timexp = jQuery("input[data-ui-id='text-groups-culqi-fields-timexp-value'").val();
+        if(enviroment == 'integ'){
+            if(!(llavepublica.length==3 && llavepublica[1]=='test')){
+                jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de integración');
+                hasError = '1';
+                //$('#config-edit-form').submit(false);
+            }
+            if(!(llaveprivada.length==3 && llaveprivada[1]=='test')){
+                jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de integración');
+                hasError = '1';
+                //$('#config-edit-form').submit(false);
+            }
+        }
+        if(enviroment == 'prod'){
+            if(!(llavepublica.length==3 && llavepublica[1]=='live')){
+                jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de producción');
+                hasError = '1';
+                //$('#config-edit-form').submit(false);
+            }
+            if(!(llaveprivada.length==3 && llaveprivada[1]=='live')){
+                jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de producción');
+                hasError = '1';
+                //$('#config-edit-form').submit(false);
+            }
+        }
+
+        if(!(timexp=='' || (timexp>0 && timexp.length <= 10 && timexp.length > 0))){
+            jQuery('#errortimeexp').html('El tiempo de expiración debe ser un valor numérico, mayor a 0 y no mayor a 10 dígitos.');
+            hasError = '1';
+            //$('#config-edit-form').submit(false);
+        }
+
+        if (hasError === '1') {
+            $('#config-edit-form').submit(false);
+        }
+
+        /FIN/
+        /* var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
+        var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');
+
+        if(enviroment == 'integ'){
+            if(!(llavepublica.length==3 && llavepublica[1]=='test' && llaveprivada.length==3 && llaveprivada[1]=='test')){
+                alert('Las llaves ingresadas no pertenecen al ambiente de integración');
+                $('#config-edit-form').submit(false);
+            }
+        }
+        if(enviroment == 'prod'){
+            if(!(llavepublica.length==3 && llavepublica[1]=='live' && llaveprivada.length==3 && llaveprivada[1]=='live')){
+                alert('Las llaves ingresadas no pertenecen al ambiente de producción');
+                $('#config-edit-form').submit(false);
+            }
+        } */
+
+        var urlwebhook = "<?php echo $this->getUrlWebhookInteg() ?>";
+        jQuery('input[type="radio"]').each(function(){
+            if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+            }
+        });
+        console.log(urlwebhook);
+        if (jQuery('#CULQI_TOKENLOGIN').val().length>0) {
+            const settings = {
+                url: urlwebhook,
+                crossDomain: true,
+                dataType: 'json',
+                contentType: 'application/json',
+                type: "GET",
+                timeout: 0,
+                headers: {
+                    'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
+                    'Access-Control-Allow-Origin': '*',
+                    "Content-Type": "application/json",
+                    "Accept": "/"
+                },
+                data: {
+                    "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
+                    "version": 2
+                }
+            };
+            jQuery.ajax(settings).done(function (response) {
+                var valid = 1;
+                for(let i = 0; i < response.data.length; i++) {
+                    if(response.data[i].url==jQuery('input[name="groups[culqi][fields][notpay][value]"]').val()){
+                        valid=0;
                     }
                 }
-                if(enviroment == 'prod'){
-                    if(!(llavepublica.length==3 && llavepublica[1]=='live' && llaveprivada.length==3 && llaveprivada[1]=='live')){
-                        alert('Las llaves ingresadas no pertenecen al ambiente de producción');
-                        $('#config-edit-form').submit(false);
-                    }
-                } */
-                
-                var urlwebhook = "<?php echo $this->getUrlWebhookInteg() ?>";
-                jQuery('input[type="radio"]').each(function(){
-                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
-                        urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
-                     }
-                 });
-                console.log(urlwebhook);
-                if (jQuery('#CULQI_TOKENLOGIN').val().length>0) {
+                if(valid==1){
                     const settings = {
                         url: urlwebhook,
                         crossDomain: true,
                         dataType: 'json',
                         contentType: 'application/json',
-                        type: "GET",
+                        type: "POST",
                         timeout: 0,
                         headers: {
                             'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
                             'Access-Control-Allow-Origin': '*',
                             "Content-Type": "application/json",
-                            "Accept": "*/*"
+                            "Accept": "/"
                         },
-                        data: {
+                        data: JSON.stringify({
                             "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
+                            "eventId": "order.status.changed",
+                            "url": jQuery('input[name="groups[culqi][fields][notpay][value]"]').val(),
                             "version": 2
-                        }
+                        }),
                     };
                     jQuery.ajax(settings).done(function (response) {
-                        var valid = 1;
-                        for(let i = 0; i < response.data.length; i++) {
-                            if(response.data[i].url==jQuery('input[name="groups[culqi][fields][notpay][value]"]').val()){
-                                valid=0;
-                            }
-                        }
-                        if(valid==1){
-                            const settings = {
-                                url: urlwebhook,
-                                crossDomain: true,
-                                dataType: 'json',
-                                contentType: 'application/json',
-                                type: "POST",
-                                timeout: 0,
-                                headers: {
-                                    'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
-                                    'Access-Control-Allow-Origin': '*',
-                                    "Content-Type": "application/json",
-                                    "Accept": "*/*"
-                                },
-                                data: JSON.stringify({
-                                    "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
-                                    "eventId": "order.status.changed",
-                                    "url": jQuery('input[name="groups[culqi][fields][notpay][value]"]').val(),
-                                    "version": 2
-                                }),
-                            };
-                            jQuery.ajax(settings).done(function (response) {
-                                console.log(response);
-                            });
-                        }
+                        console.log(response);
                     });
                 }
-                return true;
             });
+        }
+        return true;
+    });
 
-            function login(){
-                
-                fullculqi_login();
-            };
+    function login(){
 
-            function fullculqi_login() {
-                if(jQuery('#email').val()!='' && jQuery('#password').val()){
-                    jQuery('body').append('<div id="loadingloginculqi" style="position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999999; top: 0; text-align: center; justify-content: center; align-content: center; flex-direction: column; padding: 25% 0; color: white; font-size: 14px">Cargando <img width="14" src="https://icon-library.com/images/loading-icon-transparent-background/loading-icon-transparent-background-12.jpg" /></div>');
-                    var urllogin = "<?php echo $this->getUrlLoginInteg() ?>";
-                jQuery('input[type="radio"]').each(function(){
-                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
-                        urllogin = "<?php echo $this->getUrlLoginProd() ?>";
-                    }
-                });
-                console.log(urllogin);
-                const settings = {
-                    url: urllogin,
-                    method: "POST",
-                    timeout: 0,
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    data: JSON.stringify({
-                        email: jQuery('#email').val(),
-                        password: jQuery('#password').val(),
-                    }),
-                };
-                console.log('settings:::', settings);
-                jQuery.ajax(settings).done(function (response) {
+        fullculqi_login();
+    };
 
-                    if(typeof(response.message) != "undefined" && response.message !== null){
-                        //jQuery('#loginbutton').html('Iniciar sesión');
-                        //jQuery('#loginbutton').removeAttr('disabled');
-                        jQuery('#loadingloginculqi').remove();
-                        jQuery('#errorlogincpanelculqi').html(response.message);
-                    }else{
-                        window.culqi_token = response.data;
-                        culqiWoGetMerchants(window.culqi_token);
-                    }
-                    //console.log('response:::', response);
-                    //window.culqi_token = response.data;
-                    //console.log('window.culqi_token:::', window.culqi_token);
-                    //culqiWoGetMerchants(window.culqi_token);
-                });
-                }else{
-                    jQuery('#errorlogincpanelculqi').html('Debes ingresar el correo electrónico y la contraseña.');
+    function fullculqi_login() {
+        if(jQuery('#email').val()!='' && jQuery('#password').val()){
+            jQuery('body').append('<div id="loadingloginculqi" style="position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999999; top: 0; text-align: center; justify-content: center; align-content: center; flex-direction: column; color: white; font-size: 14px; display:table-cell; vertical-align:middle;"><div style="position: absolute; width: 100%; top: 50%">Cargando <img width="14" src="https://icon-library.com/images/loading-icon-transparent-background/loading-icon-transparent-background-12.jpg" /></div></div>');
+            var urllogin = "<?php echo $this->getUrlLoginInteg() ?>";
+            jQuery('input[type="radio"]').each(function(){
+                if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                    urllogin = "<?php echo $this->getUrlLoginProd() ?>";
                 }
-                
+            });
+            console.log(urllogin);
+            const settings = {
+                url: urllogin,
+                method: "POST",
+                timeout: 0,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: JSON.stringify({
+                    email: jQuery('#email').val(),
+                    password: jQuery('#password').val(),
+                }),
+            };
+            console.log('settings:::', settings);
+            jQuery.ajax(settings).done(function (response) {
+
+                if(typeof(response.message) != "undefined" && response.message !== null){
+                    //jQuery('#loginbutton').html('Iniciar sesión');
+                    //jQuery('#loginbutton').removeAttr('disabled');
+                    jQuery('#loadingloginculqi').remove();
+                    jQuery('#errorlogincpanelculqi').html(response.message);
+                }else{
+                    window.culqi_token = response.data;
+                    culqiWoGetMerchants(window.culqi_token);
+                }
+                //console.log('response:::', response);
+                //window.culqi_token = response.data;
+                //console.log('window.culqi_token:::', window.culqi_token);
+                //culqiWoGetMerchants(window.culqi_token);
+            });
+        }else{
+            jQuery('#errorlogincpanelculqi').html('Debes ingresar el correo electrónico y la contraseña.');
+        }
+
+    }
+
+    const culqiWoGetMerchants = (token) => {
+        console.log('culqiWoGetMerchants');
+        var urlmerchant = "<?php echo $this->getUrlMerchantInteg() ?>";
+        jQuery('input[type="radio"]').each(function(){
+            if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                urlmerchant = "<?php echo $this->getUrlMerchantProd() ?>";
             }
+        });
+        const settings = {
+            url: urlmerchant,
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": "Bearer " + token,
+            },
+        };
 
-            const culqiWoGetMerchants = (token) => {
-                console.log('culqiWoGetMerchants');
-                var urlmerchant = "<?php echo $this->getUrlMerchantInteg() ?>";
-                jQuery('input[type="radio"]').each(function(){
-                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
-                    urlmerchant = "<?php echo $this->getUrlMerchantProd() ?>";
-                    }
-                });
-                const settings = {
-                    url: urlmerchant,
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "Authorization": "Bearer " + token,
-                    },
-                };
+        console.log('settings:::', settings);
 
-                console.log('settings:::', settings);
+        jQuery.ajax(settings)
+            .done(function (response) {
+                console.log('response:::', response);
+                renderMerchants(response.data);
+                jQuery("#modalLogin").hide();
+                jQuery("#modalList").show();
+            })
+            .error(function (error) {
+                console.log('error:::', error);
+            });
+    };
 
-                jQuery.ajax(settings)
-                .done(function (response) {
-                    console.log('response:::', response);
-                    renderMerchants(response.data);
-                    jQuery("#modalLogin").hide();
-                    jQuery("#modalList").show();
-                })
-                .error(function (error) {
-                    console.log('error:::', error);
-                });
-            };
+    const getMerchant = (id) => {
+        console.log('getMerchant');
+        var urlmerchantsingle = "<?php echo $this->getUrlMerchantSingleInteg() ?>";
+        jQuery('input[type="radio"]').each(function(){
+            if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                urlmerchantsingle = "<?php echo $this->getUrlMerchantSingleProd() ?>";
+            }
+        });
+        const settings = {
+            url: urlmerchantsingle + id,
+            method: "GET",
+            timeout: 0,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": "Bearer " + window.culqi_token,
+            },
+        };
 
-            const getMerchant = (id) => {
-                console.log('getMerchant');
-                var urlmerchantsingle = "<?php echo $this->getUrlMerchantSingleInteg() ?>";
-                jQuery('input[type="radio"]').each(function(){
-                    if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
-                    urlmerchantsingle = "<?php echo $this->getUrlMerchantSingleProd() ?>";
-                    }
-                });
-                const settings = {
-                    url: urlmerchantsingle + id,
-                    method: "GET",
-                    timeout: 0,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "Authorization": "Bearer " + window.culqi_token,
-                    },
-                };
+        console.log('settings:::', settings);
 
-                console.log('settings:::', settings);
+        jQuery.ajax(settings)
+            .done(function (response) {
+                console.log('response data:::', response);
+                window.culqi_settings["private_key"] = response.data[0].key;
+                renderSettings();
+                jQuery("#modalList").hide();
+            });
+        return false;
+    };
 
-                jQuery.ajax(settings)
-                .done(function (response) {
-                    console.log('response data:::', response);
-                    window.culqi_settings["private_key"] = response.data[0].key;
-                    renderSettings();
-                    jQuery("#modalList").hide();
-                });
-                return false;
-            };
+    const renderSettings = () => {
+        console.log(window.culqi_settings);
 
-            const renderSettings = () => {
-            console.log(window.culqi_settings);
+        jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(window.culqi_settings["public_key"]);
 
-            jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(window.culqi_settings["public_key"]);
 
-             
-                jQuery('input[name="groups[culqi][fields][llave_secreta][value]"]').val(window.culqi_settings["private_key"]);
-                
-                jQuery("#CULQI_TOKENLOGIN").val(window.culqi_token);
+        jQuery('input[name="groups[culqi][fields][llave_secreta][value]"]').val(window.culqi_settings["private_key"]);
 
-                window.culqi_settings = null;
+        jQuery("#CULQI_TOKENLOGIN").val(window.culqi_token);
 
-                console.log(window.culqi_settings);
-            };
+        window.culqi_settings = null;
 
-            const renderMerchants = (merchants) => {
-                let html = "";
-                merchants.forEach((merchant) => {
-                html += `
+        console.log(window.culqi_settings);
+    };
+
+    const renderMerchants = (merchants) => {
+        let html = "";
+        merchants.forEach((merchant) => {
+            html += `
                     <li>
                     <div class="items">
                        <div class="merchant_item" data-name="`+merchant.nombre_comercial+`" data-key='`+merchant.codigo_comercio+`'>
@@ -817,8 +817,8 @@
                             </svg>
                         </div>
                         <div class="merchant_name">`
-                        +merchant.nombre_comercial+
-                    `</div>
+                +merchant.nombre_comercial+
+                `</div>
                         <div class="merchant_arrow">
                             <svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5.95079 5.23163L1.71079 0.341176C1.61783 0.233069 1.50723 0.147262 1.38537 0.0887049C1.26351 0.0301478 1.1328 0 1.00079 0C0.868781 0 0.738075 0.0301478 0.616216 0.0887049C0.494356 0.147262 0.383755 0.233069 0.290792 0.341176C0.104542 0.557282 0 0.849616 0 1.15433C0 1.45904 0.104542 1.75138 0.290792 1.96748L3.83079 6.05055L0.290792 10.1336C0.104542 10.3497 0 10.6421 0 10.9468C0 11.2515 0.104542 11.5438 0.290792 11.7599C0.384233 11.8668 0.495049 11.9514 0.616886 12.0088C0.738724 12.0662 0.869186 12.0953 1.00079 12.0944C1.1324 12.0953 1.26286 12.0662 1.3847 12.0088C1.50654 11.9514 1.61735 11.8668 1.71079 11.7599L5.95079 6.86947C6.04452 6.76225 6.11891 6.63468 6.16968 6.49413C6.22045 6.35357 6.24659 6.20282 6.24659 6.05055C6.24659 5.89829 6.22045 5.74753 6.16968 5.60698C6.11891 5.46642 6.04452 5.33886 5.95079 5.23163Z" fill="#B1B8C1"/>
@@ -827,23 +827,23 @@
                         </div>
                     </div>
                     </li>`;
-                });
-                jQuery("#list-merchants").html(html);
-                jQuery("#modalLogin").hide();
-                setTimeout(function (){
-                    jQuery('#loadingloginculqi').remove();
-                }, 2000)
-                jQuery(".merchant_item").click(function (event) {
+        });
+        jQuery("#list-merchants").html(html);
+        jQuery("#modalLogin").hide();
+        setTimeout(function (){
+            jQuery('#loadingloginculqi').remove();
+        }, 2000)
+        jQuery(".merchant_item").click(function (event) {
 
-                    const key = jQuery(this).attr("data-key");
-                    const name = jQuery(this).attr("data-name");
-                    window.culqi_settings = {
-                        public_key: key,
-                        merchant_name: name,
-                    };
-                    getMerchant(key);
-                });
+            const key = jQuery(this).attr("data-key");
+            const name = jQuery(this).attr("data-name");
+            window.culqi_settings = {
+                public_key: key,
+                merchant_name: name,
             };
+            getMerchant(key);
+        });
+    };
 
 
-    </script>
+</script>
