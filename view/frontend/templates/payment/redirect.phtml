@@ -98,6 +98,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     },
                     dataType: 'json',
                     success: function (data) {
+
                         console.log('data:::', data);
                         //var obj = JSON.parse(data);
                         var result = "";
@@ -128,6 +129,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         }
 
                         if (result.object === 'error') {
+                            $jq('body').waitMe('hide');
                             console.log('2');
                             resultdiv(obj.user_message);
                             post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('fail'));
