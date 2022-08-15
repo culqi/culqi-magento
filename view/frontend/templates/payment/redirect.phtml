@@ -144,11 +144,9 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     },
                     beforeSend: function () {
                         console.log('144');
-                        run_waitMe();
                     },
                     complete: function () {
                         console.log('148');
-                        run_waitMe();
                     }
                 });
 
