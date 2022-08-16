@@ -80,6 +80,12 @@ class Redirect extends \Magento\Framework\View\Element\Template
         return $this->storeManager->getStore()->getName();
     }
 
+    public function getMagentoVersion(){
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
+        return $productMetadata->getVersion();
+    }
+
     public function getLogo()
     {
         return $this->scopeConfig->getvalue(

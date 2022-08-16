@@ -30,7 +30,7 @@ $email = $block->getData('dataOrder')['email'];
 
 $total = number_format($block->getData('dataOrder')['amount'], 2, '', '');
 $storeName = $block->getStoreName();
-
+$version = $block->getMagentoVersion();
 ?>
 
 <!-- Culqi Order -->
@@ -175,6 +175,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             billetera: <?php echo in_array('billetera', $paymentMethods) ? 'true' : 'false';  ?>,
             cuotealo: <?php echo in_array('cuotealo', $paymentMethods) ? 'true' : 'false';  ?>
         },
+        installments: true,
         style: {
             bannerColor: '<?php echo $theme[0]; ?>',
             imageBanner: '',
@@ -370,7 +371,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     amount: <?php echo $total; ?>,
                     order: response,
                     culqiclient: 'Magento',
-                    culqiclientversion: '123',
+                    culqiclientversion: '<?php  echo $version; ?>',
                 });
 
                 /* Inicio */
@@ -408,7 +409,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     amount: <?php echo $total; ?>,
                     //order: 'ord_live_mQjOSWvYKnNgotsY', // esto es solo si se tiene habilitada la opción de billeteras, agentes y/o cuetealo
                     culqiclient: 'Magento',
-                    culqiclientversion: '123',
+                    culqiclientversion: '<?php  echo $version; ?>',
                 });
                 Culqi.open();
                 e.preventDefault();
