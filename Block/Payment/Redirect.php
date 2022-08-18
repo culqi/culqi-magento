@@ -101,7 +101,11 @@ class Redirect extends \Magento\Framework\View\Element\Template
             \Magento\Store\model\ScopeInterface::SCOPE_STORE
         );
 
-        return explode('-', $theme);
+        if(is_null($theme) or $theme==''){
+            $theme = '#141414-#00a19b';
+        }
+
+        return explode('-', (String)$theme);
     }
 
     public function getURLEnviroment()
