@@ -79,7 +79,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 var token = Culqi.token.id;
                 var email = Culqi.token.email;
 
-                console.log('Se ha creado un token: ' + token); 
+                console.log('Se ha creado un token: ' + token);
                 //run_waitMe();
                 $jq.ajax({
                     url: "<?= $block->escapeUrl($block->getUrl('pago/payment/check')); ?>",
@@ -355,63 +355,80 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
     function generateOrder() {
         var $jq = jQuery.noConflict();
-        $jq.ajax({
-            url: "<?= $block->escapeUrl($block->getUrl('pago/payment/order')); ?>",
-            type: "POST",
-            dataType: 'json',
-            success: function (response) {
-                console.log('response:::', response);
-                Culqi.settings({
-                    title: '<?php echo $storeName ?>',
-                    currency: '<?php echo $currencyCode ?>',
-                    amount: <?php echo $total; ?>,
-                    order: response,
-                    culqiclient: 'Magento',
-                    culqiclientversion: '<?php  echo $version; ?>',
-                });
+        if(in_array('billetera', $paymentMethods) ||
+            in_array('bancamovil', $paymentMethods) ||
+            in_array('agente', $paymentMethods) ||
+            in_array('cuotealo', $paymentMethods)){
+            $jq.ajax({
+                url: "<?= $block->escapeUrl($block->getUrl('pago/payment/order')); ?>",
+                type: "POST",
+                dataType: 'json',
+                success: function (response) {
+                    console.log('response:::', response);
+                    Culqi.settings({
+                        title: '<?php echo $storeName ?>',
+                        currency: '<?php echo $currencyCode ?>',
+                        amount: <?php echo $total; ?>,
+                        order: response,
+                        culqiclient: 'Magento',
+                        culqiclientversion: '<?php  echo $version; ?>',
+                    });
 
-                /* Inicio */
+                    /* Inicio */
 
-                $jq.ajax({
-                    url: "<?= $block->escapeUrl($block->getUrl('pago/payment/registerorder')); ?>",
-                    type: "POST",
-                    data: {
-                        order_id: '<?= $block->escapeHtml($orderId) ?>',
-                        order_culqi: response
-                    },
+                    $jq.ajax({
+                        url: "<?= $block->escapeUrl($block->getUrl('pago/payment/registerorder')); ?>",
+                        type: "POST",
+                        data: {
+                            order_id: '<?= $block->escapeHtml($orderId) ?>',
+                            order_culqi: response
+                        },
 
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log('data:::', data);
-                    },
-                    error: function () {
-                        console.log('8');
-                        $jq('body').waitMe('hide');
-                        resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
-                    }
-                });
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log('data:::', data);
+                        },
+                        error: function () {
+                            console.log('8');
+                            $jq('body').waitMe('hide');
+                            resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
+                        }
+                    });
 
-                /* Termino */
-                $jq('#btn_pago').removeAttr('disabled');
-                Culqi.open();
-                e.preventDefault();
-                //console.log(Culqi);
-            },
-            error: function (error) {
-                console.log('error:::', error);
-                Culqi.settings({
-                    title: '<?php echo $storeName ?>',
-                    currency: '<?php echo $currencyCode ?>',
-                    amount: <?php echo $total; ?>,
-                    //order: 'ord_live_mQjOSWvYKnNgotsY', // esto es solo si se tiene habilitada la opción de billeteras, agentes y/o cuetealo
-                    culqiclient: 'Magento',
-                    culqiclientversion: '<?php  echo $version; ?>',
-                });
-                Culqi.open();
-                e.preventDefault();
-            }
+                    /* Termino */
+                    $jq('#btn_pago').removeAttr('disabled');
+                    Culqi.open();
+                    e.preventDefault();
+                    //console.log(Culqi);
+                },
+                error: function (error) {
+                    console.log('error:::', error);
+                    Culqi.settings({
+                        title: '<?php echo $storeName ?>',
+                        currency: '<?php echo $currencyCode ?>',
+                        amount: <?php echo $total; ?>,
+                        //order: 'ord_live_mQjOSWvYKnNgotsY', // esto es solo si se tiene habilitada la opción de billeteras, agentes y/o cuetealo
+                        culqiclient: 'Magento',
+                        culqiclientversion: '<?php  echo $version; ?>',
+                    });
+                    Culqi.open();
+                    e.preventDefault();
+                }
 
-        });
+            });
+        }else{
+            Culqi.settings({
+                title: '<?php echo $storeName ?>',
+                currency: '<?php echo $currencyCode ?>',
+                amount: <?php echo $total; ?>,
+                //order: 'ord_live_mQjOSWvYKnNgotsY', // esto es solo si se tiene habilitada la opción de billeteras, agentes y/o cuetealo
+                culqiclient: 'Magento',
+                culqiclientversion: '<?php  echo $version; ?>',
+            });
+            Culqi.open();
+            e.preventDefault();
+        }
+
     }
 
     function run_waitMe() {
