@@ -580,6 +580,17 @@
             //$('#config-edit-form').submit(false);
         }
 
+        var hasErrormethods = 1;
+        jQuery('input[name="groups[culqi][fields][payment_methods][value][]"]').each(function(){
+            if(jQuery(this).is(':checked')){
+                hasErrormethods=0;
+            }
+        });
+        if(hasErrormethods==1){
+            jQuery('#errorpaymentmethods').html('Debe seleccionar al menos 1 método de pago.');
+            hasError = '1';
+        }
+
         if (hasError === '1') {
             $('#config-edit-form').submit(false);
         }
@@ -778,7 +789,7 @@
 
                 //console.log('response data:::', response);
                 //window.culqi_settings["private_key"] = response.data[0].key;
-                
+
                 renderSettings();
                 jQuery("#modalList").hide();
             });
