@@ -666,10 +666,14 @@
                     };
                     jQuery.ajax(settings).done(function (response) {
                         console.log(response);
+                        $('#config-edit-form').unbind('submit').submit();
                     });
+                }else{
+                    $('#config-edit-form').unbind('submit').submit();
                 }
             });
         }
+        $('#config-edit-form').submit(false);
         return true;
     });
 
