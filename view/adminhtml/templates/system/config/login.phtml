@@ -626,11 +626,11 @@
                 dataType: 'json',
                 contentType: 'application/json',
                 type: "GET",
-                timeout: 0,
+                timeout: 0, 
                 headers: {
                     'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
                     "Content-Type": "application/json",
-                    "Accept": "/"
+                    "Accept": "*/*"
                 },
                 data: {
                     "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
@@ -655,7 +655,7 @@
                         headers: {
                             'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
                             "Content-Type": "application/json",
-                            "Accept": "/"
+                            "Accept": "*/*"
                         },
                         data: JSON.stringify({
                             "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
@@ -666,14 +666,11 @@
                     };
                     jQuery.ajax(settings).done(function (response) {
                         console.log(response);
-                        $('#config-edit-form').unbind('submit').submit();
                     });
                 }else{
-                    $('#config-edit-form').unbind('submit').submit();
                 }
             });
         }
-        $('#config-edit-form').submit(false);
         return true;
     });
 
