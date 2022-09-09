@@ -49,9 +49,18 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $this->logger->debug("Mensaje de webhook recibido");
 
         $this->logger->debug($data);
+
+        if (empty($data->metadata)) {
+            exit("Error: Metadata vacia");
+        }
+
+        if (empty($data->amount) || empty($data->currency_code) || empty($data->state)) {
+            exit("Error: valores de la orden incorrectos");
+        }
+
         if ($input->object == 'event' && $input->type == 'order.status.changed') {
             $mgtOrderId = (int)$data->metadata->mgt_order_id;
-            //var_dump($mgtOrderId); exit(1);
+
             $this->logger->debug('Evento de Culqi, cambio de orden identificado. Orden: '.$mgtOrderId);
 
             $orderToSet = $this->order->loadByIncrementId($mgtOrderId);
