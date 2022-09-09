@@ -618,7 +618,6 @@
                 urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
             }
         });
-        console.log(urlwebhook);
         if (jQuery('#CULQI_TOKENLOGIN').val().length>0) {
             const settings = {
                 url: urlwebhook,
@@ -688,7 +687,6 @@
                     urllogin = "<?php echo $this->getUrlLoginProd() ?>";
                 }
             });
-            console.log(urllogin);
             const settings = {
                 url: urllogin,
                 method: "POST",
@@ -701,22 +699,15 @@
                     password: jQuery('#password').val(),
                 }),
             };
-            console.log('settings:::', settings);
             jQuery.ajax(settings).done(function (response) {
 
                 if(typeof(response.message) != "undefined" && response.message !== null){
-                    //jQuery('#loginbutton').html('Iniciar sesión');
-                    //jQuery('#loginbutton').removeAttr('disabled');
                     jQuery('#loadingloginculqi').remove();
                     jQuery('#errorlogincpanelculqi').html(response.message);
                 }else{
                     window.culqi_token = response.data;
                     culqiWoGetMerchants(window.culqi_token);
                 }
-                //console.log('response:::', response);
-                //window.culqi_token = response.data;
-                //console.log('window.culqi_token:::', window.culqi_token);
-                //culqiWoGetMerchants(window.culqi_token);
             });
         }else{
             jQuery('#errorlogincpanelculqi').html('Debes ingresar el correo electrónico y la contraseña.');
@@ -725,7 +716,6 @@
     }
 
     const culqiWoGetMerchants = (token) => {
-        console.log('culqiWoGetMerchants');
         var urlmerchant = "<?php echo $this->getUrlMerchantInteg() ?>";
         jQuery('input[type="radio"]').each(function(){
             if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
@@ -742,8 +732,6 @@
             },
         };
 
-        console.log('settings:::', settings);
-
         jQuery.ajax(settings)
             .done(function (response) {
                 console.log('response:::', response);
@@ -757,7 +745,6 @@
     };
 
     const getMerchant = (id) => {
-        console.log('getMerchant');
         var urlmerchantsingle = "<?php echo $this->getUrlMerchantSingleInteg() ?>";
         jQuery('input[type="radio"]').each(function(){
             if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
@@ -775,21 +762,15 @@
             },
         };
 
-        console.log('settings:::', settings);
-
         jQuery.ajax(settings)
             .done(function (response) {
 
                 window.culqi_settings["private_key"] = '';
-                console.log('response data seckeys:::', response.data);
                 for(var v=0; v<response.data.length; v++){
                     if(response.data[v].active){
                         window.culqi_settings["private_key"] = response.data[v].key;
                     }
                 }
-
-                //console.log('response data:::', response);
-                //window.culqi_settings["private_key"] = response.data[0].key;
 
                 renderSettings();
                 jQuery("#modalList").hide();
@@ -798,7 +779,6 @@
     };
 
     const renderSettings = () => {
-        console.log(window.culqi_settings);
 
         jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(window.culqi_settings["public_key"]);
 
@@ -808,8 +788,6 @@
         jQuery("#CULQI_TOKENLOGIN").val(window.culqi_token);
 
         window.culqi_settings = null;
-
-        console.log(window.culqi_settings);
     };
 
     const renderMerchants = (merchants) => {
