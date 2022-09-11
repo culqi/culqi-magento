@@ -48,7 +48,7 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
 
         $this->logger->debug("Mensaje de webhook recibido");
 
-        $this->logger->debug($data);
+        //$this->logger->debug($data);
 
         if (empty($data->metadata)) {
             exit("Error: Metadata vacia");
@@ -77,7 +77,7 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 }
 
                 if ($data->state == 'expired') {
-                    $this->logger->debug('Orden Experiada');
+                    $this->logger->debug('Orden Expirada');
                     $orderToSet->setState($this->statusCanceled)->setStatus($this->statusCanceled);
                     $orderToSet->addStatusToHistory(
                         $orderToSet->getStatus(),
