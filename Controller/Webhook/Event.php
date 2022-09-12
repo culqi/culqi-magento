@@ -54,8 +54,12 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
             exit("Error: Metadata vacia");
         }
 
-        if (empty($data->amount) || empty($data->currency_code) || empty($data->state)) {
-            exit("Error: valores de la orden incorrectos");
+        if (empty($data->amount)) {
+            exit("Error: No envió el amount");
+        }
+
+        if (empty($data->id) || empty($data->order_number) || empty($data->currency_code) || empty($data->state)) {
+            exit("Error: order_id, order_number, currency_code o state vacios");
         }
 
         if ($input->object == 'event' && $input->type == 'order.status.changed') {
@@ -85,6 +89,7 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                     );
                     $orderToSet->save();
                 }
+                echo "Operación satisfactoria";
             }
         }
     }
