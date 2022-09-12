@@ -208,6 +208,14 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
                 }
             });
+
+            var id = setInterval(function () {
+                    if (!Culqi.isOpen) {
+                        run_waitMe();
+                        clearInterval(id);
+                        post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('order', '', '', culqi_order_id));
+                    }
+                }, 1000);
 /*
             if (Culqi.token == null) {
 
