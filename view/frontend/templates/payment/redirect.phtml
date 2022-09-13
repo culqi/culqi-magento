@@ -196,7 +196,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 data: {
                     order: 'order',
                     order_id: '<?= $block->escapeHtml($orderId) ?>',
-                    cip: cip_code
+                    cip: cip_code,
+                    order_culqi: culqi_order_id
                 },
                 dataType: 'json',
                 success: function (data) {
