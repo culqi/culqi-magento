@@ -55,8 +55,13 @@ class UpdateStateOrder extends \Magento\Framework\App\Action\Action implements C
         $order = $this->getRequest()->getPost('order');
         $orderId = $this->getRequest()->getPost('order_id');
         $cip = $this->getRequest()->getPost('cip');
+        $culqi_order_id = $this->getRequest()->getPost('order_culqi');
         
         // === Load Order Data ===
+        $orders = $this->order->loadByIncrementId($orderId);
+        $orders->addStatusHistoryComment('Order Id: <b>' . $culqi_order_id . '.</b>' );
+        $orders->save();
+
         $orderToSet = $this->order->loadByIncrementId($orderId);
         $orderToSet->setState($this->statusProcessing)->setStatus($this->statusProcessing);
         $orderToSet->addStatusHistoryComment('Culqi CIP Code: ' . $cip . '.' );

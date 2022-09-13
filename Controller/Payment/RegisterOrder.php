@@ -55,10 +55,11 @@ class RegisterOrder extends \Magento\Framework\App\Action\Action implements Csrf
         $culqi_order_id = $this->getRequest()->getPost('order_culqi');
         
         // === Load Order Data ===
+        /*
         $orders = $this->order->loadByIncrementId($orderId);
         $orders->addStatusHistoryComment('Order Id: ' . $culqi_order_id . '.' );
         $orders->save();
-        
+        */
         $this->getResponse()->setBody(Json::encode('OK'));
     }
 
