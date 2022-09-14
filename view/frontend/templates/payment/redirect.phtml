@@ -71,9 +71,10 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
         if (event.origin === window.location.origin) {
             const {parameters3DS, error} = event.data;
-            run_waitMe();
             if (parameters3DS) {
-
+                $jq(document).ajaxStart(function () {
+                    run_waitMe();
+                });
                 var token = Culqi.token.id;
                 var email = Culqi.token.email;
                 $jq.ajax({
