@@ -192,45 +192,31 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             var cip_code = Culqi.order.payment_code;
 
             $jq.ajax({
-                url: "<?= $block->escapeUrl($block->getUrl('pago/payment/registerorder')); ?>",
+                url: "<?= $block->escapeUrl($block->getUrl('pago/payment/updatestateorder')); ?>",
                 type: "POST",
                 data: {
+                    order: 'order',
                     order_id: '<?= $block->escapeHtml($orderId) ?>',
+                    cip: cip_code,
                     order_culqi: culqi_order_id
                 },
-
                 dataType: 'json',
                 success: function (data) {
-                    $jq.ajax({
-                        url: "<?= $block->escapeUrl($block->getUrl('pago/payment/updatestateorder')); ?>",
-                        type: "POST",
-                        data: {
-                            order: 'order',
-                            order_id: '<?= $block->escapeHtml($orderId) ?>',
-                            cip: cip_code,
-                            order_culqi: culqi_order_id
-                        },
-                        dataType: 'json',
-                        success: function (data) {
-                            var id = setInterval(function () {
-                                if (!Culqi.isOpen) {
-                                    run_waitMe();
-                                    clearInterval(id);
-                                    post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('order', '', '', culqi_order_id));
-                                }
-                            }, 1000);
-                        },
-                        error: function () {
-                            $jq('body').waitMe('hide');
-                            resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
-                        }
-                    });
+
                 },
                 error: function () {
                     $jq('body').waitMe('hide');
                     resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
                 }
             });
+
+            var id = setInterval(function () {
+                if (!Culqi.isOpen) {
+                    run_waitMe();
+                    clearInterval(id);
+                    post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('order', '', '', culqi_order_id));
+                }
+            }, 1000);
 
         } else if (Culqi.token) {
             Culqi.close();
@@ -346,7 +332,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         culqiclientversion: '<?php  echo $version; ?>',
                     });
 
-                    /* Inicio
+                    /* Inicio */
 
                     $jq.ajax({
                         url: "<?= $block->escapeUrl($block->getUrl('pago/payment/registerorder')); ?>",
@@ -365,7 +351,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                             resultdiv('Hubo algún problema en el procesamiento de la compra. Intenta nuevamente por favor.');
                         }
                     });
-                    */
+
                     $jq('#btn_pago').removeAttr('disabled');
                     Culqi.open();
                     e.preventDefault();
