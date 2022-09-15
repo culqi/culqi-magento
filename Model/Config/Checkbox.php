@@ -26,6 +26,7 @@ class Checkbox
         return [
             ['value' => 'tarjeta', 'label' => __('Tarjetas débito/credito')], 
             ['value' => 'bancamovil', 'label' => __('Banca móvil o internet')],
+            ['value' => 'yape', 'label' => __('Yape')],
             ['value' => 'agente', 'label' => __('Agentes y bodegas')],
             ['value' => 'billetera', 'label' => __('Billeteras móviles')],
             ['value' => 'cuotealo', 'label' => __('Cuotéalo BCP')],
