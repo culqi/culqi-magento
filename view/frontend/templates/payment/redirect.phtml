@@ -332,7 +332,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
         var $jq = jQuery.noConflict();
         if(<?php echo in_array('bancamovil', $paymentMethods) ? 'true' : 'false';  ?>==true ||
         <?php echo in_array('agente', $paymentMethods) ? 'true' : 'false';  ?>==true ||
-        <?php echo in_array('billetera', $paymentMethods) ? 'true' : 'false';  ?>==true ||       
+        <?php echo in_array('billetera', $paymentMethods) ? 'true' : 'false';  ?>==true ||    
         <?php echo in_array('cuotealo', $paymentMethods) ? 'true' : 'false';  ?>==true){
             $jq.ajax({
                 url: "<?= $block->escapeUrl($block->getUrl('pago/payment/order')); ?>",
