@@ -1542,7 +1542,7 @@
             $,
             modal
         ) {
-            const setUrlLogo = jQuery('input[name="groups[culqi][fields][logo][value]"]').val(); // Al iniciar estará vacío, una vez personalizado el checkout esta variable tendrá seteado el url de logo ingresado
+            const setLogoPs = jQuery('input[name="groups[culqi][fields][logo][value]"]').val(); // Al iniciar estará vacío, una vez personalizado el checkout esta variable tendrá seteado el url de logo ingresado
             const setPrimaryColor = ''; // Al iniciar estará vacío, una vez personalizado el checkout esta variable tendrá seteado el color ingresado
             const setSecondaryColor = ''; // Al iniciar estará vacío, una vez personalizado el checkout esta variable tendrá seteado el color ingresado
             const setColors = (setPrimaryColor != '' ? setPrimaryColor.slice(1) : '') + '-' + (setSecondaryColor != '' ? setSecondaryColor.slice(1) : '');
@@ -1563,26 +1563,13 @@
             const inputLogo = document.querySelector('#logo-url');
             const logo = document.querySelector('#logo');
             const labelText = document.querySelector('#label-text');
-
-            const btnClose = document.querySelectorAll('.btn-close-checkout-preview')
-            const btnSave = document.querySelector('.btn-save-checkout-preview')
+            let btnClose, btnSave;
+            // const btnClose = document.querySelectorAll('.btn-close-checkout-preview')
+            // const btnSave = document.querySelector('.btn-save-checkout-preview')
 
             const logoDefault = logo.src;
             const labelDefault = 'Copia la URL de tu logotipo';
 
-            let styleConfig = {};
-            let isEnabledRadio = false,
-                isEnabledLogo = false,
-                isValidUrlLogo = true;
-
-            const checkoutPreviewText = {
-                labelDefault: 'Copia la URL de tu logotipo',
-                logoDefault: 'https://culqi-static-files.s3.amazonaws.com/v3/v3-checkout/brand.svg',
-                errors: {
-                    logoUrl: 'URL incompleta, falta agregar protocolo https o http',
-                    logoInvalid: 'Imagen no válida'
-                }
-            }
 
             const actionButton = () => {
                 if (isEnabledRadio || isEnabledLogo) {
@@ -1638,7 +1625,7 @@
                 });
             }
 
-            if (setUrlLogo != '' && setUrlLogo != null && setUrlLogo != undefined) {
+            if (setLogoPs != '' && setLogoPs != null && setLogoPs != undefined) {
                 inputLogo.src = setColors;
             }
 
@@ -1736,7 +1723,19 @@
                     actionTextVisible.innerText = 'Ver más combinaciones';
                 }
             });
+            let styleConfig = {};
+            let isEnabledRadio = false,
+                isEnabledLogo = false,
+                isValidUrlLogo = true;
 
+            const checkoutPreviewText = {
+                labelDefault: 'Copia la URL de tu logotipo',
+                logoDefault: 'https://culqi-static-files.s3.amazonaws.com/v3/v3-checkout/brand.svg',
+                errors: {
+                    logoUrl: 'URL incompleta, falta agregar protocolo https o http',
+                    logoInvalid: 'Imagen no válida'
+                }
+            }
             var options = {
                 type: 'popup',
                 responsive: true,
@@ -1811,6 +1810,8 @@
 
             var popup = modal(options, $('#popup-modal'));
             $("#open-modal").on('click', function() {
+                btnClose = document.querySelectorAll('.btn-close-checkout-preview')
+                btnSave = document.querySelector('.btn-save-checkout-preview')
                 setValidationInput(false, false)
                 actionButton();
                 if (styleConfig.urlLogo != undefined) {
