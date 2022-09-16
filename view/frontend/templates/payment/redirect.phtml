@@ -203,7 +203,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 dataType: 'json',
                 success: function (data) {
 
-
                 },
                 error: function () {
                     $jq('body').waitMe('hide');
@@ -212,27 +211,12 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             });
 
             var id = setInterval(function () {
-                    if (!Culqi.isOpen) {
-                        run_waitMe();
-                        clearInterval(id);
-                        post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('order', '', '', culqi_order_id));
-                    }
-                }, 1000);
-/*
-            if (Culqi.token == null) {
-
-                var id = setInterval(function () {
-                    if (!Culqi.isOpen) {
-                        run_waitMe();
-                        clearInterval(id);
-                        post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('order', '', '', culqi_order_id));
-                    }
-                }, 1000);
-
-            } else {
-
-            }
-            */
+                if (!Culqi.isOpen) {
+                    run_waitMe();
+                    clearInterval(id);
+                    post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('order', '', '', culqi_order_id));
+                }
+            }, 1000);
 
         } else if (Culqi.token) {
             Culqi.close();
