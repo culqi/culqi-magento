@@ -145,9 +145,10 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
         lang: 'auto',
         paymentMethods: {
             tarjeta: <?php echo in_array('tarjeta', $paymentMethods) ? 'true' : 'false';  ?>,
+            yape: <?php echo in_array('yape', $paymentMethods) ? 'true' : 'false';  ?>,
+            billetera: <?php echo in_array('billetera', $paymentMethods) ? 'true' : 'false';  ?>,
             bancaMovil: <?php echo in_array('bancamovil', $paymentMethods) ? 'true' : 'false';  ?>,
             agente: <?php echo in_array('agente', $paymentMethods) ? 'true' : 'false';  ?>,
-            billetera: <?php echo in_array('billetera', $paymentMethods) ? 'true' : 'false';  ?>,
             cuotealo: <?php echo in_array('cuotealo', $paymentMethods) ? 'true' : 'false';  ?>
         },
         installments: true,
