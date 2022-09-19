@@ -111,7 +111,13 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
             $emailCulqi,
             $source_id,
             $device,
-            $parameters3DS
+            $parameters3DS,
+            $firstName,
+            $lastName,
+            $countryCode,
+            $addressCity,
+            $address,
+            $phoneNumber
         );
 
         $this->getResponse()->setBody(Json::encode($cargo));
@@ -124,7 +130,13 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $email,
         $source_id,
         $device,
-        $parameters3DS
+        $parameters3DS,
+        $firstName,
+        $lastName,
+        $countryCode,
+        $addressCity,
+        $address,
+        $phoneNumber
     ) {
         include_once dirname(__FILE__, 3).'/libraries/Requests/library/Requests.php';
         \Requests::register_autoloader();
@@ -143,8 +155,16 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 'source_id' => $source_id,
                 'capture' => true,
                 'enviroment' => $this->_enviroment,
-                'antifraud_details' => array('device_finger_print_id'=>$device),
-                'metadata' => ["mgt_order_id" => (string) $orderId, "sponsor" => "magento"],
+                'antifraud_details' => array(
+                    'firt_name'=>$firstName,
+                    'last_name'=>$lastName,
+                    'address'=>$address,
+                    'address_city'=>$addressCity,
+                    'country_code'=>$countryCode,
+                    'phone_number'=>$phoneNumber,
+                    'device_finger_print_id'=>$device
+                ),
+                'metadata' => ["order_id" => (string) $orderId, "sponsor" => "magento"],
             );
 
             if( is_array($parameters3DS)){
