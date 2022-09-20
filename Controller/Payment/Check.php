@@ -156,7 +156,7 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 'capture' => true,
                 'enviroment' => $this->_enviroment,
                 'antifraud_details' => array(
-                    'firt_name'=>$firstName,
+                    'first_name'=>$firstName,
                     'last_name'=>$lastName,
                     'address'=>$address,
                     'address_city'=>$addressCity,
