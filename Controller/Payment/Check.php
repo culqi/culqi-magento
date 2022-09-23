@@ -148,6 +148,27 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $culqi = new \Culqi\Culqi(array('api_key' => $this->_private_key ));
 
         try {
+            $antifraud_charges = array();
+            if(isset($firstName) and !empty($firstName) and !is_null($firstName) and $firstName!=''){
+                $antifraud_charges['first_name']=$firstName;
+            }
+            if(isset($lastName) and !empty($lastName) and !is_null($lastName) and $lastName!=''){
+                $antifraud_charges['last_name']=$lastName;
+            }
+            if(isset($address) and !empty($address) and !is_null($address) and $address!=''){
+                $antifraud_charges['address']=$address;
+            }
+            if(isset($addressCity) and !empty($addressCity) and !is_null($addressCity) and $addressCity!=''){
+                $antifraud_charges['address_city']=$addressCity;
+            }
+            if(isset($countryCode) and !empty($countryCode) and !is_null($countryCode) and $countryCode!=''){
+                $antifraud_charges['country_code']=$countryCode;
+            }
+            if(isset($phoneNumber) and !empty($phoneNumber) and !is_null($phoneNumber) and $phoneNumber!=''){
+                $antifraud_charges['phone_number']=$phoneNumber;
+            }
+            $antifraud_charges['device_finger_print_id']=$device;
+            
             $args_charge = array(
                 'amount' => $amount,
                 'currency_code' => $currencyCode,
@@ -155,15 +176,7 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 'source_id' => $source_id,
                 'capture' => true,
                 'enviroment' => $this->_enviroment,
-                'antifraud_details' => array(
-                    'first_name'=>$firstName,
-                    'last_name'=>$lastName,
-                    'address'=>$address,
-                    'address_city'=>$addressCity,
-                    'country_code'=>$countryCode,
-                    'phone_number'=>$phoneNumber,
-                    'device_finger_print_id'=>$device
-                ),
+                'antifraud_details' => $antifraud_charges
                 'metadata' => ["order_id" => (string) $orderId, "sponsor" => "magento"],
             );
 
