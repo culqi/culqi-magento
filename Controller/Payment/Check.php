@@ -176,7 +176,7 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 'source_id' => $source_id,
                 'capture' => true,
                 'enviroment' => $this->_enviroment,
-                'antifraud_details' => $antifraud_charges
+                'antifraud_details' => $antifraud_charges,
                 'metadata' => ["order_id" => (string) $orderId, "sponsor" => "magento"],
             );
 
