@@ -63,7 +63,7 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         }
 
         if ($input->object == 'event' && $input->type == 'order.status.changed') {
-            $mgtOrderId = (int)$data->metadata->mgt_order_id;
+            $mgtOrderId = (int)$data->metadata->order_id;
 
             $this->logger->debug('Evento de Culqi, cambio de orden identificado. Orden: '.$mgtOrderId);
 
