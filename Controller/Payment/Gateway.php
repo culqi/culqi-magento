@@ -77,7 +77,7 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
                 "Venta correcta vía Tarjeta de Crédito (Culqi), espera a su entrega y confirmación."
             );
             $orderToSet->addStatusHistoryComment('Card number: ' . $card_number . ' Card brand: ' . $card_brand );
-            $orderToSet->addStatusHistoryComment('Charge Id: ' . $culqi_order_id . '.' );
+            $orderToSet->addStatusHistoryComment('Charge Id: <b>' . $culqi_order_id . '.</b>' );
             $orderToSet->save();
 
             $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
