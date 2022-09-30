@@ -4,4 +4,6 @@
  */
 
 
- .img-payments-culqi {    background: url(images/logo_cards.png) no-repeat 0 0% / 18rem auto; height: 100px; }
+ .img-payments-culqi {    background: url(images/logo_cards.png) no-repeat; background: url(images/cards.jpg) no-repeat;
+    height: 90px;
+    width: 720px; }
