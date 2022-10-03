@@ -185,10 +185,10 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
     function culqi() {
 
         if (Culqi.order) {
-            $jq(document).ajaxStart(function () {
+            /*$jq(document).ajaxStart(function () {
                 run_waitMe();
             });
-
+            */
             var culqi_order_id = Culqi.order.id;
             var cip_code = Culqi.order.payment_code;
 
