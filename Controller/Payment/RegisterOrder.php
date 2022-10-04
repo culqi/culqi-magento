@@ -27,7 +27,6 @@ class RegisterOrder extends \Magento\Framework\App\Action\Action implements Csrf
         \Culqi\Pago\Model\Payment\Method $culqiopera,
         \Psr\Log\LoggerInterface $logger,
         \Culqi\Pago\Block\Payment\Redirect $storeConfig
-        //\Culqi\Culqi $culqilib
     ) {
         $this->_checkoutSession = $checkoutSession;
         $this->request = $request;
@@ -50,16 +49,9 @@ class RegisterOrder extends \Magento\Framework\App\Action\Action implements Csrf
 
     public function execute()
     {
-        // Reception of Post parameters
         $orderId = $this->getRequest()->getPost('order_id');
         $culqi_order_id = $this->getRequest()->getPost('order_culqi');
-        
-        // === Load Order Data ===
-        /*
-        $orders = $this->order->loadByIncrementId($orderId);
-        $orders->addStatusHistoryComment('Order Id: ' . $culqi_order_id . '.' );
-        $orders->save();
-        */
+
         $this->getResponse()->setBody(Json::encode('OK'));
     }
 

@@ -11,7 +11,6 @@ use Zend\Json\Json;
 class Method extends \Magento\Payment\Model\Method\AbstractMethod
 {
     protected $resultJsonFactory;
-    //protected $_url_base = "https://api.culqi.com/v2";
     protected $storeConfig;
     protected $_private_key;
 
