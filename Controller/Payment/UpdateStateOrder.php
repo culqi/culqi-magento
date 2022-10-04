@@ -28,7 +28,6 @@ class UpdateStateOrder extends \Magento\Framework\App\Action\Action implements C
         \Culqi\Pago\Model\Payment\Method $culqiopera,
         \Psr\Log\LoggerInterface $logger,
         \Culqi\Pago\Block\Payment\Redirect $storeConfig
-        //\Culqi\Culqi $culqilib
     ) {
         $this->_checkoutSession = $checkoutSession;
         $this->request = $request;

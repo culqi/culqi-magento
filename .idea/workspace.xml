@@ -3,8 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="77a1be1b-b508-4368-b1a4-0fc40ad8fd29" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Block/Payment/Redirect.php" beforeDir="false" afterPath="$PROJECT_DIR$/Block/Payment/Redirect.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/Payment/Check.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/Check.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/frontend/templates/payment/redirect.phtml" beforeDir="false" afterPath="$PROJECT_DIR$/view/frontend/templates/payment/redirect.phtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/Payment/Gateway.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/Gateway.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/Payment/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/Payment/RegisterOrder.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/RegisterOrder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/Payment/UpdateStateOrder.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/UpdateStateOrder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/Webhook/Event.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Webhook/Event.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Payment/Culqi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Payment/Method.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Payment/Method.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,5 +86,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

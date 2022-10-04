@@ -130,7 +130,6 @@ class Redirect extends \Magento\Framework\View\Element\Template
             \Magento\Store\model\ScopeInterface::SCOPE_STORE
         );
         return isset($timexp) ? $timexp : TIME_EXPIRATION_DEFAULT;
-        //var_dump(isset($timexp) ? $timexp : 24); exit(1);
 
     }
     

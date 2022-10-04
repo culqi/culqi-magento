@@ -50,8 +50,6 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
 
     public function execute()
     {
-        //echo('hoi'); exit(1);
-        // Reception of Post parameters
         $source_id = $this->getRequest()->getPost('token_id');
         $orderId = $this->getRequest()->getPost('order_id');
         $emailCulqi = $this->getRequest()->getPost('email');
@@ -59,16 +57,13 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $device = $this->getRequest()->getPost('device');
         $parameters3DS = $this->getRequest()->getPost('parameters3DS');
 
-        // === Load Order Data ===
         $orders = $this->order->loadByIncrementId($orderId);
-        //var_dump($orders); exit(1);
         $total=$orders->getGrandTotal();
         $amount = number_format($total, 2, '', '');
 
         $currencyCode = $orders->getOrderCurrencyCode();
 
         $items =$orders->getAllItems();
-        // product Names
         $productNames = [];
         foreach ($items as $item) {
             $productNames[]= $item->getName();
@@ -95,15 +90,10 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
 
         $address = join(" ", $billingstreet);
 
-        // Generar un pedido aleatorio (for development - debug)
         $listOfCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $string = str_shuffle($listOfCharacters);
         $string = substr($string, 0, 15);
 
-        // ======================
-        //var_dump($this->culqiopera); exit(1);
-        // Culqi functions
-        // Create Cargo
         $cargo = $this->crearCargo(
             $orderId,
             $amount,
@@ -141,10 +131,8 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         include_once dirname(__FILE__, 3).'/libraries/Requests/library/Requests.php';
         \Requests::register_autoloader();
         include_once dirname(__FILE__, 3) . '/libraries/culqi-php/lib/culqi.php';
-        //\Requests::register_autoloader();
         $this->_private_key = $this->storeConfig->getLlaveSecreta();
         $this->_enviroment = $this->storeConfig->getURLEnviroment();
-        //var_dump($this->_enviroment); exit(1);
         $culqi = new \Culqi\Culqi(array('api_key' => $this->_private_key ));
 
         try {

@@ -59,11 +59,9 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
         $result = $this->responseAction();
         return $result;
     }
-    
-    /* Response Processing */
+
     public function responseAction()
     {
-        // If all is right !
         if ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'complete_payment') {
             $orderId = $this->getRequest()->get("orderId");
             $card_number = $this->getRequest()->get("card_number");
@@ -114,8 +112,6 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
                 $orderToSet->save();
             }
 
-            //Return sesion
-            //Return quote
             $quote = $this->quoteFactory->create()->load($orderToSet->getQuoteId());
             if ($quote && $quote->getId()) {
                 $quote->setIsActive(true)->setReservedOrderId(null)->save();
@@ -149,8 +145,6 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
                 $orderToSet = $this->order->loadByIncrementId($orderId);
             }
 
-            //Return sesion
-            //Cancel order
             $orderToSet->setState($this->statusCanceled)->setStatus($this->statusCanceled);
             $orderToSet->addStatusToHistory($orderToSet->getStatus(), "Cancelado por el usuario.");
             $orderToSet->save();

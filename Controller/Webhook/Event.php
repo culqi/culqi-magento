@@ -39,7 +39,6 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
 
     public function execute()
     {
-        // Recepcion del mensaje de webhook
         $inputJSON = $this->getRequest()->getContent();
         
         $input = json_decode($inputJSON);
@@ -47,8 +46,6 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $data = json_decode($input->data);
 
         $this->logger->debug("Mensaje de webhook recibido");
-
-        //$this->logger->debug($data);
 
         if (empty($data->metadata)) {
             exit("Error: Metadata vacia");
