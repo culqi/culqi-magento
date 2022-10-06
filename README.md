@@ -1,164 +1,145 @@
-# Culqi-magento2
+# Plugin - Magento 2.4
 
-### Pasos para la integración del Metódo de Pago Culqi
+Nuestro plugin integra por tí nuestro Checkout v4 y nuestra librería JS 3DS, con los cuales tendrás la posibilidad de realizar cobros con tarjetas de débito y crédito, Yape, PagoEfectivo, billeteras móviles y Cuotéalo con solo unos simples pasos de configuración.
 
-#### 1. Registrarse en Culqi   `<link>` : <https://www.culqi.com/>
+> Recuerda que para usar cualquier plugins necesitas tener tu llave pública y llave privada (test o live), los cuales los puedes generar a través de tu Culqipanel.
 
-Así podrás tener acceso al ambiente de pruebas de Culqi `<link>` : <https://integ-panel.culqi.com/>
-donde encontrarás tus llaves `<link>` : <https://integ-panel.culqi.com/#/desarrollo/llaves/> 
+## Requisitos ##
 
-`Llave publica: pk_test_xxxxxxxxxxxxxx`
-
-`Llave privada: sk_test_xxxxxxxxxxxxxx`
-
-#### 2. Descargar  el Método de Pago de Culqi para Magento 2
-
-`<link>` : <https://github.com/culqi/culqi-magento/releases/tag/v3.0.0> 
-
-##### 2.1
-![Imgur](https://i.imgur.com/m6KXC3q.png)
+- PHP 7.4+
+- Magento 2.4.0+
+- [Credenciales de Culqi](https://www.culqi.com)
 
 
-#### 3. Instalación del Método de Pago de Culqi en tu Magento 2.3
+## Instalación y activación
 
-##### 3.1 Descargar el archivo .zip y descomprimirlo
+Descargar el zip (.zip) de nuestro plugin desde [aquí](https://github.com/culqi/culqi-magento/releases/download/v3.0.0/culqi-magento.zip "download") y subirlo como un plugin.
 
-![Imgur](https://i.imgur.com/p6ulVcQ.png)
+Descomprimelo para mostrar el  directorio **/Culqi/Pago**. Este contiene los archivos del plugin y sigue estos pasos:
 
-##### 3.2 Colocar todos estos archivos dentro de las carpetas Culqi\Pago
-
-![imgur](https://i.imgur.com/uvsqBXj.png)
-
-Tendremos entonces la carpeta Culqi que contiene la carpeta Pago el cual contiene nuestros
-archivos.
-
-##### 3.3 Seguir los siguientes pasos:
-
-```Markdown 
-Paso 1: Subir el nuevo modulo a tu Magento
-Copiar la carpeta "Culqi" dentro de tu "app\code\"
-
-De no existir la carpeta \code, crearla.
 ```
+Paso 1: Subir el nuevo modulo a tu Magento
+Copiar la carpeta "Culqi" dentro de tu "app\code\"(de no existir la carpeta \code, crearla).
 
-Para los siguientes pasos nos situamos en tu carpeta principal de magento:
+Para los siguientes pasos nos situamos en tu carpeta principal de magento.
 
-![Imgur](https://i.imgur.com/zEKnyGk.png)
-
-```Markdown 
 Paso 2: Habilitar el nuevo modulo Culqi (importante verificar el php usado y correrlo correctamente).
 
 $ php bin/magento module:enable Culqi_Pago
-```
 
-```Markdown 
 Paso 3: Correr el comando setup:upgrade.
 
 $ php bin/magento setup:upgrade
-```
 
-```Markdown 
-Paso 4: Correr el comando cache:flush
+Paso 4: correr el comando setup:static-content:deploy -f
+
+$ php bin/magento setup:static-content:deploy -f
+
+Paso 5: Correr el comando cache:flush
+
 $ php bin/magento cache:flush
 ```
-> Ten cuidado con los permisos de las carpetas y archivos en Magento 2 ! 
-`<link>` : <https://devdocs.magento.com/guides/v2.4/install-gde/prereq/file-system-perms.html/> 
 
-#### 4. Configurar el Método de pago de Culqi en tu administrador de Magento 2.3
+> Ten cuidado con los permisos de las carpetas y archivos en Magento 2. [Ver aquí.](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/file-system-perms.html)
 
-##### 4.1 Panel principal 
+## Configuración
 
-![Imgur](https://i.imgur.com/dADyL3a.png)
+A continuación se presenta una imagen de la pantalla de configuración:
 
-##### 4.2 Sales
+![magento](https://docs.culqi.com/images/plugins/magento-conf.png)
 
-![Imgur](https://i.imgur.com/zQ6N4HY.png)
+Ingresa en la sección "Stores", luego "Configuration", "Sales", finalmente "Payment Methods".
+Independiente del mecanismo de instalación, los pasos para configurar el plugin son los mismos
 
-##### 4.3 Payment methods
+1. Activa tu Culqi checkout: Siempre debes mantenerlo activo para que tu checkout se muestre en tu tienda virtual.
 
-![Imgur](https://i.imgur.com/axDBf3r.png)
+2. Selecciona el ambiente (integración o producción): Este paso es esencial para que determines cuándo realizar pruebas y cuándo activar tu tienda en producción. Sirve también para indicar en que ambiente de CulqiPanel vas iniciar sesión.
 
-##### 4.4 Nos dirigimos al último 
+3. Iniciar sesión: Con este boton podrás iniciar sesión en tu CulqiPanel y podrás obtener las llaves de tu comercio automáticamente.
 
-![Imgur](https://i.imgur.com/bmFrxPs.png)
+> Recuerda que las credenciales son enviadas al correo que registraste en el proceso de afiliación.
 
-##### 4.5 Configuración de llaves
+4. Ingresa las llaves pública y privada (test o live): Lo puedes hacer de manera manual o automática. Para el segundo, haz click en "Iniciar Sesión" para entrar al CulqiPanel, luego selecciona tu comercio e inserta automáticamente tus llaves.
 
-![Imgur](https://i.imgur.com/uZc8FMk.png)
+> Recuerda que las llaves de integración se identifican como "test" y las de producción como "live".
 
-### Finalmente debes tener a Culqi como pasarela de pago de esta manera:
+5. Selecciona los métodos de pago: Por defecto nuestro plugin habilita los pagos con tarjeta. Sin embargo, si deseas habilitar otros medios de pago (Banca móvil e internet, Agentes y bodegas, Billeteras móviles, Cuotéalo BCP) solo debes activar los "checks".
 
-![Imgur](https://i.imgur.com/1xWAyX3.png)
+6. Define el tiempo de expiración de pago: Debes definirlo si habilitarás pagos con PagoEfectivo, billeteras móviles o Cuotéalo.
 
-##### Configura el nombre de tu tienda
+> Recuerda que si no configuras el tiempo de expiración, este tomará el tiempo por defecto: 24 horas.
 
-Tip para definir el nombre de tu tienda en el checkout de Culqi.
-
-##### 1. Nos dirigimos al panel de administración de Magento
-
-###### 1.1 Ubicamos la sección All Stores.
-
-![Imgur](https://i.imgur.com/1mviyes.png)
+7. Registra notificaciones de pago (Webhook): Valida en tu CulqiPanel que la URL de notificaciones de pago sea correcta.
 
 
-###### 1.2 Seleccionamos Magento Commerce en la Seccion Web Store.
+> Recuerda que si no iniciaste sesión en el Culqipanel desde el plugin, debes configurar manualmente la URL de Webhook con el <b>evento (order.status.changed)</b>. Sigue los pasos [aquí](https://docs.culqi.com/es/documentacion/pagos-online/webhooks/).
 
-![Imgur](https://i.imgur.com/NsyzdDW.png)
+8. Personaliza tu checkout: Con esta opción puedes cambiar los colores preestablecidos por los colores de tu marca, así como el logo.
 
-###### 1.3 Configuramos el nombre deseado.
+![magento](https://docs.culqi.com/images/plugins/magento-preview-checkout.png)
 
-![Imgur](https://i.imgur.com/tCVGnYj.png)
+9. Finalmente guarda tu configuración: ¡Listo!, Tus clientes ya pueden realizar pagos a través de tu tienda virtual.
 
+## Pruebas
 
-### Webhook
+Antes de activar tu tienda en producción, te recomendamos realizar pruebas de integración. Así garantizarás un correcto despliegue.
 
-Puedes activar un Webhook desde el panel de integración de Culqi para mantener el status de una orden pagada por pagoefectivo.
+Si vas a empezar a vender desde tu tienda virtual, deberás seleccionar el ambiente de producción e ingresar tus llaves.
 
-```Markdown 
-Paso 1: Ir al panel de integración de culqi, en la sección Eventos y luego a Webhooks.
-```
+> Recuerda que si quieres probar tu integración, puedes utilizar nuestras [tarjetas de prueba.](https://docs.culqi.com/es/documentacion/pagos-online/tarjetas-de-prueba/)
 
-![Imgur](https://i.imgur.com/yfFo29t.png)
+## Versiones disponibles
 
+Contamos con las siguientes versiones:
 
-```Markdown 
-Paso 2: Configuramos nuestra url con el Webhook order.status.changed 
+<table
+  class="mx-auto max-w-4xl w-full whitespace-nowrap bg-transparent divide-y divide-culqi-gray-ultra-light dark:divide-culqi-plate-light border-2 border-culqi-gray-ultra-light dark:border-culqi-plate-light">
+  <thead>
+    <tr class="bg-culqi-gray-light dark:bg-culqi-gray-ultra-light text-culqi-plate-light text-left">
+      <th class="px-3 py-[14px] font-semibold text-sm"></th>
+      <th class="px-3 py-[14px] font-semibold text-sm">Versión</th>
+      <th class="px-3 py-[14px] font-semibold text-sm">Descarga</th>
+    </tr>
+  </thead>
+  <tbody class="bg-transparent divide-y divide-culqi-gray-ultra-light dark:divide-culqi-plate-light">
+    <tr class="whitespace-nowrap font-normal font-Archivo  text-culqi-plate-dark dark:text-white-gray">
+      <td class = "px-3 py-4 font-bold text-sm">
+        <img src="https://docs.culqi.com/images/plugins/magento.svg" alt="magento" /></br>
+      </td>
+      <td class = "px-3 py-4 font-bold text-sm">
+        2.4.0+
+      </td>
+      <td class = "px-3 py-4 text-sm">
+        <a href='https://github.com/culqi/culqi-magento/releases/download/v3.0.0/culqi-magento.zip'>
+          Descargar
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-Importante: la dirección /pago/webhook/event siempre se mantendrá.
-```
+## Manual de instalación y configuración
 
-![Imgur](https://i.imgur.com/Jv0CwEp.png)
+Puedes usar el manual para obtener más detalle:
 
-Y con esto tenemos activado nuestro Webhook para que nuestras ventas pagadas por pagoefectivo se encuentren monitoreadas y actualizadas en todo momento.
-
-> Recordar que la dirección aqui registrada no puede ser local y debe iniciar con https://
-
-> Si tienes dudas con lo que es un Webhook puedes consultar el siguiente enlace: 
-`<link>` : < https://docs.culqi.com/#/desarrollo/webhooks/> 
-
-
-### Pase a producción:
-
-#### 1. Cumplir con los requisitos técnicos
-
-`<link>` : < https://culqi.com/docs/#/desarrollo/produccion/> 
-
-#### 2. Activar comercio desde tu panel de integración de Culqi
-
-![Imgur](https://i.imgur.com/wVOz6cc.png)
-
-> Si tienes más dudas con respecto al proceso de "Activación de comercio" escríbenos a unete@culqi.com
-
-Cuando te envien los accesos a tu panel de producción de Culqi debes reemplazar
-tus llaves de pruebas por tus llaves de producción como en el paso 4.2 
-
-`Llave publica: pk_live_xxxxxxxxxxxxxx`
-
-`Llave privada: sk_live_xxxxxxxxxxxxxx`
-
-> En el ambiente de producción podrás comenzar a usar tarjetas reales.
-
-
-### Si tienes dudas de integración escríbenos a integrate@culqi.com
-
-### Si tienes dudas comerciales escríbenos a unete@culqi.com
+<table
+  class="mx-auto max-w-4xl w-full whitespace-nowrap bg-transparent divide-y divide-culqi-gray-ultra-light dark:divide-culqi-plate-light border-2 border-culqi-gray-ultra-light dark:border-culqi-plate-light">
+  <thead>
+    <tr class="bg-culqi-gray-light dark:bg-culqi-gray-ultra-light text-culqi-plate-light text-left">
+      <th class="px-3 py-[14px] font-semibold text-sm"></th>
+      <th class="px-3 py-[14px] font-semibold text-sm">Descarga</th>
+    </tr>
+  </thead>
+  <tbody class="bg-transparent divide-y divide-culqi-gray-ultra-light dark:divide-culqi-plate-light">
+    <tr class="whitespace-nowrap font-normal font-Archivo  text-culqi-plate-dark dark:text-white-gray">
+      <td class = "px-3 py-4 font-bold text-sm">
+        <img src="https://docs.culqi.com/images/plugins/magento.svg" alt="woocommerce" /></br>
+      </td>
+      <td class = "px-3 py-4 text-sm">
+        <a href='https://docs.culqi.com/pdf/manual_magento.pdf' download>
+          Descargar
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
