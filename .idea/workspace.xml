@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="77a1be1b-b508-4368-b1a4-0fc40ad8fd29" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Model/Payment/Culqi.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="77a1be1b-b508-4368-b1a4-0fc40ad8fd29" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,7 +76,7 @@
       <workItem from="1663600184907" duration="796000" />
       <workItem from="1663603462667" duration="477000" />
       <workItem from="1664903963927" duration="68000" />
-      <workItem from="1665606277118" duration="1335000" />
+      <workItem from="1665606277118" duration="2041000" />
     </task>
     <servers />
   </component>
