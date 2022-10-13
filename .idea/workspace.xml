@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="77a1be1b-b508-4368-b1a4-0fc40ad8fd29" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/libraries/culqi-php/lib/Culqi/Lang/messages/en.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libraries/culqi-php/lib/Culqi/Lang/messages/es.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Block/Payment/Redirect.php" beforeDir="false" afterPath="$PROJECT_DIR$/Block/Payment/Redirect.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/Payment/Check.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/Check.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/Payment/Gateway.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/Gateway.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/Payment/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/Payment/RegisterOrder.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/RegisterOrder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/Payment/UpdateStateOrder.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Payment/UpdateStateOrder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/Webhook/Event.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Webhook/Event.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Payment/Culqi.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/Payment/Method.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Payment/Method.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +28,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libraries/culqi-php/lib/Culqi/Lang" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -43,6 +36,12 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/libraries/culqi-php/lib/Culqi/Lang" />
+      <recent name="$PROJECT_DIR$/Model/Payment" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -81,6 +80,11 @@
       <workItem from="1663274008611" duration="432000" />
       <workItem from="1663600184907" duration="796000" />
       <workItem from="1663603462667" duration="477000" />
+      <workItem from="1664903963927" duration="68000" />
+      <workItem from="1665606277118" duration="2328000" />
+      <workItem from="1665688704517" duration="92000" />
+      <workItem from="1665688895108" duration="480000" />
+      <workItem from="1665689989602" duration="604000" />
     </task>
     <servers />
   </component>
