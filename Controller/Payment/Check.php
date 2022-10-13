@@ -4,7 +4,7 @@ namespace Culqi\Pago\Controller\Payment;
 
 
 
-use Zend\Json\Json;
+use Laminas\Json\Json;
 
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
