@@ -14,7 +14,6 @@ class CulqiException extends \Exception {
 /**
  * Input validation error
  */
-namespace Culqi\Error;
 
 class InputValidationError extends CulqiException {
     protected $message = "Error de validacion en los campos";
@@ -22,7 +21,6 @@ class InputValidationError extends CulqiException {
 /**
  * Authentication error
  */
-namespace Culqi\Error;
 
 class AuthenticationError extends CulqiException {
     protected $message = "Error de autenticación";
@@ -30,7 +28,6 @@ class AuthenticationError extends CulqiException {
 /**
  * Resource not found
  */
-namespace Culqi\Error;
 
 class NotFound extends CulqiException {
     protected $message = "Recurso no encontrado";
@@ -38,7 +35,6 @@ class NotFound extends CulqiException {
 /**
  * Method not allowed
  */
-namespace Culqi\Error;
 
 class MethodNotAllowed extends CulqiException {
     protected $message = "Method not allowed";
@@ -46,7 +42,6 @@ class MethodNotAllowed extends CulqiException {
 /**
  * Unhandled error
  */
-namespace Culqi\Error;
 
 class UnhandledError extends CulqiException {
     protected $message = "Unhandled error";
@@ -54,7 +49,6 @@ class UnhandledError extends CulqiException {
 /**
  * Invalid API Key
  */
-namespace Culqi\Error;
 
 class InvalidApiKey extends CulqiException {
     protected $message = "API Key invalido";

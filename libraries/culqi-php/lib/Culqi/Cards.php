@@ -1,7 +1,7 @@
 <?php
 
 namespace Culqi;
-
+require_once('Resource.php');
 /**
  * Class Cards
  *

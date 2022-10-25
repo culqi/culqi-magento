@@ -12,6 +12,7 @@
  * @package Requests
  * @subpackage Transport
  */
+require_once(dirname(__FILE__).'/../Transport.php');
 class Requests_Transport_cURL implements Requests_Transport {
 	const CURL_7_10_5 = 0x070A05;
 	const CURL_7_16_2 = 0x071002;

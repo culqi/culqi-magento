@@ -10,6 +10,7 @@
  *
  * @package Requests
  */
+require_once(dirname(__FILE__).'/../Utility/CaseInsensitiveDictionary.php');
 class Requests_Response_Headers extends Requests_Utility_CaseInsensitiveDictionary {
 	/**
 	 * Get the given header

@@ -37,7 +37,7 @@ class Requests_Utility_FilteredIterator extends ArrayIterator {
 	 *
 	 * @return string
 	 */
-	public function current() {
+	public function current():array {
 		$value = parent::current();
 		$value = call_user_func($this->callback, $value);
 		return $value;

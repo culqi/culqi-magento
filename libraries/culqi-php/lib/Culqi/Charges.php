@@ -1,7 +1,7 @@
 <?php
 
 namespace Culqi;
-
+require_once(dirname(__FILE__).'/Resource.php');
 /**
  * Class Charges
  *
