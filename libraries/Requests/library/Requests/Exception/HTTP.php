@@ -10,6 +10,7 @@
  *
  * @package Requests
  */
+require_once(dirname(__FILE__).'/../Exception.php');
 class Requests_Exception_HTTP extends Requests_Exception {
 	/**
 	 * HTTP status code

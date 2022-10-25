@@ -16,6 +16,7 @@
  * @subpackage Proxy
  * @since 1.6
  */
+require_once(dirname(__FILE__).'/../Proxy.php');
 class Requests_Proxy_HTTP implements Requests_Proxy {
 	/**
 	 * Proxy host and port

@@ -15,6 +15,7 @@
  * @package Requests
  * @subpackage Authentication
  */
+require_once(dirname(__FILE__).'/../Auth.php');
 class Requests_Auth_Basic implements Requests_Auth {
 	/**
 	 * Username

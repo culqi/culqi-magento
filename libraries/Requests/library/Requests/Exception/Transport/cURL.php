@@ -1,5 +1,5 @@
 <?php
-
+require_once(dirname(__FILE__).'/../Transport.php');
 class Requests_Exception_Transport_cURL extends Requests_Exception_Transport {
 
 	const EASY = 'cURLEasy';
