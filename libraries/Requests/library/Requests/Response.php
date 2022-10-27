@@ -1,4 +1,5 @@
 <?php
+require_once(dirname(__FILE__).'/Exception/HTTP.php');
 /**
  * HTTP response class
  *

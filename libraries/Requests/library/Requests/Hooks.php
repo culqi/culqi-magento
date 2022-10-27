@@ -12,6 +12,7 @@
  * @package Requests
  * @subpackage Utilities
  */
+require_once(dirname(__FILE__).'/Hooker.php');
 class Requests_Hooks implements Requests_Hooker {
 	/**
 	 * Registered callbacks for each hook

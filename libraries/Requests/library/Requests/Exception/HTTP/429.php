@@ -12,6 +12,7 @@
  * @see https://tools.ietf.org/html/draft-nottingham-http-new-status-04
  * @package Requests
  */
+require_once(dirname(__FILE__).'/../HTTP.php');
 class Requests_Exception_HTTP_429 extends Requests_Exception_HTTP {
 	/**
 	 * HTTP status code

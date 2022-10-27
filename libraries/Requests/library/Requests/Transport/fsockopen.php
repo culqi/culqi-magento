@@ -12,6 +12,7 @@
  * @package Requests
  * @subpackage Transport
  */
+require_once(dirname(__FILE__).'/../Transport.php');
 class Requests_Transport_fsockopen implements Requests_Transport {
 	/**
 	 * Second to microsecond conversion

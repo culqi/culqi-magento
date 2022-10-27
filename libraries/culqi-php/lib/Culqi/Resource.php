@@ -1,7 +1,7 @@
 <?php
 
 namespace Culqi;
-
+require_once('Client.php');
 /**
  * Class Resource
  *
