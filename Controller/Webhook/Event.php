@@ -47,6 +47,17 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
 
         $this->logger->debug("Mensaje de webhook recibido");
 
+        if(isset($input->userName) && isset($input->password)){
+            $username = $input->userName;
+            $password = $input->password;
+        }else{
+            return response(['error'=> "No autorizado"], 401);
+        }
+
+        if($username <> $shop->username or $password <> $shop->password){
+            return response(['error'=> "Crendenciales Incorrectas"], 401);
+        }
+
         if (empty($data->metadata)) {
             exit("Error: Metadata vacia");
         }
