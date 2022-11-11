@@ -50,6 +50,16 @@
                     <comment>Si no iniciaste sesión con tu cuenta de Culqi Panel, tienes que configurar esta URL.</comment> -->
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\NotifyPayment</frontend_model>
                 </field>
+                <field name="username_webhook" formElement="hidden">
+                    <settings>
+                        <dataType>text</dataType>
+                    </settings>
+                </field>
+                <field name="password_webhook" formElement="hidden">
+                    <settings>
+                        <dataType>text</dataType>
+                    </settings>
+                </field>
                 <field id="personalize" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PersonalizeTheme</frontend_model>
                     <attribute type="shared">1</attribute>
