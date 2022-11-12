@@ -36,4 +36,7 @@ if(strcasecmp(substr(PHP_OS, 0, 3), 'WIN') == 0){
 define('CULQI_OS', $isWindows);
 define('TIME_EXPIRATION_DEFAULT', 24);
 
+define('USERNAME_WEBHOOK', bin2hex(random_bytes(5)));
+define('PASSWORD_WEBHOOK', bin2hex(random_bytes(10)));
+
 ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Culqi_Pago', __DIR__);

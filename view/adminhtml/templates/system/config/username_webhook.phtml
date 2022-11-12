@@ -1,5 +1,5 @@
-<input id="username_webhook" 
-        name="username_webhook" 
+<input id="<?php echo $this->getHtmlId() ?>" 
+        name="<?php echo $this->getNamePrefix() ?>" 
         data-ui-id="adminhtml-form-field-disable-0-text-groups-culqi-fields-notpay-value" 
-        value="<?php echo $this->generate_autentication_wh(5)?>" 
-        class=" input-text admin__control-text" type="text" readonly="">
+        value="<?php echo $this->getValue() == '' ? $this->generate_autentication_wh() : $this->getValue() ?>" 
+        class=" input-text admin__control-text" type="hidden" readonly="">

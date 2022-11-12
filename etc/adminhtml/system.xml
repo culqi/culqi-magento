@@ -50,12 +50,6 @@
                     <comment>Si no iniciaste sesión con tu cuenta de Culqi Panel, tienes que configurar esta URL.</comment> -->
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\NotifyPayment</frontend_model>
                 </field>
-                <field name="username_webhook" formElement="hidden">
-                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\UserNameWebhook</frontend_model>
-                </field>
-                <field name="password_webhook" formElement="hidden">
-                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PasswordWebhook</frontend_model>
-                </field>
                 <field id="personalize" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PersonalizeTheme</frontend_model>
                     <attribute type="shared">1</attribute>
@@ -69,6 +63,12 @@
                     <label>Tema elegido</label>
                     <comment>Utilizaremos estos colores para personalizar tu checkout.</comment>
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Disable</frontend_model>
+                </field>
+                <field id="username_webhook" translate="label" type="text" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\UserNameWebhook</frontend_model>
+                </field>
+                <field id="password_webhook" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PasswordWebhook</frontend_model>
                 </field>
             </group>
         </section>

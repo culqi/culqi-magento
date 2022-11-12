@@ -2,7 +2,7 @@
 
 namespace Culqi\Pago\Block\Adminhtml\Form\Field;
 
-class PublicKey extends \Magento\Config\Block\System\Config\Form\Field
+class UsernameWebhook extends \Magento\Config\Block\System\Config\Form\Field
 {
     /**
      * Template path
@@ -25,7 +25,7 @@ class PublicKey extends \Magento\Config\Block\System\Config\Form\Field
             ->setHtmlId($element->getHtmlId())
             ->setName($element->getName());
 
-        return $this->_decorateRowHtml($element, "<td class='label'>Username<div class='tooltip'><span class='help'><span></span></span><div class='tooltip-content' style='text-align:left;'>Encuentra tu llave pública ingresando a la sección Desarrollo en tu Culqipanel, en la pestaña de API Keys</div></div></td><td>" . $this->toHtml() . '<p class="note"><span>Ingresa tu llave pública</span></p></td><td></td>');
+        return $this->_decorateRowHtml($element, "<td>" . $this->toHtml() . '</td>');
     }
 
     public function getValue()
@@ -42,9 +42,9 @@ class PublicKey extends \Magento\Config\Block\System\Config\Form\Field
         return $this->_value;
     }
 
-    private function generate_autentication_wh($digito)
+    public function generate_autentication_wh()
     {
-        return bin2hex(random_bytes($digito));
+        return USERNAME_WEBHOOK;
 
     }
 }

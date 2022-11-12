@@ -11,6 +11,7 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
     protected $response;
     protected $order;
     protected $logger;
+    protected $storeConfig;
 
     protected $statusProcessing = \Magento\Sales\Model\Order::STATE_PROCESSING;
     protected $statusCanceled = \Magento\Sales\Model\Order::STATE_CANCELED;
@@ -20,10 +21,12 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         \Magento\Framework\App\Action\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Api\Data\OrderInterface $order,
-        \Psr\Log\LoggerInterface $logger
+        \Psr\Log\LoggerInterface $logger,
+        \Culqi\Pago\Block\Payment\Redirect $storeConfig
     ) {
         $this->logger = $logger;
         $this->order = $order;
+        $this->storeConfig = $storeConfig;
         parent::__construct($context);
     }
 
@@ -54,7 +57,14 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $username = $credenciales[0];
         $password = $credenciales[1];
 
-        if($username <> $shop->username_webhook or $password <> $shop->password_webhook){
+        if(!isset($username) or !isset($password)){
+            return response(['error'=> "No autorizado"], 401);
+        }
+
+        $usernameBD = $this->storeConfig->getWebhookUsername();
+        $passwordBD = $this->storeConfig->getWebhookPassword();
+
+        if($username <> $usernameBD or $password <> $passwordBD){
             return response(['error'=> "Crendenciales Incorrectas"], 401);
         }
 
