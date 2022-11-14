@@ -15,6 +15,8 @@ class NotifyPayment extends \Magento\Config\Block\System\Config\Form\Field
     const CONFIG_PATH2 = 'payment/culqi/username_webhook';
     const CONFIG_PATH3 = 'payment/culqi/password_webhook';
     protected $_value = null;
+    protected $_value2 = null;
+    protected $_value3 = null;
 
     /**
      * Render fieldset html
@@ -57,9 +59,9 @@ class NotifyPayment extends \Magento\Config\Block\System\Config\Form\Field
             } else {
                 $data = '';
             }
-            $this->_value = $data;
+            $this->_value2 = $data;
         
-        return $this->_value;
+        return $this->_value2;
     }
 
     public function getWebhookPassword()
@@ -70,8 +72,8 @@ class NotifyPayment extends \Magento\Config\Block\System\Config\Form\Field
             } else {
                 $data = '';
             }
-            $this->_value = $data;
+            $this->_value3 = $data;
         
-        return $this->_value;
+        return $this->_value3;
     }
 }
