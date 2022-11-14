@@ -50,7 +50,13 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
 
         $this->logger->debug("Mensaje de webhook recibido");
 
-        $headers = $this->getRequest()->header('Authorization');
+        $headers = getallheaders();
+
+        if(!isset($headers['Authorization'])){
+            exit("Error: No headers present");
+        }else{
+            $headers = $headers['Authorization'];
+        }
         $authorization = substr($headers,6);
         $credenciales = base64_decode($authorization);
         $credenciales = explode( ':', $credenciales );
@@ -58,14 +64,14 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $password = $credenciales[1];
 
         if(!isset($username) or !isset($password)){
-            return response(['error'=> "No autorizado"], 401);
+            exit("Error: No autorizado");
         }
 
         $usernameBD = $this->storeConfig->getWebhookUsername();
         $passwordBD = $this->storeConfig->getWebhookPassword();
 
         if($username <> $usernameBD or $password <> $passwordBD){
-            return response(['error'=> "Crendenciales Incorrectas"], 401);
+            exit("Error: Crendenciales Incorrectas");
         }
 
         if (empty($data->metadata)) {

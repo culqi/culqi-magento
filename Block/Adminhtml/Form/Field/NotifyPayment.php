@@ -33,7 +33,8 @@ class NotifyPayment extends \Magento\Config\Block\System\Config\Form\Field
         //$columns = $this->getRequest()->getParam('website') || $this->getRequest()->getParam('store') ? 5 : 4;
         $username_webhook = $this->getWebhookUsername() == '' ? USERNAME_WEBHOOK : $this->getWebhookUsername();
         $password_webhook = $this->getWebhookPassword() == '' ? PASSWORD_WEBHOOK : $this->getWebhookPassword();
-        $text_webhook = '<p class="note"><span>Si no iniciaste sesión con tu cuenta de CulqiPanel, tienes que configurar esta URL colocando estas credenciales:<br><b>Username:</b>'. $username_webhook .' <b>Password:</b>'. $password_webhook .'</span></p>';
+        $text_credenciales = '<p style="font-size:12px; margin-top: -5px;"><b>Username:</b>'. $username_webhook .' <b>Password:</b>'. $password_webhook.'</p>';
+        $text_webhook = '<p class="note"><span>Si no iniciaste sesión con tu cuenta de CulqiPanel, tienes que configurar esta URL colocando estas credenciales:<br>'. $text_credenciales .'</span></p>';
         return $this->_decorateRowHtml($element, "<td class='label'>Notificaciones de Pago<div class='tooltip'><span class='help'><span></span></span><div class='tooltip-content' style='text-align:left;'>Ingresa a tu Culqipanel en la sección de eventos, hacer clic a +Añadir. Se abrirá un popup, en donde deberás escoger order.status.changed y pegar la siguiente URL</div></div></td><td>" . $this->toHtml() . $text_webhook. '</td><td></td>');
     }
 
