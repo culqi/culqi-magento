@@ -64,6 +64,12 @@
                     <comment>Utilizaremos estos colores para personalizar tu checkout.</comment>
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\Disable</frontend_model>
                 </field>
+                <field id="username_webhook" translate="label" type="text" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\UserNameWebhook</frontend_model>
+                </field>
+                <field id="password_webhook" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PasswordWebhook</frontend_model>
+                </field>
             </group>
         </section>
     </system>
