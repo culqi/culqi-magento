@@ -386,6 +386,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             });
             Culqi.open();
             e.preventDefault();
+            $jq('#btn_pago').removeAttr('disabled');
         }
 
     }
