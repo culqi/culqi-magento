@@ -134,7 +134,12 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
     // GENERAR DEVICE ID (INVOCAR APENAS SE DE AL BOTON PAGAR Y ABRA EL CULQI CHECKOUT)
     Culqi3DS.publicKey = "<?php echo $llavePublica; ?>";
-    var device = await Culqi3DS.generateDevice();
+    //var device = await Culqi3DS.generateDevice();
+    async function generateDevice(){
+        const device = await Culqi3DS.generateDevice();
+        return device;
+    }
+    var device = generateDevice();
 
     Culqi.publicKey = '<?php echo $llavePublica; ?>';
     Culqi.useClasses = true;
@@ -381,6 +386,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             });
             Culqi.open();
             e.preventDefault();
+            $jq('#btn_pago').removeAttr('disabled');
         }
 
     }

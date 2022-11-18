@@ -133,5 +133,24 @@ class Redirect extends \Magento\Framework\View\Element\Template
 
     }
     
+    public function getWebhookUsername()
+    {
+        $username = $this->scopeConfig->getvalue(
+            'payment/culqi/username_webhook',
+            \Magento\Store\model\ScopeInterface::SCOPE_STORE
+        );
+        return $username;
+
+    }
+
+    public function getWebhookPassword()
+    {
+        $password = $this->scopeConfig->getvalue(
+            'payment/culqi/password_webhook',
+            \Magento\Store\model\ScopeInterface::SCOPE_STORE
+        );
+        return $password;
+
+    }
 
 }

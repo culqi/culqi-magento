@@ -11,6 +11,7 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
     protected $response;
     protected $order;
     protected $logger;
+    protected $storeConfig;
 
     protected $statusProcessing = \Magento\Sales\Model\Order::STATE_PROCESSING;
     protected $statusCanceled = \Magento\Sales\Model\Order::STATE_CANCELED;
@@ -20,10 +21,12 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         \Magento\Framework\App\Action\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Api\Data\OrderInterface $order,
-        \Psr\Log\LoggerInterface $logger
+        \Psr\Log\LoggerInterface $logger,
+        \Culqi\Pago\Block\Payment\Redirect $storeConfig
     ) {
         $this->logger = $logger;
         $this->order = $order;
+        $this->storeConfig = $storeConfig;
         parent::__construct($context);
     }
 
@@ -46,6 +49,30 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $data = json_decode($input->data);
 
         $this->logger->debug("Mensaje de webhook recibido");
+
+        $headers = getallheaders();
+
+        if(!isset($headers['Authorization'])){
+            exit("Error: No headers present");
+        }else{
+            $headers = $headers['Authorization'];
+        }
+        $authorization = substr($headers,6);
+        $credenciales = base64_decode($authorization);
+        $credenciales = explode( ':', $credenciales );
+        $username = $credenciales[0];
+        $password = $credenciales[1];
+
+        if(!isset($username) or !isset($password)){
+            exit("Error: No autorizado");
+        }
+
+        $usernameBD = $this->storeConfig->getWebhookUsername();
+        $passwordBD = $this->storeConfig->getWebhookPassword();
+
+        if($username <> $usernameBD or $password <> $passwordBD){
+            exit("Error: Crendenciales Incorrectas");
+        }
 
         if (empty($data->metadata)) {
             exit("Error: Metadata vacia");

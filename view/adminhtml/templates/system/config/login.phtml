@@ -660,7 +660,10 @@
                             "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
                             "eventId": "order.status.changed",
                             "url": jQuery('input[name="groups[culqi][fields][notpay][value]"]').val(),
-                            "version": 2
+                            "version": 2,
+                            "loginActive": true,
+                            "username": jQuery('input[name="groups[culqi][fields][username_webhook][value]"]').val(),
+                            "password": jQuery('input[name="groups[culqi][fields][password_webhook][value]"]').val()
                         }),
                     };
                     jQuery.ajax(settings).done(function (response) {
