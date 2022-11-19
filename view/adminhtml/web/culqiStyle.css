@@ -7,3 +7,12 @@
  .culqi-other-section .button-container {float: right; margin: 1rem 0 0 !important;}
  .culqi-other-section > .entry-edit-head > a::before {left: auto !important; right: 1.3rem !important;}
  .culqi-other-section .heading {    background: url(images/Isotipo-Culqi.png) no-repeat 0 0% / 18rem auto; padding-left: 11rem; background-size: 80px; background-position: left center;}
+ .row-heading{
+	margin-top: -25px;
+    margin-left: 20px;
+ }
+ 
+ strong.text-right {
+    text-align: right;
+    margin-top: -20px;
+}

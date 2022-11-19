@@ -14,11 +14,14 @@ class Info extends \Magento\Backend\Block\AbstractBlock implements RendererInter
     public function render(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
         $html = '<div class="section-config with-button""> 
-                <div class="config-heading">
-                <strong>
-                    <a class="link-more" href="https://www.culqi.com/docs" target="_blank"> Documentación Culqi </a>
-                </strong>
-                </div>
+                    <div class="config-heading">
+                        <div class=row-heading>
+                            '.MPCULQI_PLUGIN_VERSION.'
+                            <strong class="text-right">
+                                <a class="link-more" href="https://www.culqi.com/docs" target="_blank"> Documentación Culqi </a>
+                            </strong>
+                        </div>
+                    </div>
                  </div>';
         return $html;
     }
