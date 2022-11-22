@@ -137,7 +137,11 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
     //var device = await Culqi3DS.generateDevice();
     const device_aux = Promise.resolve(Culqi3DS.generateDevice());
     device_aux.then(value => {
-      window.device = value;
+    // Activa el botón de pago
+        $jq('#btn_pago').on('click', function (e) {
+            $jq('#btn_pago').attr('disabled', true);
+            generateOrder(e, value);
+        });
     }).catch(err => {
       console.log(err);
     });
@@ -176,15 +180,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
     $jq('#btn_cancelar').on('click', function (e) {
         post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>",
             jsonResponse('cancelado_por_usuario'));
-    });
-
-    // Activa el botón de pago
-    $jq('#btn_pago').on('click', function (e) {
-        $jq('#btn_pago').attr('disabled', true);
-        generateOrder(e);
-
-        //Abre el formulario con las opciones de Culqi.settings
-
     });
 
 
@@ -318,7 +313,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
     };
 
-    function generateOrder(e) {
+    function generateOrder(e, device) {
+        window.device = device;
         var $jq = jQuery.noConflict();
         if(<?php echo in_array('bancamovil', $paymentMethods) ? 'true' : 'false';  ?>==true ||
         <?php echo in_array('agente', $paymentMethods) ? 'true' : 'false';  ?>==true ||
