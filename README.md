@@ -13,7 +13,7 @@ Nuestro plugin integra por tí nuestro Checkout v4 y nuestra librería JS 3DS, c
 
 ## Instalación y activación
 
-Descargar el zip (.zip) de nuestro plugin desde [aquí](https://github.com/culqi/culqi-magento/releases/download/v3.0.0/culqi-magento.zip "download").
+Descargar el zip (.zip) de nuestro plugin desde [aquí](https://github.com/culqi/culqi-magento/releases/download/vCulqi-Magento2.4/culqi-magento.zip "download").
 
 Crea el  directorio **/Culqi/Pago/** y copia el contenido del zip y sigue estos pasos:
 
@@ -110,7 +110,7 @@ Contamos con las siguientes versiones:
         2.4.0+
       </td>
       <td class = "px-3 py-4 text-sm">
-        <a href='https://github.com/culqi/culqi-magento/releases/download/v3.0.0/culqi-magento.zip'>
+        <a href='https://github.com/culqi/culqi-magento/releases/download/vCulqi-Magento2.4/culqi-magento.zip'>
           Descargar
         </a>
       </td>
