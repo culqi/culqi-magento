@@ -453,13 +453,13 @@
                     <div class="form-group">
                         <label id="errorlogincpanelculqi" style="color: red"></label>
                     </div>
-                    <div class="form-group d-none" style="display: none">
+                    <!--<div class="form-group d-none" style="display: none">
                         <label for="type_integration">Tipo de Integración</label>
                         <select name="type_integration" class="form-control" id="type_integration">
                             <option value="0" selected>Test</option>
                             <option value="1">Live</option>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="login()" name="button" class="btn btn-primary" style='width:100%'>Iniciar Sesión</button>
@@ -613,33 +613,38 @@
         } */
 
         var urlwebhook = "<?php echo $this->getUrlWebhookInteg() ?>";
+        var url_get_webhook = "<?php echo $this->getUrlGetWebhookInteg() ?>";
         jQuery('input[type="radio"]').each(function(){
             if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
                 urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                url_get_webhook = "<?php echo $this->getUrlGetWebhookProd() ?>";
             }
         });
         if (jQuery('#CULQI_TOKENLOGIN').val().length>0) {
             const settings = {
-                url: urlwebhook,
+                url: url_get_webhook,
                 crossDomain: true,
                 dataType: 'json',
                 contentType: 'application/json',
-                type: "GET",
+                type: "POST",
                 timeout: 0, 
                 headers: {
                     'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
                     "Content-Type": "application/json",
                     "Accept": "*/*"
                 },
-                data: {
-                    "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
-                    "version": 2
+                data: JSON.stringify({
+                    "merchantCode": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
+                    "apiVersion": "2.0"
+                }),
+                beforeSend: function(xhr){
+                    //Empty to remove magento's default handler
                 }
             };
             jQuery.ajax(settings).done(function (response) {
                 var valid = 1;
-                for(let i = 0; i < response.data.length; i++) {
-                    if(response.data[i].url==jQuery('input[name="groups[culqi][fields][notpay][value]"]').val()){
+                for(let i = 0; i < response.length; i++) {
+                    if(response[i].url==jQuery('input[name="groups[culqi][fields][notpay][value]"]').val()){
                         valid=0;
                     }
                 }
@@ -657,14 +662,17 @@
                             "Accept": "*/*"
                         },
                         data: JSON.stringify({
-                            "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
-                            "eventId": "order.status.changed",
+                            "merchantCode": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
+                            "eventType": "order.status.changed",
                             "url": jQuery('input[name="groups[culqi][fields][notpay][value]"]').val(),
-                            "version": 2,
+                            "apiVersion": "2.0",
                             "loginActive": true,
-                            "username": jQuery('input[name="groups[culqi][fields][username_webhook][value]"]').val(),
+                            "userName": jQuery('input[name="groups[culqi][fields][username_webhook][value]"]').val(),
                             "password": jQuery('input[name="groups[culqi][fields][password_webhook][value]"]').val()
                         }),
+                        beforeSend: function(xhr){
+                            //Empty to remove magento's default handler
+                        }
                     };
                     jQuery.ajax(settings).done(function (response) {
                         console.log(response);
@@ -701,14 +709,18 @@
                     email: jQuery('#email').val(),
                     password: jQuery('#password').val(),
                 }),
+                beforeSend: function(xhr){
+                    //Empty to remove magento's default handler
+                }
             };
+            console.log(settings);
             jQuery.ajax(settings).done(function (response) {
 
                 if(typeof(response.message) != "undefined" && response.message !== null){
                     jQuery('#loadingloginculqi').remove();
                     jQuery('#errorlogincpanelculqi').html(response.message);
                 }else{
-                    window.culqi_token = response.data;
+                    window.culqi_token = response.idToken;
                     culqiWoGetMerchants(window.culqi_token);
                 }
             });
@@ -719,6 +731,7 @@
     }
 
     const culqiWoGetMerchants = (token) => {
+        console.log(token);
         var urlmerchant = "<?php echo $this->getUrlMerchantInteg() ?>";
         jQuery('input[type="radio"]').each(function(){
             if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
@@ -727,18 +740,24 @@
         });
         const settings = {
             url: urlmerchant,
-            method: "GET",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Authorization": "Bearer " + token,
             },
+            data: JSON.stringify({
+                email: jQuery("#email").val()
+            }),
+            beforeSend: function(xhr){
+                //Empty to remove magento's default handler
+            }
         };
 
         jQuery.ajax(settings)
             .done(function (response) {
                 console.log('response:::', response);
-                renderMerchants(response.data);
+                renderMerchants(response.accounts[0].merchants);
                 jQuery("#modalLogin").hide();
                 jQuery("#modalList").show();
             })
@@ -755,14 +774,20 @@
             }
         });
         const settings = {
-            url: urlmerchantsingle + id,
-            method: "GET",
+            url: urlmerchantsingle,
+            method: "POST",
             timeout: 0,
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Authorization": "Bearer " + window.culqi_token,
             },
+            data: JSON.stringify({
+                publicKey: id
+            }),
+            beforeSend: function(xhr){
+                //Empty to remove magento's default handler
+            }
         };
 
         jQuery.ajax(settings)
@@ -799,7 +824,7 @@
             html += `
                     <li>
                     <div class="items">
-                       <div class="merchant_item" data-name="`+merchant.nombre_comercial+`" data-key='`+merchant.codigo_comercio+`'>
+                       <div class="merchant_item" data-name="`+merchant.name+`" data-key='`+merchant.products[0].publicKey+`'>
                         <div class="merchant_logo">
                             <svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_135_620)">
@@ -818,7 +843,7 @@
                             </svg>
                         </div>
                         <div class="merchant_name">`
-                +merchant.nombre_comercial+
+                +merchant.name+
                 `</div>
                         <div class="merchant_arrow">
                             <svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">

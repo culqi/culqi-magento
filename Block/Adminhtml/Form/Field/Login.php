@@ -32,10 +32,24 @@ class Login extends \Magento\Config\Block\System\Config\Form\Field
         
     }
 
+    public function getUrlGetWebhookInteg()
+    {
+
+        return URLAPI_GET_WEBHOOK_INTEG;
+        
+    }
+
     public function getUrlWebhookProd()
     {
 
         return URLAPI_WEBHOOK_PROD;
+        
+    }
+
+    public function getUrlGetWebhookProd()
+    {
+
+        return URLAPI_GET_WEBHOOK_PROD;
         
     }
 
