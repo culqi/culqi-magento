@@ -333,6 +333,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         order: response,
                         culqiclient: 'Magento',
                         culqiclientversion: '<?php  echo $version; ?>',
+                        culqipluginversion: '<?php  echo $MPCULQI_PLUGIN_VERSION; ?>',
                     });
 
                     /* Inicio */
@@ -367,6 +368,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         amount: <?php echo $total; ?>,
                         culqiclient: 'Magento',
                         culqiclientversion: '<?php  echo $version; ?>',
+                        culqipluginversion: '<?php  echo $MPCULQI_PLUGIN_VERSION; ?>',
                     });
                     Culqi.open();
                     e.preventDefault();
@@ -380,6 +382,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 amount: <?php echo $total; ?>,
                 culqiclient: 'Magento',
                 culqiclientversion: '<?php  echo $version; ?>',
+                culqipluginversion: '<?php  echo $MPCULQI_PLUGIN_VERSION; ?>',
             });
             Culqi.open();
             e.preventDefault();
