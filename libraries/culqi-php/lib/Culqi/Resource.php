@@ -7,8 +7,8 @@ require_once('Client.php');
  *
  * @package Culqi
  */
+#[\AllowDynamicProperties]
 class Resource extends Client {
-
     /**
      * Constructor.
      */

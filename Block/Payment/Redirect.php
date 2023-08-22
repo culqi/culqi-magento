@@ -153,4 +153,20 @@ class Redirect extends \Magento\Framework\View\Element\Template
 
     }
 
+    public function getRsaId()
+    {
+        return $this->scopeConfig->getValue(
+            'payment/culqi/rsa_id',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+    
+    public function getRsaPublickey()
+    {
+        return $this->scopeConfig->getValue(
+            'payment/culqi/rsa_publickey',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
 }
