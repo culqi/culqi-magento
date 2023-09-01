@@ -318,7 +318,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
     function getSettings(order = false) {
         const rsa_id = '<?php echo $rsa_id ?>';
-        const rsa_publickey = '<?php echo $rsa_publickey ?>';
+        const rsa_publickey = `<?php echo $rsa_publickey ?>`;
         let args_settings = {
             title: '<?php echo $storeName ?>',
             currency: '<?php echo $currencyCode ?>',
