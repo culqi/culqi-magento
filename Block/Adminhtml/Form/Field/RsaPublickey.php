@@ -27,7 +27,7 @@ class RsaPublickey extends \Magento\Config\Block\System\Config\Form\Field
             ->setName($element->getName());
 
         //$columns = $this->getRequest()->getParam('website') || $this->getRequest()->getParam('store') ? 5 : 4;
-        return $this->_decorateRowHtml($element, "<td class='label'>RSA Id<div class='tooltip'><span class='help'><span></span></span><div class='tooltip-content' style='text-align:left;'>Genera tu llave  RSA ingresando a la sección Desarrollo de tu CulqiPanel, en la pertaña de RSA Keys</div></div></td><td>" . $this->toHtml() . '<p class="note"><span>Ingresa tu llave pública RSA</span></p></td><td></td>');
+        return $this->_decorateRowHtml($element, "<td class='label'>RSA Publickey<div class='tooltip'><span class='help'><span></span></span><div class='tooltip-content' style='text-align:left;'>Genera tu llave  RSA ingresando a la sección Desarrollo de tu CulqiPanel, en la pestaña de RSA Keys</div></div></td><td>" . $this->toHtml() . '<p class="note"><span>Ingresa tu llave pública RSA</span></p></td><td></td>');
     }
 
     public function getValue()
