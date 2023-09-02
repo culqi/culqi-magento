@@ -163,10 +163,16 @@ class Redirect extends \Magento\Framework\View\Element\Template
     
     public function getRsaPublickey()
     {
-        return trim($this->scopeConfig->getValue(
+        $rsa_pk = $this->scopeConfig->getValue(
             'payment/culqi/rsa_publickey',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        ));
+        );
+        
+        if(is_string($rsa_pk)) {
+            return trim($rsa_pk);
+        }
+
+        return $rsa_pk;
     }
 
 }
