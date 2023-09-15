@@ -7,6 +7,7 @@ require_once(dirname(__FILE__).'/Resource.php');
  *
  * @package Culqi
  */
+#[\AllowDynamicProperties]
 class Orders extends Resource {
     
     const URL_ORDERS = "/orders/";

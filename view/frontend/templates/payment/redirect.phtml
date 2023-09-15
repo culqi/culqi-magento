@@ -5,11 +5,14 @@ $enviroment = $block->getEnviroment();
 $paymentMethods = $block->getPaymentMethods();
 $logo = $block->getLogo();
 $theme = $block->getTheme();
+$rsa_id = $block->getRsaId();
+$rsa_publickey = $block->getRsaPublickey();
 //echo var_dump($theme);
 
 $urlapi_ordercharges = URLAPI_ORDERCHARGES_INTEG;
 $urlapi_checkout = URLAPI_CHECKOUT_INTEG;
 $urlapi_3ds = URLAPI_INTEG_3DS;
+$plugin_version = MPCULQI_PLUGIN_VERSION;
 
 if ($enviroment == 'prod') {
     $urlapi_ordercharges = URLAPI_ORDERCHARGES_PROD;
@@ -313,6 +316,30 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
     };
 
+    function getSettings(order = false) {
+        const rsa_id = '<?php echo $rsa_id ?>';
+        const rsa_publickey = `<?php echo $rsa_publickey ?>`;
+        let args_settings = {
+            title: '<?php echo $storeName ?>',
+            currency: '<?php echo $currencyCode ?>',
+            amount: <?php echo $total; ?>,
+            culqiclient: 'Magento',
+            culqiclientversion: '<?php  echo $version; ?>',
+            culqipluginversion: '<?php  echo $plugin_version; ?>',
+        }
+        if(order) {
+            args_settings.order = order;
+        }
+        if(rsa_id && rsa_publickey) {
+            args_settings.xculqirsaid = rsa_id;
+            args_settings.rsapublickey = rsa_publickey;
+        }
+        Culqi.settings(args_settings);
+        Culqi.client = {
+            email: '<?php echo $email; ?>'
+        };
+    }
+
     function generateOrder(e, device) {
         window.device = device;
         var $jq = jQuery.noConflict();
@@ -326,14 +353,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 dataType: 'json',
                 success: function (response) {
                     console.log('response:::', response);
-                    Culqi.settings({
-                        title: '<?php echo $storeName ?>',
-                        currency: '<?php echo $currencyCode ?>',
-                        amount: <?php echo $total; ?>,
-                        order: response,
-                        culqiclient: 'Magento',
-                        culqiclientversion: '<?php  echo $version; ?>',
-                    });
+                    getSettings(response);
 
                     /* Inicio */
 
@@ -361,13 +381,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 },
                 error: function (error) {
                     console.log('error:::', error);
-                    Culqi.settings({
-                        title: '<?php echo $storeName ?>',
-                        currency: '<?php echo $currencyCode ?>',
-                        amount: <?php echo $total; ?>,
-                        culqiclient: 'Magento',
-                        culqiclientversion: '<?php  echo $version; ?>',
-                    });
+                    getSettings();
                     Culqi.open();
                     e.preventDefault();
                 }

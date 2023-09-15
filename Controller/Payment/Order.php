@@ -7,6 +7,7 @@ use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
 
+#[\AllowDynamicProperties]
 class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareActionInterface
 {
     protected $_checkoutSession;
@@ -90,9 +91,9 @@ class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         include_once dirname(__FILE__, 3).'/libraries/Requests/library/Requests.php';
         \Requests::register_autoloader();
         include_once dirname(__FILE__, 3) . '/libraries/culqi-php/lib/culqi.php';
-        $this->_private_key = $this->storeConfig->getLlaveSecreta();
-        $this->_enviroment = $this->storeConfig->getURLEnviroment();
-        $culqi = new \Culqi\Culqi(array('api_key' => $this->_private_key ));
+        $private_key = $this->storeConfig->getLlaveSecreta();
+        $enviroment = $this->storeConfig->getURLEnviroment();
+        $culqi = new \Culqi\Culqi(array('api_key' => $private_key ));
 
         try {
             $args_order = array(
@@ -109,7 +110,7 @@ class Order extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 ),
                 'expiration_date' => $expiration_date,
                 'confirm' => false,
-                'enviroment' => $this->_enviroment,
+                'enviroment' => $enviroment,
                 'metadata' => ["order_id" => $orderId, "sponsor" => "magento"]
     
             );

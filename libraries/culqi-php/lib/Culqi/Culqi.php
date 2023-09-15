@@ -8,6 +8,7 @@ use Culqi\Error as Errors;
  *
  * @package Culqi
  */
+#[\AllowDynamicProperties]
 class Culqi
 {
     public $api_key;
@@ -37,6 +38,7 @@ class Culqi
      * @example array('api_key' => "{api_key}")
      *
      */
+
     public function __construct($options)
     {
         $this->api_key = $options["api_key"];

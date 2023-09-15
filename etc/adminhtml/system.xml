@@ -50,6 +50,14 @@
                     <comment>Si no iniciaste sesión con tu cuenta de Culqi Panel, tienes que configurar esta URL.</comment> -->
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\NotifyPayment</frontend_model>
                 </field>
+                <field id="rsa_id" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\RsaId</frontend_model>
+                    <attribute type="shared">1</attribute>
+                </field>
+                <field id="rsa_publickey" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\RsaPublickey</frontend_model>
+                    <attribute type="shared">1</attribute>
+                </field>
                 <field id="personalize" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <frontend_model>Culqi\Pago\Block\Adminhtml\Form\Field\PersonalizeTheme</frontend_model>
                     <attribute type="shared">1</attribute>
