@@ -4,6 +4,7 @@ namespace Culqi\Pago\Controller\Payment;
 
 use Magento\Framework\Controller\ResultFactory;
 
+#[\AllowDynamicProperties]
 class Success extends \Magento\Framework\App\Action\Action
 {
     protected $resultPageFactory;
