@@ -116,7 +116,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                                 jQuery("body").append('<mc-sonic id="mc-sonic"  clear-background></mc-sonic>');
                                 playSonic();
                             }
-                            
+
                             post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id));
                         }
 
