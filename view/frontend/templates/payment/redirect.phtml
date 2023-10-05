@@ -34,19 +34,55 @@ $email = $block->getData('dataOrder')['email'];
 $total = number_format($block->getData('dataOrder')['amount'], 2, '', '');
 $storeName = $block->getStoreName();
 $version = $block->getMagentoVersion();
+
+//description text
+$tarjeta = in_array('tarjeta', $paymentMethods);
+$yape = in_array('yape', $paymentMethods);
+$bancamovil = in_array('billetera', $paymentMethods) || in_array('bancamovil', $paymentMethods) || in_array('agente', $paymentMethods) || in_array('cuotealo', $paymentMethods);
+//
+$txt_general = 'Acepta pagos con ';
+$txt = '';
+$txtPE = '';
+if($tarjeta) {
+    $txt .= 'tarjetas de débito y crédito';
+}
+if($yape) {
+    if($tarjeta) {
+        $txt .= ', ';
+    }
+    $txt .= 'Yape';
+}
+if($bancamovil) {
+    if($tarjeta || $yape) {
+        $txt .= ', ';
+    }
+    $txt .= 'Cuotéalo BCP y PagoEfectivo';
+    $txtPE = ' (billeteras móviles, agentes y bodegas)';
+}
+$txt = '<strong>'.$txt.'</strong>';
+$txt = $txt_general. $txt. $txtPE;
+$txt .= '.';
 ?>
 
 <!-- Culqi Order -->
 
 <h3><?= $block->escapeHtml(__('Paga con Culqi')) ?></h3>
 
-<p>
-    Culqi acepta pagos con tarjeta de crédito/débito y más..
-</p>
+<p><?php echo $txt;?></p>
 
 <br>
 
-<div class="img-payments-culqi"></div>
+<div class="img-payments-culqi">
+    <?php if($tarjeta) { ?>
+        <img src="<?php echo $block->getViewFileUrl('Culqi_Pago::images/cards.svg')?>">
+    <?php } ?>
+    <?php if($yape) { ?>
+        <img src="<?php echo $block->getViewFileUrl('Culqi_Pago::images/yape.svg')?>">
+    <?php } ?>
+    <?php if($bancamovil) { ?>
+        <img src="<?php echo $block->getViewFileUrl('Culqi_Pago::images/pagoefectivo.svg')?>">
+    <?php } ?>
+</div>
 <br>
 Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 <h5>Hacer Click en pagar para proceder con la compra o cancelar para regresar al paso anterior</h5><br><br>
