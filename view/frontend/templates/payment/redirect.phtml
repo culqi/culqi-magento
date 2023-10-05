@@ -103,7 +103,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 <script type="text/javascript" src="<?php echo $block->getViewFileUrl('Culqi_Pago::js/view/payment/mc-sonic.min.js') ?>"></script>
 
 <script type="module">
-    
     Culqi3DS.options = {
         closeModalAction: () => window.location.reload(true), // ACTION CUANDO SE CIERRA EL MODAL
     };
@@ -153,7 +152,9 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                                 playSonic();
                             }
 
-                            post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id));
+                            setTimeout(() => {
+                                post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id));
+                            }, 2000);    
                         }
 
                         if (result.object === 'error') {
@@ -338,8 +339,10 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                             //var id = setInterval(function() {
                             //if (!Culqi.isOpen) {
                             //clearInterval(id);
-                            post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id));
-                            //}
+                            setTimeout(() => {
+                                post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id));
+                            }, 2000);
+                                //}
                             //}, 1000);
                         }
 
@@ -661,9 +664,9 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
     }
 
     function onCompletion() {
-        console.log("mastercard success");
         setTimeout(() => {
             //execute
+            console.log("mastercard success");
             return;
         }, 1000);
     }
