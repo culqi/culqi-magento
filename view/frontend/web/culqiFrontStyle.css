@@ -4,4 +4,7 @@
  */
 
 
- .img-payments-culqi {    background: url(images/cards.svg) no-repeat 0 0% / 50rem auto; height: 40px; background-size: contain;}
+ .img-payments-culqi img {
+    height: 32px;
+    margin-right: 15px;
+ }

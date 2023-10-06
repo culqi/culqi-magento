@@ -131,9 +131,9 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         include_once dirname(__FILE__, 3).'/libraries/Requests/library/Requests.php';
         \Requests::register_autoloader();
         include_once dirname(__FILE__, 3) . '/libraries/culqi-php/lib/culqi.php';
-        $this->_private_key = $this->storeConfig->getLlaveSecreta();
-        $this->_enviroment = $this->storeConfig->getURLEnviroment();
-        $culqi = new \Culqi\Culqi(array('api_key' => $this->_private_key ));
+        $private_key = $this->storeConfig->getLlaveSecreta();
+        $enviroment = $this->storeConfig->getURLEnviroment();
+        $culqi = new \Culqi\Culqi(array('api_key' => $private_key ));
 
         try {
             $antifraud_charges = array();
@@ -163,7 +163,7 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 'email' => $email,
                 'source_id' => $source_id,
                 'capture' => true,
-                'enviroment' => $this->_enviroment,
+                'enviroment' => $enviroment,
                 'antifraud_details' => $antifraud_charges,
                 'metadata' => ["order_id" => (string) $orderId, "sponsor" => "magento"],
             );

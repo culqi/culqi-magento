@@ -34,19 +34,55 @@ $email = $block->getData('dataOrder')['email'];
 $total = number_format($block->getData('dataOrder')['amount'], 2, '', '');
 $storeName = $block->getStoreName();
 $version = $block->getMagentoVersion();
+
+//description text
+$tarjeta = in_array('tarjeta', $paymentMethods);
+$yape = in_array('yape', $paymentMethods);
+$bancamovil = in_array('billetera', $paymentMethods) || in_array('bancamovil', $paymentMethods) || in_array('agente', $paymentMethods) || in_array('cuotealo', $paymentMethods);
+//
+$txt_general = 'Acepta pagos con ';
+$txt = '';
+$txtPE = '';
+if($tarjeta) {
+    $txt .= 'tarjetas de débito y crédito';
+}
+if($yape) {
+    if($tarjeta) {
+        $txt .= ', ';
+    }
+    $txt .= 'Yape';
+}
+if($bancamovil) {
+    if($tarjeta || $yape) {
+        $txt .= ', ';
+    }
+    $txt .= 'Cuotéalo BCP y PagoEfectivo';
+    $txtPE = ' (billeteras móviles, agentes y bodegas)';
+}
+$txt = '<strong>'.$txt.'</strong>';
+$txt = $txt_general. $txt. $txtPE;
+$txt .= '.';
 ?>
 
 <!-- Culqi Order -->
 
 <h3><?= $block->escapeHtml(__('Paga con Culqi')) ?></h3>
 
-<p>
-    Culqi acepta pagos con tarjeta de crédito/débito y más..
-</p>
+<p><?php echo $txt;?></p>
 
 <br>
 
-<div class="img-payments-culqi"></div>
+<div class="img-payments-culqi">
+    <?php if($tarjeta) { ?>
+        <img src="<?php echo $block->getViewFileUrl('Culqi_Pago::images/cards.svg')?>">
+    <?php } ?>
+    <?php if($yape) { ?>
+        <img src="<?php echo $block->getViewFileUrl('Culqi_Pago::images/yape.svg')?>">
+    <?php } ?>
+    <?php if($bancamovil) { ?>
+        <img src="<?php echo $block->getViewFileUrl('Culqi_Pago::images/pagoefectivo.svg')?>">
+    <?php } ?>
+</div>
 <br>
 Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 <h5>Hacer Click en pagar para proceder con la compra o cancelar para regresar al paso anterior</h5><br><br>
@@ -64,8 +100,9 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
 <script type="text/javascript" src="<?php echo $urlapi_checkout; ?>"></script>
 
-<script type="module">
+<script type="text/javascript" src="<?php echo $block->getViewFileUrl('Culqi_Pago::js/view/payment/mc-sonic.min.js') ?>"></script>
 
+<script type="module">
     Culqi3DS.options = {
         closeModalAction: () => window.location.reload(true), // ACTION CUANDO SE CIERRA EL MODAL
     };
@@ -104,10 +141,20 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         if (result.object === 'charge') {
                             run_waitMe();
                             var card_number = result['source']['card_number'];
-                            var card_brand = result['source']['iin']['card_brand'] + ' ' + result['source']['iin']['card_category'] + ' ' + result['source']['iin']['card_type'];
+                            var card_brand = result['source']['iin']['card_brand'];
+                            var card_brand_complete = card_brand + ' ' + result['source']['iin']['card_category'] + ' ' + result['source']['iin']['card_type'];
                             var culqi_order_id = result.id;
+
                             resultdiv(result['user_message']);
-                            post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand, culqi_order_id));
+
+                            if(card_brand.toUpperCase() == 'MASTERCARD') {
+                                jQuery("body").append('<mc-sonic id="mc-sonic"  clear-background></mc-sonic>');
+                                playSonic();
+                            }
+
+                            setTimeout(() => {
+                                post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id));
+                            }, 2000);    
                         }
 
                         if (result.object === 'error') {
@@ -276,16 +323,26 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         if (result.object === 'charge') {
                             run_waitMe();
                             var card_number = result['source']['card_number'];
-                            var card_brand = result['source']['iin']['card_brand'] + ' ' + result['source']['iin']['card_category'] + ' ' + result['source']['iin']['card_type'];
+                            var card_brand = result['source']['iin']['card_brand'];
+                            var card_brand_complete = card_brand + ' ' + result['source']['iin']['card_category'] + ' ' + result['source']['iin']['card_type'];
                             var culqi_order_id = result.id;
 
                             resultdiv(result['user_message']);
 
+                            if(card_brand.toUpperCase() == 'MASTERCARD') {
+                                jQuery("body").append('<mc-sonic id="mc-sonic"  clear-background></mc-sonic>');
+                                playSonic();
+                            }
+
+
+
                             //var id = setInterval(function() {
                             //if (!Culqi.isOpen) {
                             //clearInterval(id);
-                            post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand, culqi_order_id));
-                            //}
+                            setTimeout(() => {
+                                post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id));
+                            }, 2000);
+                                //}
                             //}, 1000);
                         }
 
@@ -597,6 +654,21 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             form.appendChild(inputs[i]);
         }
         form.submit();
+    }
+
+    //mastercard
+    function playSonic() {
+        let mc_component = document.getElementById("mc-sonic")
+        document.addEventListener('sonicCompletion', onCompletion())
+        mc_component.play()
+    }
+
+    function onCompletion() {
+        setTimeout(() => {
+            //execute
+            console.log("mastercard success");
+            return;
+        }, 1000);
     }
 
     window.culqi = culqi;
