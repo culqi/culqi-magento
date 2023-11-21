@@ -33,7 +33,9 @@ $email = $block->getData('dataOrder')['email'];
 
 $total = number_format($block->getData('dataOrder')['amount'], 2, '', '');
 $storeName = $block->getStoreName();
-$version = $block->getMagentoVersion();
+$original_version = $block->getMagentoVersion();
+$version_parts = explode('-', $original_version);
+$version = $version_parts[0];
 
 //description text
 $tarjeta = in_array('tarjeta', $paymentMethods);
