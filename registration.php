@@ -2,7 +2,7 @@
 
 use Magento\Framework\Component\ComponentRegistrar;
 
-define( 'MPCULQI_PLUGIN_VERSION' , 'v3.0.3');
+define( 'MPCULQI_PLUGIN_VERSION' , 'v3.0.4');
 
 define('URLAPI_INTEG', 'https://integ-panel.culqi.com');
 define('URLAPI_PROD', 'https://panel.culqi.com');
