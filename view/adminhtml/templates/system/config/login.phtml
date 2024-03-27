@@ -613,9 +613,11 @@
         } */
 
         var urlwebhook = "<?php echo $this->getUrlWebhookInteg() ?>";
+        var env = 'test';
         jQuery('input[type="radio"]').each(function(){
             if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
                 urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                env = 'live';
             }
         });
         if (jQuery('#CULQI_TOKENLOGIN').val().length>0) {
@@ -629,7 +631,8 @@
                 headers: {
                     'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
                     "Content-Type": "application/json",
-                    "Accept": "*/*"
+                    "Accept": "*/*",
+                    "x-culqi-env": env
                 },
                 data: {
                     "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
@@ -654,7 +657,8 @@
                         headers: {
                             'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
                             "Content-Type": "application/json",
-                            "Accept": "*/*"
+                            "Accept": "*/*",
+                            "x-culqi-env": env
                         },
                         data: JSON.stringify({
                             "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
@@ -685,9 +689,11 @@
         if(jQuery('#email').val()!='' && jQuery('#password').val()){
             jQuery('body').append('<div id="loadingloginculqi" style="position: fixed; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999999; top: 0; text-align: center; justify-content: center; align-content: center; flex-direction: column; color: white; font-size: 14px; display:table-cell; vertical-align:middle;"><div style="position: absolute; width: 100%; top: 50%">Cargando <img width="14" src="https://icon-library.com/images/loading-icon-transparent-background/loading-icon-transparent-background-12.jpg" /></div></div>');
             var urllogin = "<?php echo $this->getUrlLoginInteg() ?>";
+            var env = 'test';
             jQuery('input[type="radio"]').each(function(){
                 if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
                     urllogin = "<?php echo $this->getUrlLoginProd() ?>";
+                    env = 'live';
                 }
             });
             const settings = {
@@ -696,6 +702,7 @@
                 timeout: 0,
                 headers: {
                     "Content-Type": "application/json",
+                    "x-culqi-env": env
                 },
                 data: JSON.stringify({
                     email: jQuery('#email').val(),
@@ -720,9 +727,11 @@
 
     const culqiWoGetMerchants = (token) => {
         var urlmerchant = "<?php echo $this->getUrlMerchantInteg() ?>";
+        var env = 'test';
         jQuery('input[type="radio"]').each(function(){
             if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
                 urlmerchant = "<?php echo $this->getUrlMerchantProd() ?>";
+                env = 'live';
             }
         });
         const settings = {
@@ -732,6 +741,7 @@
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Authorization": "Bearer " + token,
+                "x-culqi-env": env,
             },
         };
 
@@ -749,9 +759,11 @@
 
     const getMerchant = (id) => {
         var urlmerchantsingle = "<?php echo $this->getUrlMerchantSingleInteg() ?>";
+        var env = 'test';
         jQuery('input[type="radio"]').each(function(){
             if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
                 urlmerchantsingle = "<?php echo $this->getUrlMerchantSingleProd() ?>";
+                env = 'live';
             }
         });
         const settings = {
@@ -762,6 +774,7 @@
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Authorization": "Bearer " + window.culqi_token,
+                "x-culqi-env": env,
             },
         };
 
