@@ -472,7 +472,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 type: "POST",
                 dataType: 'json',
                 success: function (response) {
-                    console.log('response:::', response);
+                    console.log('Se genero una orden:::', response);
                     orderId = response 
                     setCheckout()
 
@@ -501,7 +501,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     e.preventDefault();
                 },
                 error: function (error) {
-                    console.log('error:::', error);
+                    orderId = '';
+                    console.log('Error al generar orden:::', error);
                     setCheckout();
                     Culqi.open();
                     e.preventDefault();
@@ -509,6 +510,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
             });
         }else{
+            orderId = '';
+            console.log('No se genero orden');
             setCheckout()
             Culqi.open();
             e.preventDefault();
