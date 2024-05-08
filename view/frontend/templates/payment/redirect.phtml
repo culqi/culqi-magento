@@ -120,6 +120,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 });
                 var token = Culqi.token.id;
                 var email = Culqi.token.email;
+                var installments = (Culqi.token.metadata == undefined || Culqi.token.metadata.installments == undefined) ? 0 : Culqi.token.metadata.installments;
+                
                 $jq.ajax({
                     url: "<?= $block->escapeUrl($block->getUrl('pago/payment/check')); ?>",
                     type: "POST",
@@ -127,7 +129,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         token_id: Culqi.token.id,
                         order_id: '<?= $block->escapeHtml($orderId) ?>',
                         email: Culqi.token.email,
-                        installments: Culqi.token.metadata.installments,
+                        installments: installments,
                         device: device,
                         parameters3DS: parameters3DS
                     },
@@ -362,6 +364,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             run_waitMe();
             var token = Culqi.token.id;
             var email = Culqi.token.email;
+            var installments = (Culqi.token.metadata == undefined || Culqi.token.metadata.installments == undefined) ? 0 : Culqi.token.metadata.installments;
+
             $jq(document).ajaxStart(function () {
                 run_waitMe();
             });
@@ -373,7 +377,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     token_id: Culqi.token.id,
                     order_id: '<?= $block->escapeHtml($orderId) ?>',
                     email: Culqi.token.email,
-                    installments: Culqi.token.metadata.installments,
+                    installments: installments,
                     device: device
                 },
                 dataType: 'json',
