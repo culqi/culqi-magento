@@ -120,6 +120,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 });
                 var token = Culqi.token.id;
                 var email = Culqi.token.email;
+                var installments = (Culqi.token.metadata == undefined || Culqi.token.metadata.installments == undefined) ? 0 : Culqi.token.metadata.installments;
+                
                 $jq.ajax({
                     url: "<?= $block->escapeUrl($block->getUrl('pago/payment/check')); ?>",
                     type: "POST",
@@ -127,7 +129,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                         token_id: Culqi.token.id,
                         order_id: '<?= $block->escapeHtml($orderId) ?>',
                         email: Culqi.token.email,
-                        installments: Culqi.token.metadata.installments,
+                        installments: installments,
                         device: device,
                         parameters3DS: parameters3DS
                     },
@@ -199,34 +201,118 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
       console.log(err);
     });
 
-    Culqi.publicKey = '<?php echo $llavePublica; ?>';
-    Culqi.useClasses = true;
-    Culqi.init();
+    var orderId = '';
+    var Culqi = null;
 
+    function setCheckout() {
+        const publicKey = setPublicKey();
+        const config = setConfig();
+        Culqi = new CulqiCheckout(publicKey, config);
+        Culqi.culqi = culqi
+    }
 
-    Culqi.options({
-        lang: 'auto',
-        paymentMethods: {
+    function setPublicKey() {
+        return '<?php echo $llavePublica; ?>';
+    }
+
+    function setConfig() {
+        const settings = setSetting();
+        const client = setClient();
+        const options = setOptions();
+        const appearance = setAppearance();
+
+        const config = {
+            settings,
+            client,
+            options,
+            appearance
+        };
+
+        return config;
+    }
+
+    function setSetting() {
+        const rsa_id = '<?php echo $rsa_id ?>';
+        const rsa_publickey = `<?php echo $rsa_publickey ?>`;
+
+        const setting = {
+            title: '<?php echo $storeName ?>',
+            currency: '<?php echo $currencyCode ?>',
+            amount: <?php echo $total; ?>,
+            culqiclient: 'Magento',
+            culqiclientversion: '<?php  echo $version; ?>',
+            culqipluginversion: '<?php  echo $plugin_version; ?>',
+        }
+
+        // Agregar el orden si existe
+        if (orderId != '') {
+            setting.order = orderId;
+        }
+
+        // Agregar llave publica si existe
+        if(rsa_id && rsa_publickey) {
+            setting.xculqirsaid = rsa_id;
+            setting.rsapublickey = rsa_publickey;
+        }
+
+        return setting;
+    }
+
+    function setClient() {
+        const client = {
+            email: '<?php echo $email; ?>'
+        };
+
+        return client;
+    }
+
+    function setPaymentMethods() {
+        const paymentMethods = {
             tarjeta: <?php echo in_array('tarjeta', $paymentMethods) ? 'true' : 'false';  ?>,
             yape: <?php echo in_array('yape', $paymentMethods) ? 'true' : 'false';  ?>,
             billetera: <?php echo in_array('billetera', $paymentMethods) ? 'true' : 'false';  ?>,
             bancaMovil: <?php echo in_array('bancamovil', $paymentMethods) ? 'true' : 'false';  ?>,
             agente: <?php echo in_array('agente', $paymentMethods) ? 'true' : 'false';  ?>,
-            cuotealo: <?php echo in_array('cuotealo', $paymentMethods) ? 'true' : 'false';  ?>
-        },
-        installments: true,
-        style: {
+            cuotealo: <?php echo in_array('cuotealo', $paymentMethods) ? 'true' : 'false';  ?>,
+        }
+
+        return paymentMethods;
+    }
+
+    function setOptions() {
+        const paymentMethods = setPaymentMethods();
+
+        const options = {
+            lang: 'auto',
+            installments: true,
+            modal: true,
+            paymentMethods,
+            paymentMethodsSort: Object.keys(paymentMethods)
+        }
+        return options;
+    }
+
+    function setAppearance() {
+        const appearence = {
+            theme: "default",
+            hiddenCulqiLogo: false,
+            hiddenBannerContent: false,
+            hiddenBanner: false,
+            hiddenToolBarAmount: false,
+            menuType: "sidebar", // sidebar / sliderTop / select
+            logo: '<?php echo $logo ?>'
+        };
+
+        appearence.defaultStyle = {
             bannerColor: '<?php echo $theme[0]; ?>',
-            imageBanner: '',
             buttonBackground: '<?php echo $theme[1]; ?>',
             menuColor: '<?php echo $theme[1]; ?>',
             linksColor: '<?php echo $theme[1]; ?>',
-            buttontext: '<?php echo $theme[0]; ?>',
-            priceColor: '<?php echo $theme[1]; ?>',
-            logo: '<?php echo $logo ?>'
-        }
-    });
+            priceColor: '<?php echo $theme[1]; ?>'
+        };
 
+        return appearence;
+    }
 
     var $jq = jQuery.noConflict();
 
@@ -278,6 +364,8 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             run_waitMe();
             var token = Culqi.token.id;
             var email = Culqi.token.email;
+            var installments = (Culqi.token.metadata == undefined || Culqi.token.metadata.installments == undefined) ? 0 : Culqi.token.metadata.installments;
+
             $jq(document).ajaxStart(function () {
                 run_waitMe();
             });
@@ -289,7 +377,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     token_id: Culqi.token.id,
                     order_id: '<?= $block->escapeHtml($orderId) ?>',
                     email: Culqi.token.email,
-                    installments: Culqi.token.metadata.installments,
+                    installments: installments,
                     device: device
                 },
                 dataType: 'json',
@@ -376,30 +464,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
     };
 
-    function getSettings(order = false) {
-        const rsa_id = '<?php echo $rsa_id ?>';
-        const rsa_publickey = `<?php echo $rsa_publickey ?>`;
-        let args_settings = {
-            title: '<?php echo $storeName ?>',
-            currency: '<?php echo $currencyCode ?>',
-            amount: <?php echo $total; ?>,
-            culqiclient: 'Magento',
-            culqiclientversion: '<?php  echo $version; ?>',
-            culqipluginversion: '<?php  echo $plugin_version; ?>',
-        }
-        if(order) {
-            args_settings.order = order;
-        }
-        if(rsa_id && rsa_publickey) {
-            args_settings.xculqirsaid = rsa_id;
-            args_settings.rsapublickey = rsa_publickey;
-        }
-        Culqi.settings(args_settings);
-        Culqi.client = {
-            email: '<?php echo $email; ?>'
-        };
-    }
-
     function generateOrder(e, device) {
         window.device = device;
         var $jq = jQuery.noConflict();
@@ -412,8 +476,9 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 type: "POST",
                 dataType: 'json',
                 success: function (response) {
-                    console.log('response:::', response);
-                    getSettings(response);
+                    console.log('Se genero una orden:::', response);
+                    orderId = response 
+                    setCheckout()
 
                     /* Inicio */
 
@@ -440,21 +505,18 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                     e.preventDefault();
                 },
                 error: function (error) {
-                    console.log('error:::', error);
-                    getSettings();
+                    orderId = '';
+                    console.log('Error al generar orden:::', error);
+                    setCheckout();
                     Culqi.open();
                     e.preventDefault();
                 }
 
             });
         }else{
-            Culqi.settings({
-                title: '<?php echo $storeName ?>',
-                currency: '<?php echo $currencyCode ?>',
-                amount: <?php echo $total; ?>,
-                culqiclient: 'Magento',
-                culqiclientversion: '<?php  echo $version; ?>',
-            });
+            orderId = '';
+            console.log('No se genero orden');
+            setCheckout()
             Culqi.open();
             e.preventDefault();
             $jq('#btn_pago').removeAttr('disabled');
