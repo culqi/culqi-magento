@@ -3,6 +3,8 @@
 	<head>
     	<css src="Culqi_Pago::css/waitMe.css" />
     	<css src="Culqi_Pago::css/mastercard.css" />
+    	<css src="Culqi_Pago::css/global.css" />
+    	<css src="Culqi_Pago::css/brands.css" />
 	</head>
 	<body>
 		<referenceContainer name="content" >

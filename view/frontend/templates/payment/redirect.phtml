@@ -102,7 +102,46 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
 <script type="text/javascript" src="<?php echo $urlapi_checkout; ?>"></script>
 
-<script type="text/javascript" src="<?php echo $block->getViewFileUrl('Culqi_Pago::js/view/payment/mc-sonic.min.js?_='.time()); ?>"></script>
+<script type="text/javascript" src="<?php echo $block->getViewFileUrl('Culqi_Pago::brands/mastercard/mc-sonic.min.js?_='.time()); ?>"></script>
+<script type="text/javascript" src="<?php echo $block->getViewFileUrl('Culqi_Pago::brands/visa/visa-sensory-branding.js?_='.time()); ?>"></script>
+<script>
+    var $jq = jQuery.noConflict();
+    const post = (url, json) => {
+        // Convertimos el json en un objeto
+        var obj = JSON.parse(json);
+
+        // Creamos un array con los nombres de las propiedades del objeto
+        var objKeys = Object.keys(obj);
+        // Creamos elementos <input> con el name=clave y value=valor del objeto
+        var inputs = [];
+        for (var i = 0; i < objKeys.length; i++) {
+            inputs[i] = document.createElement('input');
+            inputs[i].name = objKeys[i];
+            inputs[i].value = obj[objKeys[i]];
+        }
+
+        var form = document.createElement('form');
+        document.body.appendChild(form);
+        form.action = url;
+        form.method = 'post';
+        form.classList.add('hidden'); 
+        for (i = 0; i < objKeys.length; i++) {
+            form.appendChild(inputs[i]);
+        }
+        form.submit();
+    };
+
+    const run_waitMe = (bg = 'rgba(0,0,0,0.7)') => {
+        $jq('body').waitMe({
+            effect: 'bounce',
+            text: 'Cargando. Espere por favor',
+            bg: bg,
+            color: '#FFFFFF'
+        });
+    };
+    const baseBrandsUrl = "<?php echo $block->getViewFileUrl('Culqi_Pago::brands'); ?>";
+</script>
+<script type="text/javascript" src="<?php echo $block->getViewFileUrl('Culqi_Pago::brands/brand-handler.js?_='.time()); ?>"></script>
 
 
 <script type="module">
@@ -152,14 +191,16 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
                             resultdiv(result['user_message']);
 
+                            const successUrl = "<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>";
+                            const json = jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id);
+
                             if(card_brand.toUpperCase() == 'MASTERCARD') {
-                                jQuery("body").append('<mc-sonic id="mc-sonic"  clear-background></mc-sonic>');
-                                playSonic();
+                                fnMcSonic(successUrl, json);
                             }
 
-                            setTimeout(() => {
-                                post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id));
-                            }, 2000);    
+                            if(card_brand.toUpperCase() == 'VISA') {
+                                fnBrandvisa(successUrl, json, baseBrandsUrl);
+                            }
                         }
 
                         if (result.object === 'error') {
@@ -314,8 +355,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
         return appearence;
     }
 
-    var $jq = jQuery.noConflict();
-
     $jq('#btn_cancelar').on('click', function (e) {
         post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>",
             jsonResponse('cancelado_por_usuario'));
@@ -420,21 +459,16 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
 
                             resultdiv(result['user_message']);
 
+                            const successUrl = "<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>";
+                            const json = jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id);
+
                             if(card_brand.toUpperCase() == 'MASTERCARD') {
-                                jQuery("body").append('<mc-sonic id="mc-sonic"  clear-background></mc-sonic>');
-                                playSonic();
+                                fnMcSonic(successUrl, json);
                             }
 
-
-
-                            //var id = setInterval(function() {
-                            //if (!Culqi.isOpen) {
-                            //clearInterval(id);
-                            setTimeout(() => {
-                                post("<?= $block->escapeUrl($block->getUrl('pago/payment/gateway')); ?>", jsonResponse('complete_payment', card_number, card_brand_complete, culqi_order_id));
-                            }, 2000);
-                                //}
-                            //}, 1000);
+                            if(card_brand.toUpperCase() == 'VISA') {
+                                fnBrandvisa(successUrl, json, baseBrandsUrl);
+                            }
                         }
 
                         if (result.object === 'error') {
@@ -522,15 +556,6 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             $jq('#btn_pago').removeAttr('disabled');
         }
 
-    }
-
-    function run_waitMe() {
-        $jq('body').waitMe({
-            effect: 'bounce',
-            text: 'Cargando. Espere por favor',
-            bg: 'rgba(0,0,0,0.7)',
-            color: '#FFFFFF'
-        });
     }
 
     function jsonResponse(message, card_number = '', card_brand = '', order_id = '') {
@@ -697,44 +722,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
         })
     })(jQuery);
 
-    function post(url, json) {
-        // Convertimos el json en un objeto
-        var obj = JSON.parse(json);
-
-        // Creamos un array con los nombres de las propiedades del objeto
-        var objKeys = Object.keys(obj);
-        // Creamos elementos <input> con el name=clave y value=valor del objeto
-        var inputs = [];
-        for (var i = 0; i < objKeys.length; i++) {
-            inputs[i] = document.createElement('input');
-            inputs[i].name = objKeys[i];
-            inputs[i].value = obj[objKeys[i]];
-        }
-
-        var form = document.createElement('form');
-        document.body.appendChild(form);
-        form.action = url;
-        form.method = 'post';
-        for (i = 0; i < objKeys.length; i++) {
-            form.appendChild(inputs[i]);
-        }
-        form.submit();
-    }
-
     //mastercard
-    function playSonic() {
-        let mc_component = document.getElementById("mc-sonic")
-        document.addEventListener('sonicCompletion', onCompletion())
-        mc_component.play()
-    }
-
-    function onCompletion() {
-        setTimeout(() => {
-            //execute
-            console.log("mastercard success");
-            return;
-        }, 1000);
-    }
 
     window.culqi = culqi;
 
