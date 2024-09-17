@@ -54,6 +54,8 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $orderId = $this->getRequest()->getPost('order_id');
         $emailCulqi = $this->getRequest()->getPost('email');
         $installments = $this->getRequest()->getPost('installments');
+        $installments = isset($installments) ? $installments : false;
+
         $device = $this->getRequest()->getPost('device');
         $parameters3DS = $this->getRequest()->getPost('parameters3DS');
 
@@ -107,7 +109,8 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
             $countryCode,
             $addressCity,
             $address,
-            $phoneNumber
+            $phoneNumber,
+            $installments
         );
 
         $this->getResponse()->setBody(Json::encode($cargo));
@@ -126,7 +129,8 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         $countryCode,
         $addressCity,
         $address,
-        $phoneNumber
+        $phoneNumber,
+        $installments
     ) {
         include_once dirname(__FILE__, 3).'/libraries/Requests/library/Requests.php';
         \Requests::register_autoloader();
@@ -167,6 +171,10 @@ class Check extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
                 'antifraud_details' => $antifraud_charges,
                 'metadata' => ["order_id" => (string) $orderId, "sponsor" => "magento"],
             );
+
+            if($installments) {
+                $args_charge['installments'] = $installments;
+            }
 
             if( is_array($parameters3DS)){
                 $args_charge['authentication_3DS'] = $parameters3DS;

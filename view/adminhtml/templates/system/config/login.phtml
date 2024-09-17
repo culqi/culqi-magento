@@ -520,160 +520,162 @@
      * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
      * THE SOFTWARE.
      */
-    jQuery('form#config-edit-form').submit(function (e) {
-
-        if (!jQuery("input[data-ui-id='culqi-fields-active-value'").is(':checked')) {
-            jQuery("input[data-ui-id='culqi-fields-active-value'").val('0');
-        } else {
-            jQuery("input[data-ui-id='culqi-fields-active-value'").val('1');
-        }
-        //jQuery("input[data-ui-id='culqi-fields-active-value'").prop('checked', true);
-
-        var enviroment = '';
-        var hasError = '0';
-
-        jQuery('input[type="radio"]').each(function(){
-            if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
-                urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
-                enviroment = 'prod';
+    require(['jquery'],function($) {
+        jQuery('form#config-edit-form').submit(function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            if (!jQuery("input[data-ui-id='culqi-fields-active-value'").is(':checked')) {
+                jQuery("input[data-ui-id='culqi-fields-active-value'").val('0');
+            } else {
+                jQuery("input[data-ui-id='culqi-fields-active-value'").val('1');
             }
-            if(jQuery(this).is(':checked') &&jQuery(this).val()=='integ'){
-                urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
-                enviroment = 'integ';
-            }
-        });
+            //jQuery("input[data-ui-id='culqi-fields-active-value'").prop('checked', true);
 
-        jQuery('#errorpubkey').html('');
-        jQuery('#errorseckey').html('');
-        jQuery('#errortimeexp').html('');
-        var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
-        var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');
-        var timexp = jQuery("input[data-ui-id='text-groups-culqi-fields-timexp-value'").val();
-        if(enviroment == 'integ'){
-            if(!(llavepublica.length==3 && llavepublica[1]=='test')){
-                jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de integración');
-                hasError = '1';
-                //$('#config-edit-form').submit(false);
-            }
-            if(!(llaveprivada.length==3 && llaveprivada[1]=='test')){
-                jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de integración');
-                hasError = '1';
-                //$('#config-edit-form').submit(false);
-            }
-        }
-        if(enviroment == 'prod'){
-            if(!(llavepublica.length==3 && llavepublica[1]=='live')){
-                jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de producción');
-                hasError = '1';
-                //$('#config-edit-form').submit(false);
-            }
-            if(!(llaveprivada.length==3 && llaveprivada[1]=='live')){
-                jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de producción');
-                hasError = '1';
-                //$('#config-edit-form').submit(false);
-            }
-        }
+            var enviroment = '';
+            var hasError = false;
 
-        if(!(timexp=='' || (timexp>0 && timexp.length <= 10 && timexp.length > 0))){
-            jQuery('#errortimeexp').html('El tiempo de expiración debe ser un valor numérico, mayor a 0 y no mayor a 10 dígitos.');
-            hasError = '1';
-            //$('#config-edit-form').submit(false);
-        }
-
-        var hasErrormethods = 1;
-        jQuery('input[name="groups[culqi][fields][payment_methods][value][]"]').each(function(){
-            if(jQuery(this).is(':checked')){
-                hasErrormethods=0;
-            }
-        });
-        if(hasErrormethods==1){
-            jQuery('#errorpaymentmethods').html('Debe seleccionar al menos 1 método de pago.');
-            hasError = '1';
-        }
-
-        if (hasError === '1') {
-            $('#config-edit-form').submit(false);
-        }
-
-        /FIN/
-        /* var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
-        var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');
-
-        if(enviroment == 'integ'){
-            if(!(llavepublica.length==3 && llavepublica[1]=='test' && llaveprivada.length==3 && llaveprivada[1]=='test')){
-                alert('Las llaves ingresadas no pertenecen al ambiente de integración');
-                $('#config-edit-form').submit(false);
-            }
-        }
-        if(enviroment == 'prod'){
-            if(!(llavepublica.length==3 && llavepublica[1]=='live' && llaveprivada.length==3 && llaveprivada[1]=='live')){
-                alert('Las llaves ingresadas no pertenecen al ambiente de producción');
-                $('#config-edit-form').submit(false);
-            }
-        } */
-
-        var urlwebhook = "<?php echo $this->getUrlWebhookInteg() ?>";
-        jQuery('input[type="radio"]').each(function(){
-            if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
-                urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
-            }
-        });
-        if (jQuery('#CULQI_TOKENLOGIN').val().length>0) {
-            const settings = {
-                url: urlwebhook,
-                crossDomain: true,
-                dataType: 'json',
-                contentType: 'application/json',
-                type: "GET",
-                timeout: 0, 
-                headers: {
-                    'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
-                    "Content-Type": "application/json",
-                    "Accept": "*/*"
-                },
-                data: {
-                    "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
-                    "version": 2
+            jQuery('input[type="radio"]').each(function(){
+                if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                    urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                    enviroment = 'prod';
                 }
-            };
-            jQuery.ajax(settings).done(function (response) {
-                var valid = 1;
-                for(let i = 0; i < response.data.length; i++) {
-                    if(response.data[i].url==jQuery('input[name="groups[culqi][fields][notpay][value]"]').val()){
-                        valid=0;
-                    }
-                }
-                if(valid==1){
-                    const settings = {
-                        url: urlwebhook,
-                        crossDomain: true,
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        type: "POST",
-                        timeout: 0,
-                        headers: {
-                            'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
-                            "Content-Type": "application/json",
-                            "Accept": "*/*"
-                        },
-                        data: JSON.stringify({
-                            "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
-                            "eventId": "order.status.changed",
-                            "url": jQuery('input[name="groups[culqi][fields][notpay][value]"]').val(),
-                            "version": 2,
-                            "loginActive": true,
-                            "username": jQuery('input[name="groups[culqi][fields][username_webhook][value]"]').val(),
-                            "password": jQuery('input[name="groups[culqi][fields][password_webhook][value]"]').val()
-                        }),
-                    };
-                    jQuery.ajax(settings).done(function (response) {
-                        console.log(response);
-                    });
-                }else{
+                if(jQuery(this).is(':checked') &&jQuery(this).val()=='integ'){
+                    urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                    enviroment = 'integ';
                 }
             });
-        }
-        return true;
+
+            jQuery('#errorpubkey').html('');
+            jQuery('#errorseckey').html('');
+            jQuery('#errortimeexp').html('');
+            jQuery('#errorpaymentmethods').html('');
+            var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
+            var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');
+            var timexp = jQuery("input[data-ui-id='text-groups-culqi-fields-timexp-value'").val();
+            if(enviroment == 'integ'){
+                if(!(llavepublica.length==3 && llavepublica[1]=='test')){
+                    jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de integración');
+                    hasError = true;
+                }
+                if(!(llaveprivada.length==3 && llaveprivada[1]=='test')){
+                    jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de integración');
+                    hasError = true;
+                    console.log(hasError);
+                }
+            }
+            if(enviroment == 'prod'){
+                if(!(llavepublica.length==3 && llavepublica[1]=='live')){
+                    jQuery('#errorpubkey').html('La llave pública no pertenece al ambiente de producción');
+                    hasError = true;
+                }
+                if(!(llaveprivada.length==3 && llaveprivada[1]=='live')){
+                    jQuery('#errorseckey').html('La llave privada no pertenece al ambiente de producción');
+                    hasError = true;
+                }
+            }
+
+            if(!(timexp=='' || (timexp>0 && timexp.length <= 10 && timexp.length > 0))){
+                jQuery('#errortimeexp').html('El tiempo de expiración debe ser un valor numérico, mayor a 0 y no mayor a 10 dígitos.');
+                hasError = true;
+            }
+
+            var hasErrormethods = 1;
+            jQuery('input[name="groups[culqi][fields][payment_methods][value][]"]').each(function(){
+                if(jQuery(this).is(':checked')){
+                    hasErrormethods=0;
+                }
+            });
+            if(hasErrormethods==1){
+                jQuery('#errorpaymentmethods').html('Debe seleccionar al menos 1 método de pago.');
+                hasError = true;
+            }
+
+            if (hasError) {
+                return false;
+            }
+
+            /FIN/
+            /* var llavepublica = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-publica-value'").val().split('_');
+            var llaveprivada = jQuery("input[data-ui-id='text-groups-culqi-fields-llave-secreta-value'").val().split('_');
+
+            if(enviroment == 'integ'){
+                if(!(llavepublica.length==3 && llavepublica[1]=='test' && llaveprivada.length==3 && llaveprivada[1]=='test')){
+                    alert('Las llaves ingresadas no pertenecen al ambiente de integración');
+                    $('#config-edit-form').submit(false);
+                }
+            }
+            if(enviroment == 'prod'){
+                if(!(llavepublica.length==3 && llavepublica[1]=='live' && llaveprivada.length==3 && llaveprivada[1]=='live')){
+                    alert('Las llaves ingresadas no pertenecen al ambiente de producción');
+                    $('#config-edit-form').submit(false);
+                }
+            } */
+
+            var urlwebhook = "<?php echo $this->getUrlWebhookInteg() ?>";
+            jQuery('input[type="radio"]').each(function(){
+                if(jQuery(this).is(':checked') &&jQuery(this).val()=='prod'){
+                    urlwebhook = "<?php echo $this->getUrlWebhookProd() ?>";
+                }
+            });
+            if (jQuery('#CULQI_TOKENLOGIN').val().length>0) {
+                const settings = {
+                    url: urlwebhook,
+                    crossDomain: true,
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    type: "GET",
+                    timeout: 0, 
+                    headers: {
+                        'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
+                        "Content-Type": "application/json",
+                        "Accept": "*/*"
+                    },
+                    data: {
+                        "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
+                        "version": 2
+                    }
+                };
+                jQuery.ajax(settings).done(function (response) {
+                    var valid = 1;
+                    for(let i = 0; i < response.data.length; i++) {
+                        if(response.data[i].url==jQuery('input[name="groups[culqi][fields][notpay][value]"]').val()){
+                            valid=0;
+                        }
+                    }
+                    if(valid==1){
+                        const settings = {
+                            url: urlwebhook,
+                            crossDomain: true,
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            type: "POST",
+                            timeout: 0,
+                            headers: {
+                                'Authorization': 'Bearer ' + jQuery('#CULQI_TOKENLOGIN').val(),
+                                "Content-Type": "application/json",
+                                "Accept": "*/*"
+                            },
+                            data: JSON.stringify({
+                                "merchant": jQuery('input[name="groups[culqi][fields][llave_publica][value]"]').val(),
+                                "eventId": "order.status.changed",
+                                "url": jQuery('input[name="groups[culqi][fields][notpay][value]"]').val(),
+                                "version": 2,
+                                "loginActive": true,
+                                "username": jQuery('input[name="groups[culqi][fields][username_webhook][value]"]').val(),
+                                "password": jQuery('input[name="groups[culqi][fields][password_webhook][value]"]').val()
+                            }),
+                        };
+                        jQuery.ajax(settings).done(function (response) {
+                            console.log(response);
+                            e.currentTarget.submit();
+                        });
+                    }else{
+                        e.currentTarget.submit();
+                    }
+                });
+            }
+            e.currentTarget.submit();
+        });
     });
 
     function login(){
