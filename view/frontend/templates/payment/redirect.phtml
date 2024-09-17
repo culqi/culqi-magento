@@ -160,18 +160,21 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
                 var token = Culqi.token.id;
                 var email = Culqi.token.email;
                 var installments = (Culqi.token.metadata == undefined || Culqi.token.metadata.installments == undefined) ? 0 : Culqi.token.metadata.installments;
+                const payload = {
+                    token_id: Culqi.token.id,
+                    order_id: '<?= $block->escapeHtml($orderId) ?>',
+                    email: Culqi.token.email,
+                    device: device,
+                    parameters3DS: parameters3DS
+                };
+                if(installments) {
+                    payload.installments = installments;
+                }
                 
                 $jq.ajax({
                     url: "<?= $block->escapeUrl($block->getUrl('pago/payment/check')); ?>",
                     type: "POST",
-                    data: {
-                        token_id: Culqi.token.id,
-                        order_id: '<?= $block->escapeHtml($orderId) ?>',
-                        email: Culqi.token.email,
-                        installments: installments,
-                        device: device,
-                        parameters3DS: parameters3DS
-                    },
+                    data: payload,
                     dataType: 'json',
                     success: function (data) {
                         console.log('data:::', data);
@@ -404,6 +407,15 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             var token = Culqi.token.id;
             var email = Culqi.token.email;
             var installments = (Culqi.token.metadata == undefined || Culqi.token.metadata.installments == undefined) ? 0 : Culqi.token.metadata.installments;
+            const payload = {
+                token_id: Culqi.token.id,
+                order_id: '<?= $block->escapeHtml($orderId) ?>',
+                email: Culqi.token.email,
+                device: device
+            }
+            if(installments) {
+                payload.installments = installments;
+            }
 
             $jq(document).ajaxStart(function () {
                 run_waitMe();
@@ -412,13 +424,7 @@ Tu número de orden: <?= $block->escapeHtml($orderId); ?> <br> <br>
             $jq.ajax({
                 url: "<?= $block->escapeUrl($block->getUrl('pago/payment/check')); ?>",
                 type: "POST",
-                data: {
-                    token_id: Culqi.token.id,
-                    order_id: '<?= $block->escapeHtml($orderId) ?>',
-                    email: Culqi.token.email,
-                    installments: installments,
-                    device: device
-                },
+                data: payload,
                 dataType: 'json',
                 success: function (data) {
 
