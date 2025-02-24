@@ -1,9 +1,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\Payment\Model\CcGenericConfigProvider">
+    <type name="Culqi\Pago\Controller\Payment\Redirect">
         <arguments>
-            <argument name="methodCodes" xsi:type="array">
-                <item name="Culqi_Pago" xsi:type="const">Culqi\Pago\Model\Payment\Pago::CODE</item>
-            </argument>
+            <argument name="curl" xsi:type="object">Magento\Framework\HTTP\Client\Curl</argument>
+            <argument name="orderRepository" xsi:type="object">Magento\Sales\Api\OrderRepositoryInterface</argument>
+            <argument name="jsonSerializer" xsi:type="object">Magento\Framework\Serialize\Serializer\Json</argument>
+            <argument name="resultPageFactory" xsi:type="object">Magento\Framework\View\Result\PageFactory</argument>
+            <argument name="culqiopera" xsi:type="object">Culqi\Pago\Model\Payment\Culqi</argument>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session</argument>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
         </arguments>
     </type>
 </config>

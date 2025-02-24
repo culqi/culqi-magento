@@ -38,11 +38,12 @@ class Config extends Action
 
         try {
             $methodCode = $this->getRequest()->getParam('method_code');
-            $status = (int) $this->getRequest()->getParam('status');
+            $status = $this->getRequest()->getParam('status');
             $publicKey = $this->getRequest()->getParam('publicKey');
             $merchant = $this->getRequest()->getParam('merchant');
             $rsa_pk_culqi = $this->getRequest()->getParam('rsa_pk_culqi');
             $plugin_status = $this->getRequest()->getParam('pluginStatus');
+            $plugin_status = ($plugin_status === 'true');
             $rsa_sk_plugin = $this->getRequest()->getParam('rsa_sk_plugin');
             $payment_methods = $this->getRequest()->getParam('payment_methods');
 
@@ -51,7 +52,7 @@ class Config extends Action
             }
 
             // Save the configuration
-            $this->configWriter->save("payment/culqi/active", $status, ScopeInterface::SCOPE_STORE);
+            $this->configWriter->save("payment/culqi/active", $plugin_status, ScopeInterface::SCOPE_STORE);
 
             // Clear configuration and full-page caches
             $this->_objectManager->get(\Magento\Framework\App\Cache\Manager::class)->flush(['config', 'full_page']);

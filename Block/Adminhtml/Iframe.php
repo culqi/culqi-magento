@@ -7,21 +7,25 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Config\ReinitableConfigInterface;
+use Culqi\Pago\Helper\Data;
 
 class Iframe extends Template
 {
     protected $storeManager;
     protected $scopeConfig;
+    protected $helper;
 
     public function __construct(
         Context $context,
         StoreManagerInterface $storeManager,
+        Data $helper,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         array $data = []
     ) {
+        parent::__construct($context, $data);
         $this->storeManager = $storeManager;
         $this->scopeConfig = $scopeConfig;
-        parent::__construct($context, $data);
+        $this->helper = $helper;
     }
 
     public function getIframeUrl()
@@ -31,10 +35,15 @@ class Iframe extends Template
         $config->reinit();
 
         list($public_key, $merchant, $payment_methods, $plugin_status) = $this->getIframeParameters();
+        $token = $this->helper->generate_token(true);
+        
+        if($token === null) {
+            $token = '';
+        }
 
         $shopUrl = $this->storeManager->getStore()->getBaseUrl();
 
-        return CULQI_CONFIG_URL . '?platform=' . PLATFORM . '&status=' . urlencode( $plugin_status ) . '&pk=' . urlencode( $public_key ) . '&merchant=' . urlencode( $merchant ) . '&activePaymentMethods=' . urlencode($payment_methods) . '&shop=' . urlencode($shopUrl);
+        return CULQI_CONFIG_URL . '?platform=' . PLATFORM . '&status=' . urlencode( $plugin_status ) . '&pk=' . urlencode( $public_key ) . '&merchant=' . urlencode( $merchant ) . '&activePaymentMethods=' . urlencode($payment_methods) . '&shop=' . urlencode($shopUrl) . '&token=' . urlencode($token);
     }
 
     private function getIframeParameters()
@@ -77,20 +86,12 @@ class Iframe extends Template
             $query = "SELECT value FROM $tableName WHERE path = 'payment/culqi/merchant' LIMIT 1";
             $merchant = $connection->fetchOne($query) ?: '';
         }
-        
-        $plugin_status = $this->scopeConfig->getValue(
-            "payment/culqi/plugin_status",
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        ) ?? '';
 
-        if (empty($plugin_status)) {
-            $resource = ObjectManager::getInstance()->get('Magento\\Framework\\App\\ResourceConnection');
-            $connection = $resource->getConnection();
-            $tableName = $resource->getTableName('core_config_data');
-            $query = "SELECT value FROM $tableName WHERE path = 'payment/culqi/plugin_status' LIMIT 1";
-            $plugin_status = $connection->fetchOne($query) ?: 0;
-            $plugin_status = ($plugin_status === 'true');
-        }
+        $resource = ObjectManager::getInstance()->get('Magento\\Framework\\App\\ResourceConnection');
+        $connection = $resource->getConnection();
+        $tableName = $resource->getTableName('core_config_data');
+        $query = "SELECT value FROM $tableName WHERE path = 'payment/culqi/active' LIMIT 1";
+        $plugin_status = $connection->fetchOne($query) ?: 0;
 
         return [$publicKey, $merchant, $payment_methods, $plugin_status];
     }

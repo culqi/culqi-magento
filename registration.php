@@ -38,9 +38,12 @@ if(strcasecmp(substr(PHP_OS, 0, 3), 'WIN') == 0){
 //var_dump($isWindows); exit(1);
 define('CULQI_OS', $isWindows);
 define('TIME_EXPIRATION_DEFAULT', 24);
+//define( 'CULQI_API_URL' , 'http://host.docker.internal:3900/gateway/' );
 define( 'CULQI_API_URL' , 'https://ag-shopify-qa.culqi.xyz/gateway/' );
 define( 'CULQI_CONFIG_URL' , 'https://configonlineplatform-qa.culqi.xyz' );
+//define( 'CULQI_CONFIG_URL' , 'http://localhost:5173/' );
 define( 'PLATFORM' , 'magento' );
+define( 'EXPIRATION_TIME' , 15 );
 
 define('USERNAME_WEBHOOK', bin2hex(random_bytes(5)));
 define('PASSWORD_WEBHOOK', bin2hex(random_bytes(10)));
