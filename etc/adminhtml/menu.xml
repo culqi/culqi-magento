@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/menu.xsd">
+    <menu>
+        <add id="Culqi_Pago::payment" title="Culqi Payment" module="Culqi_Pago" sortOrder="100" parent="Magento_Backend::content" action="culqi_payment/payment/view" resource="Culqi_Pago::payment_view" />
+    </menu>
+</config>
