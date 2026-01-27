@@ -71,6 +71,7 @@ $txt .= '.';
         'use strict';
         const showModal = "<?php echo $showModal;?>";
         const gatewayUrl = "<?php echo $gatewayUrl;?>";
+        const operationProcessing = 'processing';
         console.log(gatewayUrl);
         $("#btn_pago").click(function(e) {
             $('.woocommerce-loader').addClass('flex');
@@ -117,7 +118,22 @@ $txt .= '.';
         function customRedirect() {
             const redirectUrl = window.redirectUrl;
             delete window.redirectUrl;
-            window.location.href = redirectUrl;
+            
+            // Set success flag via AJAX before redirecting
+            $.ajax({
+                url: "<?php echo $block->getUrl('pago/payment/registersuccess'); ?>",
+                type: 'POST',
+                data: {
+                    form_key: $.mage.cookies.get('form_key')
+                },
+                success: function() {
+                    window.location.href = "<?php echo $block->getUrl('pago/payment/success'); ?>";
+                },
+                error: function() {
+                    // Redirect anyway on error
+                    window.location.href = "<?php echo $block->getUrl('pago/payment/success'); ?>";
+                }
+            });
         }
     });
 </script>

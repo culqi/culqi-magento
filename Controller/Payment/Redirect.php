@@ -126,13 +126,25 @@ class Redirect extends \Magento\Framework\App\Action\Action
         $this->curl->setTimeout(45);
         $this->curl->post($api_url, $jsonBody);
         $responseBody = $this->curl->getBody();
+        
+        $this->logger->info('API URL: ' . $api_url);
+        $this->logger->info('Request Body: ' . $jsonBody);
+        $this->logger->info('Response Body: ' . $responseBody);
+        
+        //var_dump('Response Body:', $responseBody);
+        
         $result = $this->jsonSerializer->unserialize($responseBody);
         $gateway_url = '';
+
+        //var_dump('Parsed Result:', $result);
 
         if (isset($result['redirect_url'])) {
             $gateway_url = $result['redirect_url'];
         } else {
-            throw new \Exception('Payment error: Invalid response from payment gateway.');
+            $errorMessage = 'Payment error: Invalid response from payment gateway. Response: ' . $responseBody;
+            $this->logger->error($errorMessage);
+            //var_dump('Error:', $errorMessage);
+            throw new \Exception($errorMessage);
         }
 
         $block->setData('gateway_url', $gateway_url);
