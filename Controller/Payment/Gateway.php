@@ -62,7 +62,8 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
 
     public function responseAction()
     {
-        if ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'complete_payment') {
+        $this->logger->info("inicio de llamada");
+        if ($this->getRequest()->get("orderId") && $this->getRequest()->get("status") == 'complete_payment') {
             $orderId = $this->getRequest()->get("orderId");
             $card_number = $this->getRequest()->get("card_number");
             $card_brand = $this->getRequest()->get("card_brand");
@@ -82,7 +83,11 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
             $this->_checkoutSession->setSuccess(true);
             $resultRedirect->setUrl($this->url->getUrl('pago/payment/success'));
 
-            return $resultRedirect;
+            //return $resultRedirect;
+            die(json_encode([
+                'success' => true,
+                'data' => $resultRedirect,
+            ]));
         } elseif ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'order'){
             $orderId = $this->getRequest()->get("orderId");
             $culqi_order_id = $this->getRequest()->get("order_id");
@@ -98,7 +103,10 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
             $this->_checkoutSession->setSuccess(true);
             $resultRedirect->setUrl($this->url->getUrl('pago/payment/success'));
 
-            return $resultRedirect;
+            die(json_encode([
+                'success' => true,
+                'data' => $resultRedirect,
+            ]));
         } elseif ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'fail') {
             $orderId = $this->getRequest()->get("orderId");
 
@@ -119,8 +127,11 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
             }
             $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
             $resultRedirect->setUrl($this->url->getUrl('checkout/cart/'));
-            return $resultRedirect;
-        } elseif ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'pending_payment') {
+            die(json_encode([
+                'success' => false,
+                'data' => $resultRedirect,
+            ]));
+        } elseif ($this->getRequest()->get("orderId") && $this->getRequest()->get("status") == 'pending') {
 
             $orderId = $this->getRequest()->get("orderId");
             
@@ -136,7 +147,10 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
             $this->_checkoutSession->setSuccess(true);
             $resultRedirect->setUrl($this->url->getUrl('pago/payment/success'));
 
-            return $resultRedirect;
+            die(json_encode([
+                'success' => true,
+                'data' => $resultRedirect,
+            ]));
         } elseif ($this->getRequest()->get("orderId") && $this->getRequest()->get("statusOrder") == 'cancelado_por_usuario') {
                 
             $orderId = $this->getRequest()->get("orderId");
@@ -157,7 +171,10 @@ class Gateway extends \Magento\Framework\App\Action\Action implements CsrfAwareA
             }
             $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
             $resultRedirect->setUrl($this->url->getUrl('checkout/cart/'));
-            return $resultRedirect;
+            die(json_encode([
+                'success' => false,
+                'data' => $resultRedirect,
+            ]));
         } else {
             $resultRedirect = $this->resultRedirect->create(ResultFactory::TYPE_REDIRECT);
             $resultRedirect->setUrl($this->url->getUrl('checkout/onepage/failure'));
