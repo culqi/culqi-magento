@@ -1,14 +1,25 @@
 require(['jquery', 'mage/url', 'mage/translate'], function ($, urlBuilder, $t) {
-    console.log(12345342);
+    console.log('Culqi Config Saver Loaded');
+    
+    // Extract admin URL from current location
+    const currentUrl = window.location.href;
+    const adminPathMatch = currentUrl.match(/(https?:\/\/[^\/]+\/[^\/]+)/);
+    const adminBaseUrl = adminPathMatch ? adminPathMatch[1] : window.location.origin;
+    const configUrl = adminBaseUrl + '/culqi_payment/payment/config';
+    
+    console.log('Admin Base URL:', adminBaseUrl);
+    
+    console.log('Config URL:', configUrl);
+    
     $('.toggle-payment-method').on('click', function () {
         const methodCode = $(this).data('method-code');
         const status = $(this).data('status'); // 1 for enable, 0 for disable
 
-        console.log(methodCode);
-        console.log(status);
+        console.log('Method Code:', methodCode);
+        console.log('Status:', status);
 
         $.ajax({
-            url: urlBuilder.build('/admin_uxr9ms/culqi_payment/payment/config'),
+            url: configUrl,
             type: 'POST',
             data: {
                 method_code: methodCode,
@@ -29,13 +40,17 @@ require(['jquery', 'mage/url', 'mage/translate'], function ($, urlBuilder, $t) {
             }
         });
     });
+    
     window.addEventListener('message', function(event) {
-        console.log(event.data);
+        console.log('Message received:', event.data);
+        
         if (event.data.action === 'saveConfig') {
             const data = event.data.data;
 
+            console.log('Saving config with data:', data);
+
             $.ajax({
-                url: urlBuilder.build('/admin_uxr9ms/culqi_payment/payment/config'),
+                url: configUrl,
                 type: 'POST',
                 data: {
                     pluginStatus: data.pluginStatus,
@@ -49,15 +64,30 @@ require(['jquery', 'mage/url', 'mage/translate'], function ($, urlBuilder, $t) {
                     form_key: window.FORM_KEY 
                 },
                 success: function(response) {
-                    //alert($t(response.message));
+                    console.log('Config saved successfully:', response);
+                    if (response.success) {
+                        // Notify iframe that config was saved
+                        event.source.postMessage({
+                            action: 'configSaved',
+                            success: true
+                        }, event.origin);
+                    }
                 },
                 error: function(xhr, status, error) {
-                    console.error('AJAX Error: ' + status + error);
+                    console.error('AJAX Error:', status, error);
+                    console.error('Response:', xhr.responseText);
+                    // Notify iframe of error
+                    event.source.postMessage({
+                        action: 'configSaved',
+                        success: false,
+                        error: error
+                    }, event.origin);
                 }
             });
         }
-        //if (event.origin !== 'http://localhost:5173') return;
+        
         if (event.data.action === 'reload') {
+            console.log('Reloading page...');
             location.reload();
         }
     }, false);
