@@ -11,7 +11,7 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
     protected $response;
     protected $order;
     protected $logger;
-    protected $storeConfig;
+    protected $scopeConfig;
 
     protected $statusProcessing = \Magento\Sales\Model\Order::STATE_PROCESSING;
     protected $statusCanceled = \Magento\Sales\Model\Order::STATE_CANCELED;
@@ -22,11 +22,11 @@ class Event extends \Magento\Framework\App\Action\Action implements CsrfAwareAct
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Api\Data\OrderInterface $order,
         \Psr\Log\LoggerInterface $logger,
-        \Culqi\Pago\Block\Payment\Redirect $storeConfig
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
         $this->logger = $logger;
         $this->order = $order;
-        $this->storeConfig = $storeConfig;
+        $this->scopeConfig = $scopeConfig;
         parent::__construct($context);
     }
 
