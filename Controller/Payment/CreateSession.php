@@ -42,23 +42,25 @@ class CreateSession extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         $resultJson = $this->resultJsonFactory->create();
-        
         try {
-            $amount = $this->_checkoutSession->getAmount() ?? 0;
-            $currency_code = $this->_checkoutSession->getCurrencyCode();
-            $city = $this->_checkoutSession->getBillingCity();
-            $street = $this->_checkoutSession->getBillingStreet();
-            $country_code = $this->_checkoutSession->getCountryCode();
-            $description = $this->_checkoutSession->getDescription();
-            $store_name = $this->_checkoutSession->getStoreName();
+            $order = $this->_checkoutSession->getLastRealOrder();
+            $amount = $order->getGrandTotal();
+            $currency_code = $order->getOrderCurrencyCode();
+            $billingAddress = $order->getBillingAddress();
+            $shippingAddress = $order->getShippingAddress();
+            $city = ($shippingAddress && $shippingAddress->getCity()) ? $shippingAddress->getCity() : '';
+            $street = ($shippingAddress && $shippingAddress->getStreet()) ? $shippingAddress->getStreet() : [''];
+            $country_code = ($shippingAddress && $shippingAddress->getCountryId()) ? $shippingAddress->getCountryId() : '';
+            $description = $order->getIncrementId();
+            $store_name = $this->storeManager->getStore()->getName();
             $store_url = $this->storeManager->getStore()->getBaseUrl();
             $store_url = preg_replace("/^https?:\/\//", "", $store_url);
             $store_url = rtrim($store_url, "/");
-            $first_name = $this->_checkoutSession->getFirstName();
-            $last_name = $this->_checkoutSession->getLastName();
-            $phone_umber = $this->_checkoutSession->getPhoneNumber();
-            $email = $this->_checkoutSession->getEmail();
-            $order_id = $this->_checkoutSession->getOrderId();
+            $first_name = ($shippingAddress && $shippingAddress->getFirstname()) ? $shippingAddress->getFirstname() : '';
+            $last_name = ($shippingAddress && $shippingAddress->getLastname()) ? $shippingAddress->getLastname() : '';
+            $phone_number = ($shippingAddress && $shippingAddress->getTelephone()) ? $shippingAddress->getTelephone() : '';
+            $email = $order->getCustomerEmail();
+            $order_id = $order->getIncrementId();
             $env = $this->get_env();
             $api_url = CULQI_API_URL . 'shopify/public/save-order';
             $activeMultiPay = $this->_checkoutSession->getActiveMultiPay();
