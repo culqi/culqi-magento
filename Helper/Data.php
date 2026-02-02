@@ -116,4 +116,110 @@ class Data extends AbstractHelper
         
         return $payment_methods;
     }
+
+    /**
+     * Verify JWT token
+     * 
+     * @param string $token
+     * @return bool
+     */
+    public function verify_jwt_token($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        try {
+            $rsa_id_culqi = $this->scopeConfig->getValue(
+                "payment/culqi/rsa_id_culqi",
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            ) ?? '';
+
+            if (empty($rsa_id_culqi)) {
+                $resource = ObjectManager::getInstance()->get('Magento\\Framework\\App\\ResourceConnection');
+                $connection = $resource->getConnection();
+                $tableName = $resource->getTableName('core_config_data');
+                $query = "SELECT value FROM $tableName WHERE path = 'payment/culqi/rsa_id_culqi' LIMIT 1";
+                $rsa_id_culqi = $connection->fetchOne($query) ?: '';
+            }
+
+            if (empty($rsa_id_culqi)) {
+                return false;
+            }
+
+            // Decrypt the token
+            $decryptedData = $this->decrypt_data_with_rsa($token, $rsa_id_culqi);
+            
+            if (!$decryptedData) {
+                return false;
+            }
+
+            $data = json_decode($decryptedData, true);
+            
+            if (!isset($data['exp']) || !isset($data['pk'])) {
+                return false;
+            }
+
+            // Check if token has expired
+            if (time() > $data['exp']) {
+                return false;
+            }
+
+            // Verify public key matches
+            $public_key = $this->get_public_key();
+            if ($data['pk'] !== $public_key) {
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Decrypt data with RSA private key
+     * 
+     * @param string $encryptedData
+     * @param string $privateKeyString
+     * @return string|null
+     */
+    private function decrypt_data_with_rsa($encryptedData, $privateKeyString)
+    {
+        try {
+            $encryptedData = base64_decode($encryptedData);
+            
+            $privateKey = openssl_pkey_get_private($privateKeyString);
+            if ($privateKey === false) {
+                throw new \Exception("Invalid private key: " . openssl_error_string());
+            }
+
+            $decrypted = '';
+            $result = openssl_private_decrypt($encryptedData, $decrypted, $privateKey, OPENSSL_PKCS1_OAEP_PADDING);
+            
+            if (PHP_VERSION_ID < 80000) {
+                openssl_free_key($privateKey);
+            }
+
+            if ($result === false) {
+                throw new \Exception("Decryption failed: " . openssl_error_string());
+            }
+
+            return $decrypted;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Get payment type from transaction ID
+     * 
+     * @param string $id
+     * @return string
+     */
+    public function get_payment_type($id)
+    {
+        $type = (substr($id, 0, 4) === "ord_") ? "order" : "charge";
+        return $type;
+    }
 }
