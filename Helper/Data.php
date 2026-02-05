@@ -126,24 +126,15 @@ class Data extends AbstractHelper
     public function verify_jwt_token($token)
     {
         if (empty($token)) {
+            $this->logTokenVerification('Token vacío.');
             return false;
         }
 
         try {
-            $rsa_id_culqi = $this->scopeConfig->getValue(
-                "payment/culqi/rsa_id_culqi",
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-            ) ?? '';
+            $rsa_id_culqi = $this->getConfigValueWithFallback('payment/culqi/rsa_id_culqi');
 
             if (empty($rsa_id_culqi)) {
-                $resource = ObjectManager::getInstance()->get('Magento\\Framework\\App\\ResourceConnection');
-                $connection = $resource->getConnection();
-                $tableName = $resource->getTableName('core_config_data');
-                $query = "SELECT value FROM $tableName WHERE path = 'payment/culqi/rsa_id_culqi' LIMIT 1";
-                $rsa_id_culqi = $connection->fetchOne($query) ?: '';
-            }
-
-            if (empty($rsa_id_culqi)) {
+                $this->logTokenVerification('RSA ID no configurado.');
                 return false;
             }
 
@@ -151,30 +142,73 @@ class Data extends AbstractHelper
             $decryptedData = $this->decrypt_data_with_rsa($token, $rsa_id_culqi);
             
             if (!$decryptedData) {
+                $this->logTokenVerification('No se pudo desencriptar el token.');
                 return false;
             }
 
             $data = json_decode($decryptedData, true);
-            
+             $this->logTokenVerification('Data.', ['payload data' => $data]);
             if (!isset($data['exp']) || !isset($data['pk'])) {
+                $this->logTokenVerification('Token sin campos requeridos.', ['payload' => $data]);
                 return false;
             }
 
             // Check if token has expired
             if (time() > $data['exp']) {
+                $this->logTokenVerification('Token expirado.', ['exp' => $data['exp']]);
                 return false;
             }
 
             // Verify public key matches
             $public_key = $this->get_public_key();
             if ($data['pk'] !== $public_key) {
+                $this->logTokenVerification('Public key no coincide.');
                 return false;
             }
 
+            $this->logTokenVerification('Token válido.');
             return true;
         } catch (\Exception $e) {
+            $this->logTokenVerification('Error verificando token.', ['exception' => $e->getMessage()]);
             return false;
         }
+    }
+
+    /**
+     * Get config value with DB fallback
+     *
+     * @param string $path
+     * @return string
+     */
+    private function getConfigValueWithFallback(string $path): string
+    {
+        $value = $this->scopeConfig->getValue(
+            $path,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        ) ?? '';
+
+        if (!empty($value)) {
+            return $value;
+        }
+
+        $resource = ObjectManager::getInstance()->get('Magento\\Framework\\App\\ResourceConnection');
+        $connection = $resource->getConnection();
+        $tableName = $resource->getTableName('core_config_data');
+        $query = "SELECT value FROM $tableName WHERE path = :path LIMIT 1";
+
+        return $connection->fetchOne($query, ['path' => $path]) ?: '';
+    }
+
+    /**
+     * Log token verification events
+     *
+     * @param string $message
+     * @param array $context
+     * @return void
+     */
+    private function logTokenVerification(string $message, array $context = []): void
+    {
+        $this->_logger->info('[Culqi] verify_jwt_token: ' . $message, $context);
     }
 
     /**
