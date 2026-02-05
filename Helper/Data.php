@@ -148,8 +148,16 @@ class Data extends AbstractHelper
             }
 
             $data = json_decode($decryptedData, true);
-             $this->logTokenVerification('Data.', ['payload data' => $data]);
-            if (!isset($data['exp']) || !isset($data['pk'])) {
+            $this->logTokenVerification('Data.', ['payload data' => $data]);
+
+            if (isset($data['pk'])) {
+                $data['pk'] = (string) $data['pk'];
+            } elseif (isset($data['data'])) {
+                $data['pk'] = (string) $data['data'];
+                $this->logTokenVerification('Token con campo legacy "data".', ['payload' => $data]);
+            }
+
+            if (!isset($data['exp']) || empty($data['pk'])) {
                 $this->logTokenVerification('Token sin campos requeridos.', ['payload' => $data]);
                 return false;
             }
