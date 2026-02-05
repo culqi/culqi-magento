@@ -131,15 +131,16 @@ class Data extends AbstractHelper
         }
 
         try {
-            $rsa_id_culqi = $this->getConfigValueWithFallback('payment/culqi/rsa_id_culqi');
+            $rsa_sk_plugin = $this->getConfigValueWithFallback('payment/culqi/rsa_sk_plugin');
 
-            if (empty($rsa_id_culqi)) {
+            if (empty($rsa_sk_plugin)) {
                 $this->logTokenVerification('RSA ID no configurado.');
                 return false;
             }
 
             // Decrypt the token
-            $decryptedData = $this->decrypt_data_with_rsa($token, $rsa_id_culqi);
+            $decryptedData = $this->decrypt_data_with_rsa($token, $rsa_sk_plugin);
+            $this->logTokenVerification('Token desencriptado.', ['decrypted data' => $decryptedData]);
             
             if (!$decryptedData) {
                 $this->logTokenVerification('No se pudo desencriptar el token.');
