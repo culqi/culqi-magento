@@ -2,7 +2,7 @@
 
 use Magento\Framework\Component\ComponentRegistrar;
 
-define( 'MPCULQI_PLUGIN_VERSION' , 'v3.1.2');
+define( 'MPCULQI_PLUGIN_VERSION' , 'v4.0.0');
 
 //By default, we assume that PHP is NOT running on windows.
 $isWindows = false;
