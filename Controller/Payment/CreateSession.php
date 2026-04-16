@@ -5,6 +5,7 @@ namespace Culqi\Pago\Controller\Payment;
 use Magento\Framework\Serialize\Serializer\Json;
 use Culqi\Pago\Helper\Data;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\App\ProductMetadataInterface;
 
 class CreateSession extends \Magento\Framework\App\Action\Action
 {
@@ -16,6 +17,8 @@ class CreateSession extends \Magento\Framework\App\Action\Action
     protected $storeManager;
     protected $helper;
     protected $resultJsonFactory;
+
+    protected $productMetadata;
     
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -26,6 +29,7 @@ class CreateSession extends \Magento\Framework\App\Action\Action
         \Psr\Log\LoggerInterface $logger,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         Data $helper,
+        ProductMetadataInterface $productMetadata,
         JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context);
@@ -37,6 +41,7 @@ class CreateSession extends \Magento\Framework\App\Action\Action
         $this->storeManager = $storeManager;
         $this->helper = $helper;
         $this->resultJsonFactory = $resultJsonFactory;
+        $this->productMetadata = $productMetadata;
     }
 
     public function execute()
@@ -67,6 +72,41 @@ class CreateSession extends \Magento\Framework\App\Action\Action
             $token = $this->helper->generate_token(true);
             $payment_methods = $this->helper->get_payment_methods();
 
+            $billingAddress = $order->getBillingAddress();
+            $shippingAddress = $order->getShippingAddress();
+
+            $billingStreet = ($billingAddress && $billingAddress->getStreet()) ? $billingAddress->getStreet() : [''];
+            $shippingStreet = ($shippingAddress && $shippingAddress->getStreet()) ? $shippingAddress->getStreet() : [''];
+
+            $billingFirstName = ($billingAddress && $billingAddress->getFirstname()) ? $billingAddress->getFirstname() : '';
+            $billingLastName = ($billingAddress && $billingAddress->getLastname()) ? $billingAddress->getLastname() : '';
+            $billingPhone = ($billingAddress && $billingAddress->getTelephone()) ? $billingAddress->getTelephone() : '';
+
+            $shippingFirstName = ($shippingAddress && $shippingAddress->getFirstname()) ? $shippingAddress->getFirstname() : '';
+            $shippingLastName = ($shippingAddress && $shippingAddress->getLastname()) ? $shippingAddress->getLastname() : '';
+            $shippingPhone = ($shippingAddress && $shippingAddress->getTelephone()) ? $shippingAddress->getTelephone() : '';
+
+            $billingCity = ($billingAddress && $billingAddress->getCity()) ? $billingAddress->getCity() : '';
+            $shippingCity = ($shippingAddress && $shippingAddress->getCity()) ? $shippingAddress->getCity() : '';
+
+            $billingCountry = ($billingAddress && $billingAddress->getCountryId()) ? $billingAddress->getCountryId() : '';
+            $shippingCountry = ($shippingAddress && $shippingAddress->getCountryId()) ? $shippingAddress->getCountryId() : '';
+
+            $billingPostcode = ($billingAddress && $billingAddress->getPostcode()) ? $billingAddress->getPostcode() : '';
+            $shippingPostcode = ($shippingAddress && $shippingAddress->getPostcode()) ? $shippingAddress->getPostcode() : '';
+
+            $billingRegion = ($billingAddress && $billingAddress->getRegion()) ? $billingAddress->getRegion() : '';
+            $shippingRegion = ($shippingAddress && $shippingAddress->getRegion()) ? $shippingAddress->getRegion() : '';
+
+            $shippingMethod = $order->getShippingDescription() ?: 'No method selected';
+            $shippingTotal = number_format((float) $order->getShippingAmount(), 2, '.', '');
+            $shippingTax = number_format((float) $order->getShippingTaxAmount(), 2, '.', '');
+
+            $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+            $remoteIp = $_SERVER['REMOTE_ADDR'] ?? '';
+            $phone = $billingPhone ?: $shippingPhone;
+            $browser = $userAgent;
+
             $body = array(
                 "id" => $order_id,
                 "platform" => PLATFORM,
@@ -84,32 +124,56 @@ class CreateSession extends \Magento\Framework\App\Action\Action
                 ),
                 "customer" => array(
                     "billing_address" => array(
-                        "given_name" => $first_name,
-                        "family_name" => $last_name,
-                        "line1" => $street[0],
-                        "line2" => '',
-                        "city" => $city,
-                        "postal_code" => '',
-                        "province" => '',
-                        "country_code" => $country_code
+                        "given_name" => $billingFirstName,
+                        "family_name" => $billingLastName,
+                        "line1" => $billingStreet[0] ?? '',
+                        "line2" => $billingStreet[1] ?? '',
+                        "city" => $billingCity,
+                        "postal_code" => $billingPostcode,
+                        "province" => $billingRegion,
+                        "country_code" => $billingCountry
                     ),
                     "shipping_address" => array(
-                        "given_name" => $first_name,
-                        "family_name" => $last_name,
-                        "line1" => $street[0],
-                        "line2" => '',
-                        "city" => $city,
-                        "postal_code" => '',
-                        "province" => '',
-                        "country_code" => $country_code
+                        "given_name" => $shippingFirstName,
+                        "family_name" => $shippingLastName,
+                        "line1" => $shippingStreet[0] ?? '',
+                        "line2" => $shippingStreet[1] ?? '',
+                        "city" => $shippingCity,
+                        "postal_code" => $shippingPostcode,
+                        "province" => $shippingRegion,
+                        "country_code" => $shippingCountry
+                    ),
+                    "shipping_data" => array(
+                        "method" => $shippingMethod,
+                        "total" => $shippingTotal,
+                        "tax" => $shippingTax
                     ),
                     "email" => $email,
                     "locale" => "en-PE"
                 ),
-                "cancel_url" => '',
+                "cancel_url" => $store_url,
+                "success_url" => '',
                 "merchant_locale" => "en-PE",
                 "shop_domain" => $store_url,
-                "order_key" => '123',
+                "order_key" => "123",
+                "phone" => $phone,
+                "browser" => $browser,
+                "products" => null,
+                "audit_data" => array(
+                    "integration_type" => "plugin",
+                    "ip" => $remoteIp,
+                    "user_agent" => $userAgent,
+                    "checkout_version" => defined('CHECKOUT_VERSION') ? CHECKOUT_VERSION : '',
+                    "3ds" => defined('CULQI_3DS') ? CULQI_3DS : '',
+                    "plugin_version" => defined('PLUGIN_VERSION') ? PLUGIN_VERSION : '',
+                    "cms" => PLATFORM,
+                    "cms_version" => $this->productMetadata->getVersion(),
+                    "wordpress_version" => '',
+                    "php_version" => phpversion(),
+                    "name_theme" => '',
+                    "version_theme" => '',
+                    "url_theme" => '',
+                ),
             );
 
             $headers = [
