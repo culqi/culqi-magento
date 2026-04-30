@@ -3,6 +3,8 @@
 namespace Culqi\Pago\Controller\Payment;
 
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\View\DesignInterface;
+use Magento\Framework\UrlInterface;
 use Culqi\Pago\Helper\Data;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\App\ProductMetadataInterface;
@@ -19,7 +21,9 @@ class CreateSession extends \Magento\Framework\App\Action\Action
     protected $resultJsonFactory;
 
     protected $productMetadata;
-    
+    protected $design;
+    protected $url;
+
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\HTTP\Client\Curl $curl,
@@ -30,7 +34,9 @@ class CreateSession extends \Magento\Framework\App\Action\Action
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         Data $helper,
         ProductMetadataInterface $productMetadata,
-        JsonFactory $resultJsonFactory
+        JsonFactory $resultJsonFactory,
+        DesignInterface $design,
+        UrlInterface $url
     ) {
         parent::__construct($context);
         $this->curl = $curl;
@@ -42,6 +48,8 @@ class CreateSession extends \Magento\Framework\App\Action\Action
         $this->helper = $helper;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->productMetadata = $productMetadata;
+        $this->design = $design;
+        $this->url = $url;
     }
 
     public function execute()
@@ -103,9 +111,13 @@ class CreateSession extends \Magento\Framework\App\Action\Action
             $shippingTax = number_format((float) $order->getShippingTaxAmount(), 2, '.', '');
 
             $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
-            $remoteIp = $_SERVER['REMOTE_ADDR'] ?? '';
+            $remoteIp = $this->getRemoteIp();
             $phone = $billingPhone ?: $shippingPhone;
             $browser = $userAgent;
+
+            $themeConfig = $this->getThemeInfo();
+            $products = $this->getOrderProducts($order);
+            $cancelUrl = $this->url->getUrl('checkout/cart');
 
             $body = array(
                 "id" => $order_id,
@@ -119,7 +131,7 @@ class CreateSession extends \Magento\Framework\App\Action\Action
                 "payment_method" => array(
                     "type" => "offsite",
                     "data" => array(
-                        "cancel_url" => ''
+                        "cancel_url" => $cancelUrl
                     )
                 ),
                 "customer" => array(
@@ -151,28 +163,27 @@ class CreateSession extends \Magento\Framework\App\Action\Action
                     "email" => $email,
                     "locale" => "en-PE"
                 ),
-                "cancel_url" => $store_url,
-                "success_url" => '',
+                "cancel_url" => $cancelUrl,
                 "merchant_locale" => "en-PE",
                 "shop_domain" => $store_url,
-                "order_key" => "123",
+                "order_key" => $this->getOrderKey($order),
                 "phone" => $phone,
                 "browser" => $browser,
-                "products" => null,
+                "products" => $products,
                 "audit_data" => array(
                     "integration_type" => "plugin",
                     "ip" => $remoteIp,
                     "user_agent" => $userAgent,
                     "checkout_version" => defined('CHECKOUT_VERSION') ? CHECKOUT_VERSION : '',
-                    "3ds" => defined('CULQI_3DS') ? CULQI_3DS : '',
+                    "threeds" => defined('CULQI_3DS') ? CULQI_3DS : '',
                     "plugin_version" => defined('PLUGIN_VERSION') ? PLUGIN_VERSION : '',
                     "cms" => PLATFORM,
                     "cms_version" => $this->productMetadata->getVersion(),
                     "wordpress_version" => '',
                     "php_version" => phpversion(),
-                    "name_theme" => '',
-                    "version_theme" => '',
-                    "url_theme" => '',
+                    "name_theme" => $themeConfig['name'],
+                    "version_theme" => $themeConfig['version'],
+                    "url_theme" => $themeConfig['url'],
                 ),
             );
 
@@ -232,5 +243,72 @@ class CreateSession extends \Magento\Framework\App\Action\Action
             return 'live';
         }
         return false;
+    }
+
+    private function getRemoteIp()
+    {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+        } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return trim($ip);
+    }
+
+    private function getThemeInfo()
+    {
+        try {
+            $themeName = $this->design->getThemeName() ?: '';
+            $theme = $this->design->getDesignTheme();
+            $themeVersion = '';
+            if ($theme && method_exists($theme, 'getThemeVersion')) {
+                $themeVersion = $theme->getThemeVersion() ?: '';
+            }
+            return [
+                'name' => $themeName,
+                'version' => $themeVersion,
+                'url' => $themeName
+            ];
+        } catch (\Exception $e) {
+            return ['name' => '', 'version' => '', 'url' => ''];
+        }
+    }
+
+    private function getOrderProducts($order)
+    {
+        try {
+            $items = $order->getAllItems();
+            $products = [];
+            foreach ($items as $item) {
+                if ($item->getParentItem()) {
+                    continue;
+                }
+                $qty = (int)$item->getQtyOrdered();
+                $lineTotal = (float)$item->getRowTotalInclTax();
+                $unitPrice = $qty > 0 ? $lineTotal / $qty : (float)$item->getPrice();
+                $products[] = [
+                    'name' => $item->getName() ?: '',
+                    'quantity' => $qty > 0 ? $qty : 1,
+                    'unit_price' => number_format($unitPrice, 2, '.', ''),
+                ];
+            }
+            return $products;
+        } catch (\Exception $e) {
+            $this->logger->error('Error getting order products: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    private function getOrderKey($order)
+    {
+        try {
+            $customerId = $order->getCustomerId();
+            $orderId = $order->getIncrementId();
+            return hash('sha256', $orderId . $customerId . time());
+        } catch (\Exception $e) {
+            return hash('sha256', $order->getIncrementId() . time());
+        }
     }
 }
