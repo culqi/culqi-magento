@@ -179,7 +179,6 @@ class CreateSession extends \Magento\Framework\App\Action\Action
                     "plugin_version" => defined('PLUGIN_VERSION') ? PLUGIN_VERSION : '',
                     "cms" => PLATFORM,
                     "cms_version" => $this->productMetadata->getVersion(),
-                    "wordpress_version" => '',
                     "php_version" => phpversion(),
                     "name_theme" => $themeConfig['name'],
                     "version_theme" => $themeConfig['version'],
