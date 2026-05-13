@@ -44,7 +44,7 @@ echo 'Tamaño: ' . number_format(filesize($zipOut) / 1024, 2) . " KB\n";
 function get_module_version(string $configPath): string
 {
     $content = file_get_contents($configPath);
-    if (preg_match('/define\s*\(\s*[\'"]MPCULQI_PLUGIN_VERSION[\'"]\s*,\s*[\'"]([v\d.]+)[\'"]\s*\)/', $content, $match)) {
+    if (preg_match('/define\s*\(\s*[\'"]PLUGIN_VERSION[\'"]\s*,\s*[\'"]([v\d.]+)[\'"]\s*\)/', $content, $match)) {
         return $match[1];
     }
     throw new Exception('No se pudo leer la versión del módulo desde registration.php');
