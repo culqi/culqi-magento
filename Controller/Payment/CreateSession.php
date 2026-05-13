@@ -220,7 +220,7 @@ class CreateSession extends \Magento\Framework\App\Action\Action
                     'error' => $errorMessage
                 ]);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error('Payment session creation error: ' . $e->getMessage());
             return $resultJson->setData([
                 'success' => false,
@@ -259,7 +259,9 @@ class CreateSession extends \Magento\Framework\App\Action\Action
     private function getThemeInfo()
     {
         try {
-            $themeName = $this->design->getThemeName() ?: '';
+            $themeName = method_exists($this->design, 'getThemeName')
+                ? ($this->design->getThemeName() ?: '')
+                : '';
             $theme = $this->design->getDesignTheme();
             $themeVersion = '';
             if ($theme && method_exists($theme, 'getThemeVersion')) {
@@ -270,7 +272,7 @@ class CreateSession extends \Magento\Framework\App\Action\Action
                 'version' => $themeVersion,
                 'url' => $themeName
             ];
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return ['name' => '', 'version' => '', 'url' => ''];
         }
     }
@@ -294,7 +296,7 @@ class CreateSession extends \Magento\Framework\App\Action\Action
                 ];
             }
             return $products;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error('Error getting order products: ' . $e->getMessage());
             return null;
         }
@@ -306,7 +308,7 @@ class CreateSession extends \Magento\Framework\App\Action\Action
             $customerId = $order->getCustomerId();
             $orderId = $order->getIncrementId();
             return hash('sha256', $orderId . $customerId . time());
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return hash('sha256', $order->getIncrementId() . time());
         }
     }
