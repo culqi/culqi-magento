@@ -1,0 +1,11 @@
+.git
+.gitignore
+AGENTS.md
+CHANGELOG
+LICENSE
+README.md
+VERSION
+composer.lock
+vendor
+dist
+build
