@@ -50,7 +50,7 @@ class Data extends AbstractHelper
                 $encryptedData = $this->encrypt_data_with_rsa(json_encode($data), $rsa_pk_culqi);
                 return $encryptedData;
             }
-        } catch(\Exception $e) {
+        } catch(\Throwable $e) {
             return '';
         }
     }
@@ -74,7 +74,7 @@ class Data extends AbstractHelper
             }
     
             return base64_encode($encrypted);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }
@@ -177,7 +177,7 @@ class Data extends AbstractHelper
 
             $this->logTokenVerification('Token válido.');
             return true;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logTokenVerification('Error verificando token.', ['exception' => $e->getMessage()]);
             return false;
         }
@@ -249,7 +249,7 @@ class Data extends AbstractHelper
             }
 
             return $decrypted;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }
