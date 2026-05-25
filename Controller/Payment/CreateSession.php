@@ -3,8 +3,11 @@
 namespace Culqi\Pago\Controller\Payment;
 
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\View\DesignInterface;
+use Magento\Framework\UrlInterface;
 use Culqi\Pago\Helper\Data;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\App\ProductMetadataInterface;
 
 class CreateSession extends \Magento\Framework\App\Action\Action
 {
@@ -16,7 +19,11 @@ class CreateSession extends \Magento\Framework\App\Action\Action
     protected $storeManager;
     protected $helper;
     protected $resultJsonFactory;
-    
+
+    protected $productMetadata;
+    protected $design;
+    protected $url;
+
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\HTTP\Client\Curl $curl,
@@ -26,7 +33,10 @@ class CreateSession extends \Magento\Framework\App\Action\Action
         \Psr\Log\LoggerInterface $logger,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         Data $helper,
-        JsonFactory $resultJsonFactory
+        ProductMetadataInterface $productMetadata,
+        JsonFactory $resultJsonFactory,
+        DesignInterface $design,
+        UrlInterface $url
     ) {
         parent::__construct($context);
         $this->curl = $curl;
@@ -37,6 +47,9 @@ class CreateSession extends \Magento\Framework\App\Action\Action
         $this->storeManager = $storeManager;
         $this->helper = $helper;
         $this->resultJsonFactory = $resultJsonFactory;
+        $this->productMetadata = $productMetadata;
+        $this->design = $design;
+        $this->url = $url;
     }
 
     public function execute()
@@ -67,6 +80,45 @@ class CreateSession extends \Magento\Framework\App\Action\Action
             $token = $this->helper->generate_token(true);
             $payment_methods = $this->helper->get_payment_methods();
 
+            $billingAddress = $order->getBillingAddress();
+            $shippingAddress = $order->getShippingAddress();
+
+            $billingStreet = ($billingAddress && $billingAddress->getStreet()) ? $billingAddress->getStreet() : [''];
+            $shippingStreet = ($shippingAddress && $shippingAddress->getStreet()) ? $shippingAddress->getStreet() : [''];
+
+            $billingFirstName = ($billingAddress && $billingAddress->getFirstname()) ? $billingAddress->getFirstname() : '';
+            $billingLastName = ($billingAddress && $billingAddress->getLastname()) ? $billingAddress->getLastname() : '';
+            $billingPhone = ($billingAddress && $billingAddress->getTelephone()) ? $billingAddress->getTelephone() : '';
+
+            $shippingFirstName = ($shippingAddress && $shippingAddress->getFirstname()) ? $shippingAddress->getFirstname() : '';
+            $shippingLastName = ($shippingAddress && $shippingAddress->getLastname()) ? $shippingAddress->getLastname() : '';
+            $shippingPhone = ($shippingAddress && $shippingAddress->getTelephone()) ? $shippingAddress->getTelephone() : '';
+
+            $billingCity = ($billingAddress && $billingAddress->getCity()) ? $billingAddress->getCity() : '';
+            $shippingCity = ($shippingAddress && $shippingAddress->getCity()) ? $shippingAddress->getCity() : '';
+
+            $billingCountry = ($billingAddress && $billingAddress->getCountryId()) ? $billingAddress->getCountryId() : '';
+            $shippingCountry = ($shippingAddress && $shippingAddress->getCountryId()) ? $shippingAddress->getCountryId() : '';
+
+            $billingPostcode = ($billingAddress && $billingAddress->getPostcode()) ? $billingAddress->getPostcode() : '';
+            $shippingPostcode = ($shippingAddress && $shippingAddress->getPostcode()) ? $shippingAddress->getPostcode() : '';
+
+            $billingRegion = ($billingAddress && $billingAddress->getRegion()) ? $billingAddress->getRegion() : '';
+            $shippingRegion = ($shippingAddress && $shippingAddress->getRegion()) ? $shippingAddress->getRegion() : '';
+
+            $shippingMethod = $order->getShippingDescription() ?: 'No method selected';
+            $shippingTotal = number_format((float) $order->getShippingAmount(), 2, '.', '');
+            $shippingTax = number_format((float) $order->getShippingTaxAmount(), 2, '.', '');
+
+            $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+            $remoteIp = $this->getRemoteIp();
+            $phone = $billingPhone ?: $shippingPhone;
+            $browser = $userAgent;
+
+            $themeConfig = $this->getThemeInfo();
+            $products = $this->getOrderProducts($order);
+            $cancelUrl = $this->url->getUrl('checkout/cart');
+
             $body = array(
                 "id" => $order_id,
                 "platform" => PLATFORM,
@@ -79,37 +131,59 @@ class CreateSession extends \Magento\Framework\App\Action\Action
                 "payment_method" => array(
                     "type" => "offsite",
                     "data" => array(
-                        "cancel_url" => ''
+                        "cancel_url" => $cancelUrl
                     )
                 ),
                 "customer" => array(
                     "billing_address" => array(
-                        "given_name" => $first_name,
-                        "family_name" => $last_name,
-                        "line1" => $street[0],
-                        "line2" => '',
-                        "city" => $city,
-                        "postal_code" => '',
-                        "province" => '',
-                        "country_code" => $country_code
+                        "given_name" => $billingFirstName,
+                        "family_name" => $billingLastName,
+                        "line1" => $billingStreet[0] ?? '',
+                        "line2" => $billingStreet[1] ?? '',
+                        "city" => $billingCity,
+                        "postal_code" => $billingPostcode,
+                        "province" => $billingRegion,
+                        "country_code" => $billingCountry
                     ),
                     "shipping_address" => array(
-                        "given_name" => $first_name,
-                        "family_name" => $last_name,
-                        "line1" => $street[0],
-                        "line2" => '',
-                        "city" => $city,
-                        "postal_code" => '',
-                        "province" => '',
-                        "country_code" => $country_code
+                        "given_name" => $shippingFirstName,
+                        "family_name" => $shippingLastName,
+                        "line1" => $shippingStreet[0] ?? '',
+                        "line2" => $shippingStreet[1] ?? '',
+                        "city" => $shippingCity,
+                        "postal_code" => $shippingPostcode,
+                        "province" => $shippingRegion,
+                        "country_code" => $shippingCountry
+                    ),
+                    "shipping_data" => array(
+                        "method" => $shippingMethod,
+                        "total" => $shippingTotal,
+                        "tax" => $shippingTax
                     ),
                     "email" => $email,
                     "locale" => "en-PE"
                 ),
-                "cancel_url" => '',
+                "cancel_url" => $cancelUrl,
                 "merchant_locale" => "en-PE",
                 "shop_domain" => $store_url,
-                "order_key" => '123',
+                "order_key" => $this->getOrderKey($order),
+                "phone" => $phone,
+                "browser" => $browser,
+                "products" => $products,
+                "audit_data" => array(
+                    "integration_type" => "plugin",
+                    "ip" => $remoteIp,
+                    "user_agent" => $userAgent,
+                    "checkout_version" => defined('CHECKOUT_VERSION') ? CHECKOUT_VERSION : '',
+                    "threeds" => defined('CULQI_3DS') ? CULQI_3DS : '',
+                    "plugin_version" => defined('PLUGIN_VERSION') ? PLUGIN_VERSION : '',
+                    "cms" => PLATFORM,
+                    "cms_version" => $this->productMetadata->getVersion(),
+                    "php_version" => phpversion(),
+                    "name_theme" => $themeConfig['name'],
+                    "version_theme" => $themeConfig['version'],
+                    "url_theme" => $themeConfig['url'],
+                ),
             );
 
             $headers = [
@@ -146,7 +220,7 @@ class CreateSession extends \Magento\Framework\App\Action\Action
                     'error' => $errorMessage
                 ]);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error('Payment session creation error: ' . $e->getMessage());
             return $resultJson->setData([
                 'success' => false,
@@ -168,5 +242,74 @@ class CreateSession extends \Magento\Framework\App\Action\Action
             return 'live';
         }
         return false;
+    }
+
+    private function getRemoteIp()
+    {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+        } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return trim($ip);
+    }
+
+    private function getThemeInfo()
+    {
+        try {
+            $themeName = method_exists($this->design, 'getThemeName')
+                ? ($this->design->getThemeName() ?: '')
+                : '';
+            $theme = $this->design->getDesignTheme();
+            $themeVersion = '';
+            if ($theme && method_exists($theme, 'getThemeVersion')) {
+                $themeVersion = $theme->getThemeVersion() ?: '';
+            }
+            return [
+                'name' => $themeName,
+                'version' => $themeVersion,
+                'url' => $themeName
+            ];
+        } catch (\Throwable $e) {
+            return ['name' => '', 'version' => '', 'url' => ''];
+        }
+    }
+
+    private function getOrderProducts($order)
+    {
+        try {
+            $items = $order->getAllItems();
+            $products = [];
+            foreach ($items as $item) {
+                if ($item->getParentItem()) {
+                    continue;
+                }
+                $qty = (int)$item->getQtyOrdered();
+                $lineTotal = (float)$item->getRowTotalInclTax();
+                $unitPrice = $qty > 0 ? $lineTotal / $qty : (float)$item->getPrice();
+                $products[] = [
+                    'name' => $item->getName() ?: '',
+                    'quantity' => $qty > 0 ? $qty : 1,
+                    'unit_price' => number_format($unitPrice, 2, '.', ''),
+                ];
+            }
+            return $products;
+        } catch (\Throwable $e) {
+            $this->logger->error('Error getting order products: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    private function getOrderKey($order)
+    {
+        try {
+            $customerId = $order->getCustomerId();
+            $orderId = $order->getIncrementId();
+            return hash('sha256', $orderId . $customerId . time());
+        } catch (\Throwable $e) {
+            return hash('sha256', $order->getIncrementId() . time());
+        }
     }
 }
