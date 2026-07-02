@@ -188,7 +188,8 @@ class CreateSession extends \Magento\Framework\App\Action\Action
 
             $headers = [
                 'Content-Type' => 'application/json',
-                'shopify-shop-domain' => '',
+                'User-Agent' => 'Culqi-Magento/' . PLUGIN_VERSION,
+                'shopify-shop-domain' => $store_url,
                 'Authorization' => 'Bearer ' . $token
             ];
 

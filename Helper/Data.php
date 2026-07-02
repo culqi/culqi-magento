@@ -37,10 +37,7 @@ class Data extends AbstractHelper
             $exp = time() + $expirationTimeInSeconds;
 
             if(!$rsa_pk_culqi) {
-                if(!$is_admin) {
-                    
-                    return '';
-                }
+                return '';
             } else {
                 $data = [
                     "pk" => $public_key,
