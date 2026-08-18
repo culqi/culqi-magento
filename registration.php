@@ -18,7 +18,7 @@ define('CULQI_OS', $isWindows);
 define( 'CULQI_API_URL' , 'https://ag-online.culqi.com/gateway/' );
 define( 'CULQI_CONFIG_URL' , 'https://configonlineplatform.culqi.com' );
 
-define( 'PLUGIN_VERSION', 'v4.0.1');
+define( 'PLUGIN_VERSION', 'v4.1.0');
 define( 'PLATFORM' , 'magento' );
 define( 'CHECKOUT_VERSION', 'custom_checkout');
 define( 'CULQI_3DS', 'culqi_3ds');
