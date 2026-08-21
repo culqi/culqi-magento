@@ -53,7 +53,7 @@ class RestoreCart extends \Magento\Framework\App\Action\Action
             return $resultJson->setData([
                 'success' => true
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $resultJson->setData([
                 'success' => false,
                 'error' => $e->getMessage()

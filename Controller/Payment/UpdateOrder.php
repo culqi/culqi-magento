@@ -144,7 +144,7 @@ class UpdateOrder extends Action implements CsrfAwareActionInterface
                 'message' => 'Order status updated successfully'
             ])->setHttpResponseCode(200);
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error('Culqi Update Order Error: ' . $e->getMessage());
             return $resultJson->setData([
                 'success' => false,
@@ -330,7 +330,7 @@ class UpdateOrder extends Action implements CsrfAwareActionInterface
             $payment->save();
             
             $this->logger->info('Culqi Transaction saved: ' . $transactionId);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error('Culqi Save Transaction Error: ' . $e->getMessage());
         }
     }
@@ -360,14 +360,14 @@ class UpdateOrder extends Action implements CsrfAwareActionInterface
                     
                     try {
                         $stockManagement->backItemQty($productId, $qty, $order->getStore()->getWebsiteId());
-                    } catch (\Exception $e) {
+                    } catch (\Throwable $e) {
                         $this->logger->warning('Culqi Update Order: Could not reduce stock for product ' . $productId . ': ' . $e->getMessage());
                     }
                 }
             }
 
             $order->setInventoryProcessed(true);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger->error('Culqi Update Order: Error reducing stock levels: ' . $e->getMessage());
         }
     }

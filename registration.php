@@ -14,10 +14,14 @@ if(strcasecmp(substr(PHP_OS, 0, 3), 'WIN') == 0){
 }
 
 define('CULQI_OS', $isWindows);
-define('TIME_EXPIRATION_DEFAULT', 24);
-define( 'CULQI_API_URL' , 'https://c1-ag-online.qas.nonprodculqi.com/gateway/' );
-define( 'CULQI_CONFIG_URL' , 'https://c1-configonlineplatform.qas.nonprodculqi.com' );
+
+define( 'CULQI_API_URL' , 'https://ag-online.culqi.com/gateway/' );
+define( 'CULQI_CONFIG_URL' , 'https://configonlineplatform.culqi.com' );
+
+define( 'PLUGIN_VERSION', 'v4.1.0');
 define( 'PLATFORM' , 'magento' );
+define( 'CHECKOUT_VERSION', 'custom_checkout');
+define( 'CULQI_3DS', 'culqi_3ds');
 define( 'EXPIRATION_TIME' , 15 );
 
 define('USERNAME_WEBHOOK', bin2hex(random_bytes(5)));
