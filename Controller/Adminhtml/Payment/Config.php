@@ -119,7 +119,7 @@ class Config extends Action
                 'success' => true,
                 'message' => __('Payment method %1 has been %2.', $methodCode, $status ? 'enabled' : 'disabled')
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $resultJson->setData(['success' => false, 'message' => $e->getMessage()]);
         }
     }

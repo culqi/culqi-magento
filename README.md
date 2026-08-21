@@ -13,7 +13,9 @@ Nuestro plugin integra por tí nuestro Checkout v4 y nuestra librería JS 3DS, c
 
 ## Instalación y activación
 
-Descargar el zip (.zip) de nuestro plugin desde [aquí](https://github.com/culqi/culqi-magento/releases/download/vCulqi-Magento2.4/culqi-magento.zip "download").
+### Opción 1: Instalación manual con archivo ZIP
+
+Descargar el zip (.zip) de nuestro plugin desde [aquí](https://github.com/culqi/culqi-magento/releases).
 
 Crea el  directorio **/Culqi/Pago/** y copia el contenido del zip y sigue estos pasos:
 
@@ -42,11 +44,34 @@ $ php bin/magento cache:flush
 
 > Ten cuidado con los permisos de las carpetas y archivos en Magento 2. [Ver aquí.](https://devdocs.magento.com/guides/v2.4/install-gde/prereq/file-system-perms.html)
 
+
+### Opción 2: Instalación desde código fuente
+
+Si prefieres usar el código fuente en lugar de descargar un ZIP pre-compilado, puedes construir el plugin manualmente.
+
+**Requisitos:**
+
+- [Composer](https://getcomposer.org/) instalado en tu computadora
+- PHP 7.4 o superior
+
+**Pasos:**
+
+1. Descarga o clona el código fuente del plugin desde este repositorio
+2. Abre una terminal en la carpeta raíz del proyecto
+3. Ejecuta el comando:
+
+    ```bash
+    composer run build
+    ```
+
+4. Se generará un archivo `dist/culqi-magento-X.X.X.zip` (por ejemplo, `dist/culqi-magento-v4.1.0.zip`)
+5. Sigue los mismos pasos de la **Opción 1** para subir el ZIP a Magento
+
 ## Configuración
 
 A continuación se presenta una imagen de la pantalla de configuración:
 
-![magento](https://docs.culqi.com/images/plugins/magento-conf.png)
+![Magento](screenshots/plugin-conf.jpg)
 
 Ingresa en la sección "Stores", luego "Configuration", "Sales", finalmente "Payment Methods".
 Independiente del mecanismo de instalación, los pasos para configurar el plugin son los mismos
@@ -76,7 +101,7 @@ Independiente del mecanismo de instalación, los pasos para configurar el plugin
 
 8. Personaliza tu checkout: Con esta opción puedes cambiar los colores preestablecidos por los colores de tu marca, así como el logo.
 
-![magento](https://docs.culqi.com/images/plugins/magento-preview-checkout.png)
+![Magento](screenshots/plugin-preview-checkout.jpg)
 
 9. Finalmente guarda tu configuración: ¡Listo!, Tus clientes ya pueden realizar pagos a través de tu tienda virtual.
 
@@ -110,7 +135,7 @@ Contamos con las siguientes versiones:
         2.4.0+
       </td>
       <td class = "px-3 py-4 text-sm">
-        <a href='https://github.com/culqi/culqi-magento/releases/download/vCulqi-Magento2.4/culqi-magento.zip'>
+        <a href='https://github.com/culqi/culqi-magento/releases'>
           Descargar
         </a>
       </td>
@@ -133,7 +158,7 @@ Puedes usar el manual para obtener más detalle:
   <tbody class="bg-transparent divide-y divide-culqi-gray-ultra-light dark:divide-culqi-plate-light">
     <tr class="whitespace-nowrap font-normal font-Archivo  text-culqi-plate-dark dark:text-white-gray">
       <td class = "px-3 py-4 font-bold text-sm">
-        <img src="https://docs.culqi.com/images/plugins/magento.svg" alt="woocommerce" /></br>
+        <img src="https://docs.culqi.com/images/plugins/magento.svg" alt="magento" /></br>
       </td>
       <td class = "px-3 py-4 text-sm">
         <a href='https://docs.culqi.com/pdf/manual_magento.pdf' download>

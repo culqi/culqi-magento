@@ -2,11 +2,19 @@
     "name": "culqi/module-pago",
     "description": "Pasarela de Pagos Culqi",
     "type": "magento2-module",
-    "version": "1.0.0",
+    "version": "4.1.0",
     "autoload": {
         "files": [ "registration.php" ],
         "psr-4": {
             "Culqi\\Pago\\": ""
         }
+    },
+    "scripts": {
+        "build": [
+            "@install-prod",
+            "@package"
+        ],
+        "install-prod": "composer install --no-dev --optimize-autoloader --no-interaction",
+        "package": "php build/build.php"
     }
 }
