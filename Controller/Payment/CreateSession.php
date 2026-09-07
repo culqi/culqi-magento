@@ -208,9 +208,13 @@ class CreateSession extends \Magento\Framework\App\Action\Action
             $result = $this->jsonSerializer->unserialize($responseBody);
 
             if (isset($result['redirect_url'])) {
+                $redirectUrl = $result['redirect_url'];
+                if (strpos($redirectUrl, 'shop_name=') === false) {
+                    $redirectUrl .= '&shop_name=' . urlencode($store_name);
+                }
                 return $resultJson->setData([
                     'success' => true,
-                    'redirect_url' => $result['redirect_url'],
+                    'redirect_url' => $redirectUrl,
                     'payment_methods' => $payment_methods
                 ]);
             } else {
