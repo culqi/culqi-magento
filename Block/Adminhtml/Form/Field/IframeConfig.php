@@ -54,8 +54,9 @@ class IframeConfig extends \Magento\Config\Block\System\Config\Form\Field
         }
 
         $shopUrl = $this->storeManager->getStore()->getBaseUrl();
+        $shopName = $this->storeManager->getStore()->getName();
 
-        return CULQI_CONFIG_URL . '?platform=' . PLATFORM . '&status=' . urlencode( $plugin_status ) . '&pk=' . urlencode( $public_key ) . '&merchant=' . urlencode( $merchant ) . '&activePaymentMethods=' . urlencode($payment_methods) . '&shop=' . urlencode($shopUrl) . '&token=' . urlencode($token);
+        return CULQI_CONFIG_URL . '?platform=' . PLATFORM . '&status=' . urlencode( $plugin_status ) . '&pk=' . urlencode( $public_key ) . '&merchant=' . urlencode( $merchant ) . '&activePaymentMethods=' . urlencode($payment_methods) . '&shop=' . urlencode($shopUrl) . '&shop_name=' . urlencode($shopName) . '&token=' . urlencode($token);
     }
 
     private function getIframeParameters()
