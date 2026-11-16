@@ -4,6 +4,8 @@ Nuestro plugin integra por tí nuestro Checkout v4 y nuestra librería JS 3DS, c
 
 > Recuerda que para usar cualquier plugins necesitas tener tu llave pública y llave privada (test o live), los cuales los puedes generar a través de tu Culqipanel.
 
+Para pruebas, reemplaza `INSERTE_SU_LLAVE_PUBLICA` e `INSERTE_SU_LLAVE_PRIVADA` por tus propias llaves `pk_test_` y `sk_test_`. No hagas commit de tus llaves.
+
 ## Requisitos ##
 
 - PHP 7.4+
